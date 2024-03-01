@@ -9,17 +9,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String, modifier: Modifier = Modifier, showSettings: Boolean) {
+fun TopBar(title: String, modifier: Modifier = Modifier, showSettings: Boolean, navController: NavController) {
     TopAppBar(
         title = {
             Text(text = title)
         },
         actions = {
             if (showSettings) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    navController.navigate("preferencias")
+                }) {
                     Icon(imageVector = Icons.Rounded.Settings, contentDescription = "Ajustes")
                 }
             }
