@@ -31,9 +31,9 @@ import com.example.proyecto1.myComponents.ListClientes
 import com.example.proyecto1.myComponents.ListServicios
 import com.example.proyecto1.myComponents.ListVehículos
 import com.example.proyecto1.screens.AddCliente
-import com.example.proyecto1.screens.AddClientePreview
 import com.example.proyecto1.screens.AddServicio
 import com.example.proyecto1.screens.AddVehiculo
+import com.example.proyecto1.screens.Preferencias
 
 
 class ActivityViewModel : ViewModel() {
@@ -89,7 +89,7 @@ fun MainView(modifier: Modifier = Modifier,
     Scaffold (
         // Barra superior
         topBar = {
-            TopBar(tipo, showSettings = true)
+            TopBar(tipo, showSettings = true, navController = navController)
         },
         // Barra inferior
         bottomBar = {
@@ -150,6 +150,9 @@ fun AppNavigation(viewModel: ActivityViewModel) {
         }
         composable("newCliente") {
             AddCliente(navController, viewModel)
+        }
+        composable("preferencias") {
+            Preferencias(navController = navController, viewModel = viewModel)
         }
     }
 }
