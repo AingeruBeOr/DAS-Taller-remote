@@ -146,7 +146,7 @@ fun AppNavigation(viewModel: ActivityViewModel) {
             AddServicio(navController)
         }
         composable("newVehiculo") {
-            AddVehiculo(navController)
+            AddVehiculo(navController, viewModel)
         }
         composable("newCliente") {
             AddCliente(navController, viewModel)
