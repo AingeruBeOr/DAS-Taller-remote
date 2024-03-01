@@ -40,7 +40,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo vehículo", showSettings = false)
+            TopBar(title = "Añadir nuevo vehículo", showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (

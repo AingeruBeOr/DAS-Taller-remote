@@ -42,7 +42,7 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo cliente", showSettings = false)
+            TopBar(title = "Añadir nuevo cliente", showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (

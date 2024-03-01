@@ -55,7 +55,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo servicio", showSettings = false)
+            TopBar(title = "Añadir nuevo servicio", showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (
