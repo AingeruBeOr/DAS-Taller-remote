@@ -11,21 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Build
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -35,10 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ui.theme.Proyecto1Theme
+import com.example.proyecto1.myComponents.TopBar
+import com.example.proyecto1.myComponents.BottomBar
 
 
 data class Servicio(
@@ -99,9 +94,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView(modifier: Modifier = Modifier, viewModel: ActivityViewModel, tipo_pantalla: String) {
+fun MainView(modifier: Modifier = Modifier,
+             viewModel: ActivityViewModel,
+             tipoPantalla: String,
+             navController: NavController
+) {
     val tipo by remember {
-        mutableStateOf(tipo_pantalla)
+        mutableStateOf(tipoPantalla)
     }
 
     // Componente layout para incluir barra superior, inferior y botón flotante
@@ -112,7 +111,7 @@ fun MainView(modifier: Modifier = Modifier, viewModel: ActivityViewModel, tipo_p
         },
         // Barra inferior
         bottomBar = {
-            BottomBar()
+            BottomBar(navController = navController)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { /*TODO*/ }) {
@@ -197,43 +196,24 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar(title: String, modifier: Modifier = Modifier) {
-    TopAppBar(
-        title = {
-            Text(text = title)
-        },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = "Ajustes")
-            }
-        }
-    )
-}
 
-@Composable
-fun BottomBar(modifier: Modifier = Modifier) {
-    BottomAppBar (actions = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Build, contentDescription = "Servicios")
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Home, contentDescription = "Vehículos")
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Rounded.Person, contentDescription = "Clientes")
-        }
-    })
-}
 
 @Composable
 fun AppNavigation(viewModel: ActivityViewModel) {
+    // Defining NavController
     val navController = rememberNavController()
+
+    // Defining NavHost. This is the navigation graph
     NavHost(navController = navController, startDestination = "servicios") {
-        composable("servicios") { MainView(viewModel = viewModel, tipo_pantalla = "Servicios") }
-        composable("vehículos") { MainView(viewModel = viewModel, tipo_pantalla = "Vehículos") }
-        composable("Clientes") { MainView(viewModel = viewModel, tipo_pantalla = "Clientes") }
+        composable("servicios") {
+            MainView(viewModel = viewModel, tipoPantalla = "Servicios", navController = navController)
+        }
+        composable("vehículos") {
+            MainView(viewModel = viewModel, tipoPantalla = "Vehículos", navController = navController)
+        }
+        composable("Clientes") {
+            MainView(viewModel = viewModel, tipoPantalla = "Clientes", navController = navController)
+        }
     }
 }
 
@@ -249,7 +229,7 @@ fun ServiciosPreview() {
     viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
 
     Proyecto1Theme {
-        MainView(modifier, viewModel, "Servicios")
+        MainView(modifier, viewModel, "Servicios", navController = rememberNavController())
     }
 }
 
@@ -265,7 +245,7 @@ fun VehiculosPreview() {
     viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
 
     Proyecto1Theme {
-        MainView(modifier, viewModel, "Vehículos")
+        MainView(modifier, viewModel, "Vehículos", navController = rememberNavController())
     }
 }
 
@@ -281,6 +261,6 @@ fun ClientesPreview() {
     viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
 
     Proyecto1Theme {
-        MainView(modifier, viewModel, "Clientes")
+        MainView(modifier, viewModel, "Clientes", navController = rememberNavController())
     }
 }
