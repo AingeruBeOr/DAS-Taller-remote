@@ -11,20 +11,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
+/**
+ * BOTTOM BAR.
+ * This is only seen if one of the main screens is showing
+ */
 @Composable
 fun BottomBar(modifier: Modifier = Modifier, navController: NavController) {
     BottomAppBar (actions = {
         IconButton(onClick = {
+            // TODO consultar la documentación para hacer esto de una forma más limpia
+            navController.popBackStack()
             navController.navigate("servicios")
         }) {
             Icon(Icons.Rounded.Build, contentDescription = "Servicios")
         }
         IconButton(onClick = {
-            navController.navigate("vehículos")
+            // TODO consultar la documentación para hacer esto de una forma más limpia
+            navController.popBackStack()
+            navController.navigate("vehiculos")
         }) {
             Icon(Icons.Rounded.Home, contentDescription = "Vehículos")
         }
         IconButton(onClick = {
+            // TODO consultar la documentación para hacer esto de una forma más limpia
+            navController.popBackStack()
             navController.navigate("clientes")
         }) {
             Icon(Icons.Rounded.Person, contentDescription = "Clientes")

@@ -12,14 +12,16 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String, modifier: Modifier = Modifier) {
+fun TopBar(title: String, modifier: Modifier = Modifier, showSettings: Boolean) {
     TopAppBar(
         title = {
             Text(text = title)
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = "Ajustes")
+            if (showSettings) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Rounded.Settings, contentDescription = "Ajustes")
+                }
             }
         }
     )

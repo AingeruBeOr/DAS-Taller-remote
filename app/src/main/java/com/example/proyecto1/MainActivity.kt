@@ -1,23 +1,17 @@
 package com.example.proyecto1
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -25,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -34,25 +27,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ui.theme.Proyecto1Theme
 import com.example.proyecto1.myComponents.TopBar
 import com.example.proyecto1.myComponents.BottomBar
+import com.example.proyecto1.myComponents.ListClientes
+import com.example.proyecto1.myComponents.ListServicios
+import com.example.proyecto1.myComponents.ListVehículos
+import com.example.proyecto1.screens.AddCliente
+import com.example.proyecto1.screens.AddClientePreview
+import com.example.proyecto1.screens.AddServicio
+import com.example.proyecto1.screens.AddVehiculo
 
-
-data class Servicio(
-    val fecha: String,
-    val descripcion: String,
-    val matricula: String,
-)
-
-data class Vehiculo(
-    val matricula: String,
-    val marca: String,
-    val modelo: String
-)
-
-data class Cliente(
-    val nombre: String,
-    val telefono: Int,
-    val email: String
-)
 
 class ActivityViewModel : ViewModel() {
     val servicios = mutableStateListOf<Servicio>()
@@ -107,14 +89,25 @@ fun MainView(modifier: Modifier = Modifier,
     Scaffold (
         // Barra superior
         topBar = {
-            TopBar(tipo)
+            TopBar(tipo, showSettings = true)
         },
         // Barra inferior
         bottomBar = {
             BottomBar(navController = navController)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = {
+                // Get the current route (current screen)
+                val currentRoute = navController.currentDestination?.route
+                Log.d("Routing", "Current route: $currentRoute")
+
+                // Change screen depending on currentRoute
+                when (currentRoute) {
+                    "servicios" -> navController.navigate("newServicio")
+                    "vehiculos" -> navController.navigate("newVehiculo")
+                    "clientes" -> navController.navigate("newCliente")
+                }
+            }) {
                 Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
             }
         }
@@ -134,71 +127,6 @@ fun MainView(modifier: Modifier = Modifier,
 }
 
 @Composable
-fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
-    LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (servicio in viewModel.servicios) {
-            item {
-                Card (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                ) {
-                    Column {
-                        Text(text = servicio.descripcion)
-                        Text(text = servicio.fecha)
-                        Text(text = servicio.matricula)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
-    LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (vehiculo in viewModel.vehiculos) {
-            item {
-                Card (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                ) {
-                    Column {
-                        Text(text = vehiculo.marca)
-                        Text(text = vehiculo.modelo)
-                        Text(text = vehiculo.matricula)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
-    LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (cliente in viewModel.clientes) {
-            item {
-                Card (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                ) {
-                    Column {
-                        Text(text = cliente.nombre)
-                        Text(text = cliente.email)
-                        Text(text = cliente.telefono.toString())
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-@Composable
 fun AppNavigation(viewModel: ActivityViewModel) {
     // Defining NavController
     val navController = rememberNavController()
@@ -208,11 +136,20 @@ fun AppNavigation(viewModel: ActivityViewModel) {
         composable("servicios") {
             MainView(viewModel = viewModel, tipoPantalla = "Servicios", navController = navController)
         }
-        composable("vehículos") {
+        composable("vehiculos") {
             MainView(viewModel = viewModel, tipoPantalla = "Vehículos", navController = navController)
         }
-        composable("Clientes") {
+        composable("clientes") {
             MainView(viewModel = viewModel, tipoPantalla = "Clientes", navController = navController)
+        }
+        composable("newServicio") {
+            AddServicio()
+        }
+        composable("newVehiculo") {
+            AddVehiculo()
+        }
+        composable("newCliente") {
+            AddCliente()
         }
     }
 }
