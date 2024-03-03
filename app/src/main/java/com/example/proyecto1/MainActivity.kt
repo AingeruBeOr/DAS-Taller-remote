@@ -45,12 +45,25 @@ class ActivityViewModel : ViewModel() {
         this.servicios.add(nuevoServicio)
     }
 
+    fun deleteServicio(servicioParaBorrar: Servicio) {
+        this.servicios.remove(servicioParaBorrar)
+    }
+
     fun addNewVehiculo(nuevoCoche: Vehiculo) {
         this.vehiculos.add(nuevoCoche)
     }
 
+    fun deleteVehiculo(vehiculoParaBorrar: Vehiculo) {
+        this.vehiculos.remove(vehiculoParaBorrar)
+    }
+
     fun addNewCliente(nuevoCliente: Cliente) {
         this.clientes.add(nuevoCliente)
+    }
+
+    fun deleteCliente(clienteParaBorrar: Cliente) {
+        Log.d("Data", "Deleting client")
+        this.clientes.remove(clienteParaBorrar)
     }
 }
 
@@ -101,7 +114,7 @@ fun MainView(modifier: Modifier = Modifier,
                 val currentRoute = navController.currentDestination?.route
                 Log.d("Routing", "Current route: $currentRoute")
 
-                // Change screen depending on currentRoute
+                // Change screen depending on currentRoute (current screen)
                 when (currentRoute) {
                     "servicios" -> navController.navigate("newServicio")
                     "vehiculos" -> navController.navigate("newVehiculo")
