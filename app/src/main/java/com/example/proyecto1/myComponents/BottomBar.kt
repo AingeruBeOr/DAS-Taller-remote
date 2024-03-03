@@ -31,7 +31,7 @@ fun BottomBar(
         NavigationBarItem(
             icon = { Icon(Icons.Rounded.Build, contentDescription = "Servicios") },
             label = { Text(text = "Servicios") },
-            selected = (selectedScreen == 0), // TODO cambiar dependiendo de la página
+            selected = (selectedScreen == 0),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia
                 navController.popBackStack()
@@ -41,7 +41,7 @@ fun BottomBar(
         NavigationBarItem(
             icon = { Icon(Icons.Rounded.Home, contentDescription = "Vehículos") },
             label = { Text(text = "Vehículos") },
-            selected = (selectedScreen == 1), // TODO cambiar dependiendo de la página
+            selected = (selectedScreen == 1),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia
                 navController.popBackStack()
@@ -51,7 +51,7 @@ fun BottomBar(
         NavigationBarItem(
             icon = { Icon(Icons.Rounded.Person, contentDescription = "Clientes") },
             label = { Text(text = "Clientes") },
-            selected = (selectedScreen == 2), // TODO cambiar dependiendo de la página
+            selected = (selectedScreen == 2),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia
                 navController.popBackStack()
