@@ -217,11 +217,11 @@ fun VehiculosPreview() {
 fun ClientesPreview() {
     val modifier = Modifier.fillMaxSize()
     val viewModel = ActivityViewModel()
-    viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "upv@upv.ehu", nombre = "Pepito", telefono = 123456789))
+    viewModel.addNewCliente(Cliente(email = "angel@upv.ehu", nombre = "Angel", telefono = 123456789))
+    viewModel.addNewCliente(Cliente(email = "j.carlos@upv.ehu", nombre = "Juan Carlos", telefono = 123456789))
+    viewModel.addNewCliente(Cliente(email = "jose@upv.ehu", nombre = "Jose", telefono = 123456789))
+    viewModel.addNewCliente(Cliente(email = "pedro@upv.ehu", nombre = "Pedro", telefono = 123456789))
+    viewModel.addNewCliente(Cliente(email = "antton@upv.ehu", nombre = "Antton", telefono = 123456789))
 
     Proyecto1Theme {
         MainView(modifier, viewModel, "Clientes", navController = rememberNavController())

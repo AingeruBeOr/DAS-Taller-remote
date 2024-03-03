@@ -23,10 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.Cliente
 import com.example.proyecto1.Servicio
+import com.example.proyecto1.R
 
 @Composable
 fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
@@ -50,12 +52,17 @@ fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, vi
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column {
+                        Column (
+                            modifier = Modifier.padding(all = 10.dp)
+                        ) {
                             Text(text = servicio.descripcion)
                             Text(text = servicio.fecha)
                             Text(text = servicio.matricula)
                         }
                         Spacer(modifier = Modifier.weight(1f))
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                        }
                         IconButton(
                             onClick = {
                                 deletingServicio = servicio
@@ -110,12 +117,17 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column {
+                        Column (
+                            modifier = Modifier.padding(all = 10.dp)
+                        ) {
                             Text(text = vehiculo.marca)
                             Text(text = vehiculo.modelo)
                             Text(text = vehiculo.matricula)
                         }
                         Spacer(modifier = Modifier.weight(1f))
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                        }
                         IconButton(onClick = { viewModel.deleteVehiculo(vehiculo) }) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
@@ -135,6 +147,7 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
         mutableStateOf(false)
     }
 
+    // TODO esto se puede inicializar de otra manera y no a algo random
     var deletingCliente: Cliente = Cliente("a", 1, email = "1")
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
@@ -150,12 +163,17 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column {
+                        Column (
+                            modifier = Modifier.padding(all = 10.dp)
+                        ) {
                             Text(text = cliente.nombre)
                             Text(text = cliente.email)
                             Text(text = cliente.telefono.toString())
                         }
                         Spacer(modifier = Modifier.weight(1f))
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                        }
                         IconButton(onClick = {
                             deletingCliente = cliente
                             showDeleteAlertDialog = true
