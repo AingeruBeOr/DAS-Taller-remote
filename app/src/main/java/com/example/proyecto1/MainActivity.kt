@@ -14,9 +14,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
@@ -40,6 +42,7 @@ class ActivityViewModel : ViewModel() {
     val servicios = mutableStateListOf<Servicio>()
     val vehiculos = mutableStateListOf<Vehiculo>()
     val clientes = mutableStateListOf<Cliente>()
+    val actualScreen = mutableIntStateOf(0)
 
     fun addNewServicio(nuevoServicio: Servicio) {
         this.servicios.add(nuevoServicio)
@@ -98,6 +101,10 @@ fun MainView(modifier: Modifier = Modifier,
         mutableStateOf(tipoPantalla)
     }
 
+    var selectedScreen by remember {
+        mutableIntStateOf(0)
+    }
+
     // Componente layout para incluir barra superior, inferior y botón flotante
     Scaffold (
         // Barra superior
@@ -106,7 +113,7 @@ fun MainView(modifier: Modifier = Modifier,
         },
         // Barra inferior
         bottomBar = {
-            BottomBar(navController = navController)
+            BottomBar(navController = navController, selectedScreen = selectedScreen)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -128,12 +135,15 @@ fun MainView(modifier: Modifier = Modifier,
         // Contenido principal
         innerPadding  ->
         if (tipo == "Servicios") {
+            selectedScreen = 0
             ListServicios(innerPadding = innerPadding, viewModel = viewModel)
         }
         else if (tipo == "Vehículos") {
+            selectedScreen = 1
             ListVehículos(innerPadding = innerPadding, viewModel = viewModel)
         }
         else if (tipo == "Clientes") {
+            selectedScreen = 2
             ListClientes(innerPadding = innerPadding, viewModel = viewModel)
         }
     }
