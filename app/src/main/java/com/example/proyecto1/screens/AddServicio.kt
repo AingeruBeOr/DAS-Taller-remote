@@ -1,14 +1,18 @@
 package com.example.proyecto1.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -18,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +56,9 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
         mutableStateOf(false)
     }
 
-    val modifierForInputs = Modifier.fillMaxWidth()
+    val modifierForInputs = Modifier
+        .fillMaxWidth()
+        .padding(top = 15.dp)
 
     Scaffold (
         topBar = {
@@ -59,9 +66,13 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
         }
     ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(15.dp)
         ) {
-            Row {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Text(text = fecha, modifier = Modifier
                     .padding(10.dp))
                 Button(onClick = {
@@ -80,10 +91,14 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                 value = descripcion,
                 onValueChange = { descripcion = it },
                 label = { Text(text = "Descripción") },
-                modifier = modifierForInputs
+                modifier = modifierForInputs,
+                maxLines = 10
             )
-            Row {
-                Button(onClick = { navController.popBackStack() }) {
+            Row (
+                horizontalArrangement = Arrangement.End,
+                modifier = modifierForInputs
+            ) {
+                OutlinedButton(onClick = { navController.popBackStack() }) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {

@@ -1,10 +1,12 @@
 package com.example.proyecto1.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -15,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
@@ -36,7 +39,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
         mutableStateOf("")
     }
 
-    val modifierForInputs = Modifier.fillMaxWidth()
+    val modifierForInputs = Modifier.fillMaxWidth().padding(top = 15.dp)
 
     Scaffold (
         topBar = {
@@ -44,7 +47,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
         }
     ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding).padding(15.dp)
         ) {
             TextField(
                 value = matricula,
@@ -64,10 +67,13 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 label = { Text(text = "Modelo") },
                 modifier = modifierForInputs
             )
-            Row {
-                Button(onClick = {
+            Row (
+                    horizontalArrangement = Arrangement.End,
+            modifier = modifierForInputs
+            ) {
+                OutlinedButton(onClick = {
                     navController.popBackStack()
-                }) {
+                },) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {

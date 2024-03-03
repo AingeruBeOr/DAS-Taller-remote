@@ -1,10 +1,12 @@
 package com.example.proyecto1.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,9 +39,9 @@ fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
         }
     ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding).padding(15.dp)
         ) {
-            Text(text = "Elige un idioma")
+            Text(text = "Elige un idioma", modifier = Modifier.padding(bottom = 10.dp))
             for (idioma in idiomasPosibles) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                     RadioButton(
@@ -52,8 +54,11 @@ fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
                     )
                 }
             }
-            Row {
-                Button(onClick = {
+            Row (
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedButton(onClick = {
                     navController.popBackStack()
                 }) {
                     Text(text = "Cancelar")
