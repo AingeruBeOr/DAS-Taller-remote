@@ -2,19 +2,17 @@ package com.example.proyecto1.myComponents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Build
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import com.example.proyecto1.R
 
 /**
  * BOTTOM BAR.
@@ -39,7 +37,7 @@ fun BottomBar(
             }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Rounded.Home, contentDescription = "Vehículos") },
+            icon = { Icon(painterResource(R.drawable.round_car_repair_24), contentDescription = "Vehículos") },
             label = { Text(text = "Vehículos") },
             selected = (selectedScreen == 1),
             onClick = {
