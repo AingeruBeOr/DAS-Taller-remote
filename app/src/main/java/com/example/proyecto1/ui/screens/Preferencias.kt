@@ -1,4 +1,4 @@
-package com.example.proyecto1.screens
+package com.example.proyecto1.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
-import com.example.proyecto1.myComponents.TopBar
+import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
 fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {

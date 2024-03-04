@@ -1,4 +1,4 @@
-package com.example.proyecto1
+package com.example.proyecto1.data
 
 data class Servicio(
     val fecha: String,

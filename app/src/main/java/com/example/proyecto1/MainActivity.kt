@@ -26,16 +26,19 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.proyecto1.data.Cliente
+import com.example.proyecto1.data.Servicio
+import com.example.proyecto1.data.Vehiculo
 import com.example.proyecto1.ui.theme.Proyecto1Theme
-import com.example.proyecto1.myComponents.TopBar
-import com.example.proyecto1.myComponents.BottomBar
-import com.example.proyecto1.myComponents.ListClientes
-import com.example.proyecto1.myComponents.ListServicios
-import com.example.proyecto1.myComponents.ListVehículos
-import com.example.proyecto1.screens.AddCliente
-import com.example.proyecto1.screens.AddServicio
-import com.example.proyecto1.screens.AddVehiculo
-import com.example.proyecto1.screens.Preferencias
+import com.example.proyecto1.ui.myComponents.TopBar
+import com.example.proyecto1.ui.myComponents.BottomBar
+import com.example.proyecto1.ui.myComponents.ListClientes
+import com.example.proyecto1.ui.myComponents.ListServicios
+import com.example.proyecto1.ui.myComponents.ListVehículos
+import com.example.proyecto1.ui.screens.AddCliente
+import com.example.proyecto1.ui.screens.AddServicio
+import com.example.proyecto1.ui.screens.AddVehiculo
+import com.example.proyecto1.ui.screens.Preferencias
 
 
 class ActivityViewModel : ViewModel() {

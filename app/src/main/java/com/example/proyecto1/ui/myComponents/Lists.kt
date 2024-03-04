@@ -1,4 +1,4 @@
-package com.example.proyecto1.myComponents
+package com.example.proyecto1.ui.myComponents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.proyecto1.ActivityViewModel
-import com.example.proyecto1.Cliente
-import com.example.proyecto1.Servicio
+import com.example.proyecto1.data.Cliente
+import com.example.proyecto1.data.Servicio
 import com.example.proyecto1.R
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.proyecto1.myComponents
+package com.example.proyecto1.ui.myComponents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
