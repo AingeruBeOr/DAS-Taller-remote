@@ -27,9 +27,8 @@ object AppModule {
      */
     @Singleton // Tiene que ser una instancia única
     @Provides
-    fun provideDatabase(@ApplicationContext applicationContext: Context) {
+    fun provideDatabase(@ApplicationContext applicationContext: Context) =
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "taller-db").build()
-    }
 
     /**
      * Como las interfaces no se puede  y los DAOs son interfaces, vamos a crearlas aquí.

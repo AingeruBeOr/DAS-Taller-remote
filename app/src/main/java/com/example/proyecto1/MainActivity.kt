@@ -55,9 +55,6 @@ class MainActivity : AppCompatActivity() {
     // Re-created activities receive the same ActivityViewModel.kt instance created by the first activity.
     private val viewModel: ActivityViewModel by viewModels()
 
-    // Creating the DB
-    val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "taller-db").build()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

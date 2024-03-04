@@ -127,8 +127,9 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
     }
 }
 
+/**
 @Preview(showBackground = true)
 @Composable
 fun AddServicioPreview() {
     AddServicio(navController = rememberNavController(), viewModel = ActivityViewModel())
-}
+}*/

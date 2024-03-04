@@ -87,8 +87,9 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
     }
 }
 
+/**
 @Preview(showBackground = true)
 @Composable
 fun AddVehiculoPreview() {
     AddVehiculo(navController = rememberNavController(), viewModel = ActivityViewModel())
-}
+}*/

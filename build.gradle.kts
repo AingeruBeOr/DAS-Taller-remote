@@ -4,5 +4,5 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
 
     // HILT (Dagger) - Dependency Injection
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    id("com.google.dagger.hilt.android") version "2.51" apply false
 }

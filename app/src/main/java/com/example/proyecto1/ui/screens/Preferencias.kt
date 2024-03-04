@@ -27,7 +27,7 @@ import com.example.proyecto1.ui.myComponents.TopBar
 @Composable
 fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
     //Input values
-    val idiomasPosibles = listOf<String>("Euskera", "Castellano", "Inglés")
+    val idiomasPosibles = listOf("Euskera", "Castellano", "Inglés")
     var idiomaSeleccionado by remember {
         mutableStateOf(idiomasPosibles[0])
     }
@@ -74,8 +74,9 @@ fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreferenciasPreview() {
     Preferencias(viewModel = ActivityViewModel(), navController = rememberNavController())
-}
+}*/
