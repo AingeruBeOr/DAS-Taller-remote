@@ -26,9 +26,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.proyecto1.data.Cliente
-import com.example.proyecto1.data.Servicio
-import com.example.proyecto1.data.Vehiculo
+import com.example.proyecto1.data.model.Cliente
+import com.example.proyecto1.data.model.Servicio
+import com.example.proyecto1.data.model.Vehiculo
 import com.example.proyecto1.ui.theme.Proyecto1Theme
 import com.example.proyecto1.ui.myComponents.TopBar
 import com.example.proyecto1.ui.myComponents.BottomBar

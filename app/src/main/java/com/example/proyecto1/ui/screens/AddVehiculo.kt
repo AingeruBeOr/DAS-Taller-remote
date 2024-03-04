@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
-import com.example.proyecto1.data.Vehiculo
+import com.example.proyecto1.data.model.Vehiculo
 import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
