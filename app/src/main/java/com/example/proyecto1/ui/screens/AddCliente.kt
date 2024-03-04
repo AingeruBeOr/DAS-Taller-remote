@@ -103,8 +103,9 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
     }
 }
 
+/**
 @Preview(showBackground = true)
 @Composable
 fun AddClientePreview() {
     AddCliente(navController = rememberNavController(), viewModel = ActivityViewModel())
-}
+}*/

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -15,20 +16,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.proyecto1.data.model.Cliente
-import com.example.proyecto1.data.model.Servicio
-import com.example.proyecto1.data.model.Vehiculo
+import androidx.room.Room
+import com.example.proyecto1.data.database.AppDatabase
 import com.example.proyecto1.ui.theme.Proyecto1Theme
 import com.example.proyecto1.ui.myComponents.TopBar
 import com.example.proyecto1.ui.myComponents.BottomBar
@@ -40,42 +37,13 @@ import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.Preferencias
 
-
-class ActivityViewModel : ViewModel() {
-    val servicios = mutableStateListOf<Servicio>()
-    val vehiculos = mutableStateListOf<Vehiculo>()
-    val clientes = mutableStateListOf<Cliente>()
-    val actualScreen = mutableIntStateOf(0)
-
-    fun addNewServicio(nuevoServicio: Servicio) {
-        this.servicios.add(nuevoServicio)
-    }
-
-    fun deleteServicio(servicioParaBorrar: Servicio) {
-        this.servicios.remove(servicioParaBorrar)
-    }
-
-    fun addNewVehiculo(nuevoCoche: Vehiculo) {
-        this.vehiculos.add(nuevoCoche)
-    }
-
-    fun deleteVehiculo(vehiculoParaBorrar: Vehiculo) {
-        this.vehiculos.remove(vehiculoParaBorrar)
-    }
-
-    fun addNewCliente(nuevoCliente: Cliente) {
-        this.clientes.add(nuevoCliente)
-    }
-
-    fun deleteCliente(clienteParaBorrar: Cliente) {
-        Log.d("Data", "Deleting client")
-        this.clientes.remove(clienteParaBorrar)
-    }
-}
-
-
 class MainActivity : ComponentActivity() {
-    val viewModel = ActivityViewModel()
+
+    // Re-created activities receive the same ActivityViewModel.kt instance created by the first activity.
+    private val viewModel: ActivityViewModel by viewModels()
+
+    // Creating the DB
+    val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "taller-db").build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,6 +151,7 @@ fun AppNavigation(viewModel: ActivityViewModel) {
     }
 }
 
+/**
 @Preview(showBackground = true)
 @Composable
 fun ServiciosPreview() {
@@ -229,4 +198,4 @@ fun ClientesPreview() {
     Proyecto1Theme {
         MainView(modifier, viewModel, "Clientes", navController = rememberNavController())
     }
-}
+}*/
