@@ -11,10 +11,4 @@ import dagger.hilt.android.HiltAndroidApp
  * We need to create this class to use Hilt
  */
 @HiltAndroidApp
-class TallerApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-
-        Log.d("Lifecycle", "Application started")
-    }
-}
+class TallerApplication : Application()
