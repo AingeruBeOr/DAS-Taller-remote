@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -36,8 +37,20 @@ import com.example.proyecto1.ui.screens.AddCliente
 import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.Preferencias
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+/**
+ * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
+ *
+ * ComponentActivity has all you need for a Compose-only app.
+ * If you need AppCompat APIs, an AndroidView which works with AppCompat or MaterialComponents
+ * theme, or you need Fragments then use AppCompatActivity.
+ *
+ * Además, nosotros vamos a usar AppCompatActiviy para poder usar Hilt (Inyección de dependencias)
+ */
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     // Re-created activities receive the same ActivityViewModel.kt instance created by the first activity.
     private val viewModel: ActivityViewModel by viewModels()

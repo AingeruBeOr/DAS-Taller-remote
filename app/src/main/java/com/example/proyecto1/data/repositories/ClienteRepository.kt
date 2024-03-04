@@ -3,8 +3,9 @@ package com.example.proyecto1.data.repositories
 import com.example.proyecto1.data.database.dao.ClienteDao
 import com.example.proyecto1.data.database.entities.Cliente
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ClienteRepository (
+class ClienteRepository @Inject constructor(
     val clienteDao: ClienteDao
 ) {
     fun getAllClientes(): Flow<List<Cliente>> {
