@@ -5,15 +5,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.proyecto1.data.model.Cliente
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ClienteDao {
     @Query("SELECT * FROM clientes")
-    fun getAllClientes(): List<Cliente>
+    fun getAllClientes(): Flow<List<Cliente>>
 
     @Insert
-    fun insertCliente(cliente: Cliente)
+    suspend fun insertCliente(cliente: Cliente)
 
     @Delete
-    fun deleteCliente(cliente: Cliente)
+    suspend fun deleteCliente(cliente: Cliente)
 }
