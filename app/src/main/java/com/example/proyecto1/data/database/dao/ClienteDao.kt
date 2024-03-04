@@ -1,10 +1,10 @@
-package com.example.proyecto1.data.dao
+package com.example.proyecto1.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.proyecto1.data.model.Cliente
+import com.example.proyecto1.data.database.entities.Cliente
 import kotlinx.coroutines.flow.Flow
 
 @Dao

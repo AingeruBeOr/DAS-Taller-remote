@@ -1,7 +1,7 @@
 package com.example.proyecto1.data.repositories
 
-import com.example.proyecto1.data.dao.ClienteDao
-import com.example.proyecto1.data.model.Cliente
+import com.example.proyecto1.data.database.dao.ClienteDao
+import com.example.proyecto1.data.database.entities.Cliente
 import kotlinx.coroutines.flow.Flow
 
 class ClienteRepository (

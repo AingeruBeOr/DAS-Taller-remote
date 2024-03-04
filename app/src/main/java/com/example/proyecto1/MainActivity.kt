@@ -55,7 +55,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavigation(viewModel = viewModel)
-                    //MainView(viewModel = viewModel, tipo_pantalla = "Servicios")
                 }
             }
         }

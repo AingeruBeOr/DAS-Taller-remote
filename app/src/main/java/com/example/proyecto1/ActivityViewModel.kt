@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyecto1.data.model.Cliente
-import com.example.proyecto1.data.model.Servicio
-import com.example.proyecto1.data.model.Vehiculo
+import com.example.proyecto1.data.database.entities.Cliente
+import com.example.proyecto1.data.database.entities.Servicio
+import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.data.repositories.ClienteRepository
+import com.example.proyecto1.data.repositories.ServicioRepository
+import com.example.proyecto1.data.repositories.VehiculoRepository
 import kotlinx.coroutines.launch
 
 class ActivityViewModel (
-    val clienteRepository: ClienteRepository
+    val clienteRepository: ClienteRepository,
+    val vehiculoRepository: VehiculoRepository,
+    val servicioRepository: ServicioRepository
 ) : ViewModel() {
     val servicios = mutableStateListOf<Servicio>()
     val vehiculos = mutableStateListOf<Vehiculo>()

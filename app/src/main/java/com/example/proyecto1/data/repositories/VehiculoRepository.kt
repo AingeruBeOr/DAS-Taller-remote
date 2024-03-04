@@ -1,7 +1,7 @@
 package com.example.proyecto1.data.repositories
 
-import com.example.proyecto1.data.dao.VehiculoDao
-import com.example.proyecto1.data.model.Vehiculo
+import com.example.proyecto1.data.database.dao.VehiculoDao
+import com.example.proyecto1.data.database.entities.Vehiculo
 import kotlinx.coroutines.flow.Flow
 
 class VehiculoRepository(
