@@ -117,7 +117,9 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
 
     // TODO esto se puede inicializar de otra manera y no a algo random
     var deletingVehiculo by remember {
-        mutableStateOf(Vehiculo("1234abc", marca = "Mercedes", modelo = "A45 AMG"))
+        mutableStateOf(Vehiculo(
+            matricula = "1234abc", marca = "Mercedes", modelo = "A45 AMG", nombreCliente = "Pepe")
+        )
     }
 
     var stateVehiculos = viewModel.vehiculos.collectAsState(initial = emptyList())
@@ -141,6 +143,7 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
                             Text(text = vehiculo.marca)
                             Text(text = vehiculo.modelo)
                             Text(text = vehiculo.matricula)
+                            Text(text = vehiculo.nombreCliente)
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         IconButton(onClick = { /*TODO*/ }) {

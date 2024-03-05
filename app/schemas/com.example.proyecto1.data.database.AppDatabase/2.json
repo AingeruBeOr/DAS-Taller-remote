@@ -1,0 +1,116 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "326f87e2b9803b2ea07997ea801e0d37",
+    "entities": [
+      {
+        "tableName": "clientes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`nombre` TEXT NOT NULL, `telefono` INTEGER NOT NULL, `email` TEXT NOT NULL, PRIMARY KEY(`nombre`))",
+        "fields": [
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "telefono",
+            "columnName": "telefono",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "nombre"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "vehiculos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`matricula` TEXT NOT NULL, `marca` TEXT NOT NULL, `modelo` TEXT NOT NULL, `nombreCliente` TEXT NOT NULL, PRIMARY KEY(`matricula`))",
+        "fields": [
+          {
+            "fieldPath": "matricula",
+            "columnName": "matricula",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marca",
+            "columnName": "marca",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modelo",
+            "columnName": "modelo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombreCliente",
+            "columnName": "nombreCliente",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "matricula"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "servicios",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fecha` TEXT NOT NULL, `descripcion` TEXT NOT NULL, `matricula` TEXT NOT NULL, PRIMARY KEY(`fecha`))",
+        "fields": [
+          {
+            "fieldPath": "fecha",
+            "columnName": "fecha",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "matricula",
+            "columnName": "matricula",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "fecha"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '326f87e2b9803b2ea07997ea801e0d37')"
+    ]
+  }
+}

@@ -80,4 +80,8 @@ class ActivityViewModel @Inject constructor(
             clienteRepository.deleteCliente(clienteParaBorrar)
         }
     }
+
+    fun getClientVehicles(nombreCliente: String) {
+        clienteRepository.getClientVehicles(nombreCliente)
+    }
 }

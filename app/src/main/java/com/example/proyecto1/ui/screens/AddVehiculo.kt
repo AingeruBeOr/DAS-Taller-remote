@@ -5,12 +5,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +32,7 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.TopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
     // Input values
@@ -39,7 +48,20 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
         mutableStateOf("")
     }
 
-    val modifierForInputs = Modifier.fillMaxWidth().padding(top = 15.dp)
+    var nombreCliente by remember {
+        mutableStateOf("")
+    }
+
+    // DropDown Menu state
+    var dropdownIsExtended by remember {
+        mutableStateOf(false)
+    }
+
+    var listaClientes = viewModel.clientes.collectAsState(initial = emptyList()).value
+
+    val modifierForInputs = Modifier
+        .fillMaxWidth()
+        .padding(top = 15.dp)
 
     Scaffold (
         topBar = {
@@ -47,7 +69,9 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
         }
     ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerPadding).padding(15.dp)
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(15.dp)
         ) {
             TextField(
                 value = matricula,
@@ -67,6 +91,33 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 label = { Text(text = "Modelo") },
                 modifier = modifierForInputs
             )
+            ExposedDropdownMenuBox (
+                expanded = dropdownIsExtended,
+                onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
+            ) {
+                TextField(
+                    value = nombreCliente,
+                    onValueChange = { nombreCliente = it },
+                    label = { Text("Cliente") },
+                    trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
+                    readOnly = true,
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                        .padding(top = 15.dp)
+                )
+                ExposedDropdownMenu(
+                    expanded = dropdownIsExtended,
+                    onDismissRequest = { dropdownIsExtended = false }
+                ) {
+                    for (cliente in listaClientes) {
+                        DropdownMenuItem(
+                            text = { Text(text = cliente.nombre) },
+                            onClick = { nombreCliente = cliente.nombre; dropdownIsExtended = false }
+                        )
+                    }
+                }
+            }
             Row (
                 horizontalArrangement = Arrangement.End,
                 modifier = modifierForInputs
@@ -77,7 +128,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {
-                    viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo))
+                    viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
                     navController.popBackStack()
                 }) {
                     Text(text = "Guardar")

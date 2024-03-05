@@ -12,6 +12,10 @@ class ClienteRepository @Inject constructor(
         return clienteDao.getAllClientes()
     }
 
+    fun getClientVehicles(nombreCliente: String): List<String> {
+        return clienteDao.getClientVehicles(nombreCliente)
+    }
+
     suspend fun insertarCliente(cliente: Cliente) {
         clienteDao.insertCliente(cliente)
     }

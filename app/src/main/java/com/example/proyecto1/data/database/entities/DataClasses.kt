@@ -17,7 +17,8 @@ data class Servicio(
 data class Vehiculo(
     @PrimaryKey val matricula: String,
     val marca: String,
-    val modelo: String
+    val modelo: String,
+    val nombreCliente: String
 )
 
 @Entity(tableName = "clientes")
