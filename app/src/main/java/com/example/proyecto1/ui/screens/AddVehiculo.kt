@@ -68,8 +68,8 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 modifier = modifierForInputs
             )
             Row (
-                    horizontalArrangement = Arrangement.End,
-            modifier = modifierForInputs
+                horizontalArrangement = Arrangement.End,
+                modifier = modifierForInputs
             ) {
                 OutlinedButton(onClick = {
                     navController.popBackStack()

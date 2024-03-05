@@ -91,7 +91,7 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {
-                    viewModel.addNewCliente2(Cliente(nombre, telefono.toInt(), email))
+                    viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
                     navController.popBackStack()
                 }) {
                     Text(text = "Guardar")

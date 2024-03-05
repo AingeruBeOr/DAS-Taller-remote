@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,11 +37,13 @@ fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, vi
         mutableStateOf(false)
     }
 
+    var stateServicios = viewModel.servicios.collectAsState(initial = emptyList())
+
     // TODO esto se puede inicializar de otra manera y no a algo random
     var deletingServicio: Servicio = Servicio("a", "a", "a")
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (servicio in viewModel.servicios) {
+        for (servicio in stateServicios.value) {
             item {
                 ElevatedCard (
                     modifier = Modifier
@@ -104,8 +107,10 @@ fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, vi
 
 @Composable
 fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
+    var stateVehiculos = viewModel.vehiculos.collectAsState(initial = emptyList())
+
     LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (vehiculo in viewModel.vehiculos) {
+        for (vehiculo in stateVehiculos.value) {
             item {
                 ElevatedCard (
                     modifier = Modifier
@@ -126,7 +131,10 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         IconButton(onClick = { /*TODO*/ }) {
-                            Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                            Icon(
+                                painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                                contentDescription = "Ver"
+                            )
                         }
                         IconButton(onClick = { viewModel.deleteVehiculo(vehiculo) }) {
                             Icon(
@@ -147,11 +155,13 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
         mutableStateOf(false)
     }
 
+    var listaClientes = viewModel.clientes.collectAsState(initial = emptyList())
+
     // TODO esto se puede inicializar de otra manera y no a algo random
     var deletingCliente: Cliente = Cliente("a", 1, email = "1")
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
-        for (cliente in viewModel.clientes) {
+        for (cliente in listaClientes.value) {
             item {
                 ElevatedCard (
                     modifier = Modifier

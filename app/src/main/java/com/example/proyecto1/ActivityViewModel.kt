@@ -38,38 +38,44 @@ class ActivityViewModel @Inject constructor(
     val servicioRepository: ServicioRepository,
     val vehiculoRepository: VehiculoRepository
 ) : ViewModel() {
-    val servicios = mutableStateListOf<Servicio>()
-    val vehiculos = mutableStateListOf<Vehiculo>()
-    val clientes = mutableStateListOf<Cliente>()
+    val servicios = servicioRepository.getAllServicios()
+    val vehiculos = vehiculoRepository.getAllVehiculos()
+    var clientes = clienteRepository.getAllClientes()
 
     fun addNewServicio(nuevoServicio: Servicio) {
-        this.servicios.add(nuevoServicio)
+        viewModelScope.launch {
+            servicioRepository.insertServicio(nuevoServicio)
+        }
     }
 
     fun deleteServicio(servicioParaBorrar: Servicio) {
-        this.servicios.remove(servicioParaBorrar)
+        viewModelScope.launch{
+            servicioRepository.deleteServicio(servicioParaBorrar)
+        }
     }
 
     fun addNewVehiculo(nuevoCoche: Vehiculo) {
-        this.vehiculos.add(nuevoCoche)
+        viewModelScope.launch {
+            vehiculoRepository.insertVehiculo(nuevoCoche)
+        }
     }
 
     fun deleteVehiculo(vehiculoParaBorrar: Vehiculo) {
-        this.vehiculos.remove(vehiculoParaBorrar)
+        viewModelScope.launch {
+            vehiculoRepository.deleteVehiculo(vehiculoParaBorrar)
+        }
     }
 
     fun addNewCliente(nuevoCliente: Cliente) {
-        this.clientes.add(nuevoCliente)
-    }
-
-    fun addNewCliente2(nuevoCliente: Cliente) {
+        // Launch must be used becase insertarCliente() from repository is a suspend function
         viewModelScope.launch {
             clienteRepository.insertarCliente(nuevoCliente)
         }
     }
 
     fun deleteCliente(clienteParaBorrar: Cliente) {
-        Log.d("Data", "Deleting client")
-        this.clientes.remove(clienteParaBorrar)
+        viewModelScope.launch {
+            clienteRepository.deleteCliente(clienteParaBorrar)
+        }
     }
 }
