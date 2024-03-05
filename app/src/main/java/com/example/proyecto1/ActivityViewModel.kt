@@ -49,6 +49,7 @@ class ActivityViewModel @Inject constructor(
     }
 
     fun deleteServicio(servicioParaBorrar: Servicio) {
+        Log.d("ViewModel", "Deleting service")
         viewModelScope.launch{
             servicioRepository.deleteServicio(servicioParaBorrar)
         }
@@ -74,6 +75,7 @@ class ActivityViewModel @Inject constructor(
     }
 
     fun deleteCliente(clienteParaBorrar: Cliente) {
+        Log.d("ViewModel", "Deleting client: ${clienteParaBorrar.nombre}")
         viewModelScope.launch {
             clienteRepository.deleteCliente(clienteParaBorrar)
         }

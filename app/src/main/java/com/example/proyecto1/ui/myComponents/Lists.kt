@@ -30,6 +30,7 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.R
+import com.example.proyecto1.data.database.entities.Vehiculo
 
 @Composable
 fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
@@ -37,10 +38,13 @@ fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, vi
         mutableStateOf(false)
     }
 
+    // TODO esto se puede inicializar de otra manera y no a algo random
+    var deletingServicio by remember {
+        mutableStateOf(Servicio("a", "a", "a"))
+    }
+
     var stateServicios = viewModel.servicios.collectAsState(initial = emptyList())
 
-    // TODO esto se puede inicializar de otra manera y no a algo random
-    var deletingServicio: Servicio = Servicio("a", "a", "a")
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
         for (servicio in stateServicios.value) {
@@ -107,6 +111,15 @@ fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, vi
 
 @Composable
 fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
+    var showDeleteAlertDialog by remember {
+        mutableStateOf(false)
+    }
+
+    // TODO esto se puede inicializar de otra manera y no a algo random
+    var deletingVehiculo by remember {
+        mutableStateOf(Vehiculo("1234abc", marca = "Mercedes", modelo = "A45 AMG"))
+    }
+
     var stateVehiculos = viewModel.vehiculos.collectAsState(initial = emptyList())
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
@@ -136,7 +149,10 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
                                 contentDescription = "Ver"
                             )
                         }
-                        IconButton(onClick = { viewModel.deleteVehiculo(vehiculo) }) {
+                        IconButton(onClick = {
+                            showDeleteAlertDialog = true
+                            deletingVehiculo = vehiculo
+                        }) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
                                 contentDescription = "Eliminar",
@@ -147,6 +163,27 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
             }
         }
     }
+
+    if (showDeleteAlertDialog) {
+        AlertDialog(
+            title = { Text(text = "¿Estás seguro?") },
+            text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
+            confirmButton = {
+                Button(onClick = {
+                    showDeleteAlertDialog = false
+                    viewModel.deleteVehiculo(deletingVehiculo)
+                }) {
+                    Text(text = "Confirmar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDeleteAlertDialog = false }) {
+                    Text(text = "Cancelar")
+                }
+            },
+            onDismissRequest = { showDeleteAlertDialog = false },
+        )
+    }
 }
 
 @Composable
@@ -155,10 +192,12 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
         mutableStateOf(false)
     }
 
-    var listaClientes = viewModel.clientes.collectAsState(initial = emptyList())
-
     // TODO esto se puede inicializar de otra manera y no a algo random
-    var deletingCliente: Cliente = Cliente("a", 1, email = "1")
+    var deletingCliente by remember {
+        mutableStateOf(Cliente("a", 1, email = "1"))
+    }
+
+    var listaClientes = viewModel.clientes.collectAsState(initial = emptyList())
 
     LazyColumn(modifier = modifier.padding(innerPadding)){
         for (cliente in listaClientes.value) {
