@@ -5,16 +5,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +58,12 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
         mutableStateOf(false)
     }
 
+    var dropdownIsExtended by remember {
+        mutableStateOf(false)
+    }
+
+    var listaVehiculos = viewModel.vehiculos.collectAsState(initial = emptyList()).value
+
     val modifierForInputs = Modifier
         .fillMaxWidth()
         .padding(top = 15.dp)
@@ -77,12 +89,33 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                     Text(text = "Cambiar fecha")
                 }
             }
-            TextField(
-                value = matricula,
-                onValueChange = { matricula = it },
-                label = { Text(text = "Matrícula") },
-                modifier = modifierForInputs
-            )
+            ExposedDropdownMenuBox (
+                expanded = dropdownIsExtended,
+                onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
+            ) {
+                TextField(
+                    value = matricula,
+                    onValueChange = { matricula = it },
+                    label = { Text("Matricula") },
+                    trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
+                    readOnly = true,
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                        .padding(top = 15.dp)
+                )
+                ExposedDropdownMenu(
+                    expanded = dropdownIsExtended,
+                    onDismissRequest = { dropdownIsExtended = false }
+                ) {
+                    for (vehiculo in listaVehiculos) {
+                        DropdownMenuItem(
+                            text = { Text(text = vehiculo.matricula) },
+                            onClick = { matricula = vehiculo.matricula; dropdownIsExtended = false }
+                        )
+                    }
+                }
+            }
             TextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
