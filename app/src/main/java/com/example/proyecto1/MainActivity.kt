@@ -36,6 +36,7 @@ import com.example.proyecto1.ui.myComponents.ListVehículos
 import com.example.proyecto1.ui.screens.AddCliente
 import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
+import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -67,64 +68,6 @@ class MainActivity : AppCompatActivity() {
                     AppNavigation(viewModel = viewModel)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun MainView(modifier: Modifier = Modifier,
-             viewModel: ActivityViewModel,
-             tipoPantalla: String,
-             navController: NavController
-) {
-    val tipo by remember {
-        mutableStateOf(tipoPantalla)
-    }
-
-    var selectedScreen by remember {
-        mutableIntStateOf(0)
-    }
-
-    // Componente layout para incluir barra superior, inferior y botón flotante
-    Scaffold (
-        // Barra superior
-        topBar = {
-            TopBar(tipo, showSettings = true, navController = navController)
-        },
-        // Barra inferior
-        bottomBar = {
-            BottomBar(navController = navController, selectedScreen = selectedScreen)
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                // Get the current route (current screen)
-                val currentRoute = navController.currentDestination?.route
-                Log.d("Routing", "Current route: $currentRoute")
-
-                // Change screen depending on currentRoute (current screen)
-                when (currentRoute) {
-                    "servicios" -> navController.navigate("newServicio")
-                    "vehiculos" -> navController.navigate("newVehiculo")
-                    "clientes" -> navController.navigate("newCliente")
-                }
-            }) {
-                Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
-            }
-        }
-    ) {
-        // Contenido principal
-        innerPadding  ->
-        if (tipo == "Servicios") {
-            selectedScreen = 0
-            ListServicios(innerPadding = innerPadding, viewModel = viewModel)
-        }
-        else if (tipo == "Vehículos") {
-            selectedScreen = 1
-            ListVehículos(innerPadding = innerPadding, viewModel = viewModel)
-        }
-        else if (tipo == "Clientes") {
-            selectedScreen = 2
-            ListClientes(innerPadding = innerPadding, viewModel = viewModel)
         }
     }
 }
