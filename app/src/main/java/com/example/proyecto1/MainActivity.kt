@@ -22,9 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.proyecto1.data.database.AppDatabase
 import com.example.proyecto1.ui.theme.Proyecto1Theme
@@ -38,6 +40,7 @@ import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
+import com.example.proyecto1.ui.screens.ViewCliente
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -99,6 +102,14 @@ fun AppNavigation(viewModel: ActivityViewModel) {
         }
         composable("preferencias") {
             Preferencias(navController = navController, viewModel = viewModel)
+        }
+        composable(
+            "viewCliente/{nombreCliente}",
+            arguments = listOf(navArgument(name = "nombreCliente") {
+                type = NavType.StringType
+            })
+        ) {
+            ViewCliente(navController, viewModel, it.arguments?.getString("nombreCliente"))
         }
     }
 }

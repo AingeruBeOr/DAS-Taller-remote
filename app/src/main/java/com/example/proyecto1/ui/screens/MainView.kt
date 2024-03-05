@@ -63,7 +63,7 @@ fun MainView(modifier: Modifier = Modifier,
         }
     ) {
         // Contenido principal
-            innerPadding  ->
+        innerPadding  ->
         if (tipo == "Servicios") {
             selectedScreen = 0
             ListServicios(innerPadding = innerPadding, viewModel = viewModel)
@@ -74,7 +74,7 @@ fun MainView(modifier: Modifier = Modifier,
         }
         else if (tipo == "Clientes") {
             selectedScreen = 2
-            ListClientes(innerPadding = innerPadding, viewModel = viewModel)
+            ListClientes(innerPadding = innerPadding, viewModel = viewModel, navController = navController)
         }
     }
 }

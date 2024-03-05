@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
@@ -33,7 +34,11 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Vehiculo
 
 @Composable
-fun ListServicios(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
+fun ListServicios(
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
+    viewModel: ActivityViewModel,
+) {
     var showDeleteAlertDialog by remember {
         mutableStateOf(false)
     }
@@ -190,7 +195,12 @@ fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, v
 }
 
 @Composable
-fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
+fun ListClientes(
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
+    viewModel: ActivityViewModel,
+    navController: NavController
+) {
     var showDeleteAlertDialog by remember {
         mutableStateOf(false)
     }
@@ -223,7 +233,9 @@ fun ListClientes(modifier: Modifier = Modifier, innerPadding: PaddingValues, vie
                             Text(text = cliente.telefono.toString())
                         }
                         Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            navController.navigate("viewCliente/${cliente.nombre}")
+                        }) {
                             Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                         }
                         IconButton(onClick = {

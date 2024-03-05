@@ -17,6 +17,9 @@ interface ClienteDao {
     @Query("SELECT matricula FROM vehiculos WHERE vehiculos.nombreCliente == :nombreCliente")
     fun getClientVehicles(nombreCliente: String): List<String>
 
+    @Query("SELECT * FROM clientes WHERE clientes.nombre == :nombreCliente")
+    suspend fun getClientInfoFromName(nombreCliente: String): Cliente
+
     @Insert
     suspend fun insertCliente(cliente: Cliente)
 

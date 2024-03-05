@@ -2,6 +2,7 @@ package com.example.proyecto1
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -42,6 +43,8 @@ class ActivityViewModel @Inject constructor(
     val vehiculos = vehiculoRepository.getAllVehiculos()
     var clientes = clienteRepository.getAllClientes()
 
+    var actualCiente = Cliente("a", 1, "a")
+
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
             servicioRepository.insertServicio(nuevoServicio)
@@ -81,7 +84,14 @@ class ActivityViewModel @Inject constructor(
         }
     }
 
-    fun getClientVehicles(nombreCliente: String) {
-        clienteRepository.getClientVehicles(nombreCliente)
+    fun getUserDataFromName(nombreCliente: String): Cliente {
+        viewModelScope.launch {
+            actualCiente = clienteRepository.getClientInfoFromName(nombreCliente)
+        }
+        return actualCiente
+    }
+
+    fun getClientVehicles(nombreCliente: String): List<String> {
+        return clienteRepository.getClientVehicles(nombreCliente)
     }
 }
