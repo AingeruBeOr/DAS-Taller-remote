@@ -2,6 +2,7 @@ package com.example.proyecto1.data.repositories
 
 import com.example.proyecto1.data.database.dao.ClienteDao
 import com.example.proyecto1.data.database.entities.Cliente
+import com.example.proyecto1.data.database.entities.Vehiculo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class ClienteRepository @Inject constructor(
         return clienteDao.getAllClientes()
     }
 
-    fun getClientVehicles(nombreCliente: String): List<String> {
+    fun getClientVehicles(nombreCliente: String): Flow<List<Vehiculo>> {
         return clienteDao.getClientVehicles(nombreCliente)
     }
 

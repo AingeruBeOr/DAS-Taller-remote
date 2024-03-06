@@ -1,8 +1,6 @@
 package com.example.proyecto1
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -12,6 +10,7 @@ import com.example.proyecto1.data.repositories.ClienteRepository
 import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -91,7 +90,7 @@ class ActivityViewModel @Inject constructor(
         return actualCiente
     }
 
-    fun getClientVehicles(nombreCliente: String): List<String> {
+    fun getClientVehicles(nombreCliente: String): Flow<List<Vehiculo>> {
         return clienteRepository.getClientVehicles(nombreCliente)
     }
 }

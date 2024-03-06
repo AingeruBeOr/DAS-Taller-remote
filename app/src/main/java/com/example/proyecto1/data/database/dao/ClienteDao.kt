@@ -14,8 +14,8 @@ interface ClienteDao {
     fun getAllClientes(): Flow<List<Cliente>>
 
 
-    @Query("SELECT matricula FROM vehiculos WHERE vehiculos.nombreCliente == :nombreCliente")
-    fun getClientVehicles(nombreCliente: String): List<String>
+    @Query("SELECT * FROM vehiculos WHERE vehiculos.nombreCliente == :nombreCliente")
+    fun getClientVehicles(nombreCliente: String): Flow<List<Vehiculo>>
 
     @Query("SELECT * FROM clientes WHERE clientes.nombre == :nombreCliente")
     suspend fun getClientInfoFromName(nombreCliente: String): Cliente

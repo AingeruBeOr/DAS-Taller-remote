@@ -115,7 +115,11 @@ fun ListServicios(
 }
 
 @Composable
-fun ListVehículos(modifier: Modifier = Modifier, innerPadding: PaddingValues, viewModel: ActivityViewModel) {
+fun ListVehículos(
+    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
+    viewModel: ActivityViewModel
+) {
     var showDeleteAlertDialog by remember {
         mutableStateOf(false)
     }
