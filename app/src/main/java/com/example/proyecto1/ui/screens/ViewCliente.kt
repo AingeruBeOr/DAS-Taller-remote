@@ -72,6 +72,7 @@ fun ViewCliente(
             TopBar(
                 title = "Información del cliente",
                 showSettings = false,
+                showBackNavArrow = true,
                 navController = navController
             )
         }
