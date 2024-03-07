@@ -1,21 +1,28 @@
 package com.example.proyecto1
 
+import android.app.LocaleManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.os.LocaleListCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -39,6 +46,7 @@ import com.example.proyecto1.ui.screens.ViewCliente
 import com.example.proyecto1.ui.screens.ViewService
 import com.example.proyecto1.ui.screens.ViewVehiculo
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlin.reflect.KFunction1
 
 /**
@@ -57,11 +65,13 @@ class MainActivity : AppCompatActivity() {
     // Re-created activities receive the same ActivityViewModel.kt instance created by the first activity.
     private val viewModel: ActivityViewModel by viewModels()
 
-    // Add DataStore into Context
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "PREFERENCES_SETTINGS")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            changeLocales(viewModel.getSavedLanguage())
+        }
+
         setContent {
             Proyecto1Theme {
                 // A surface container using the 'background' color from the theme
@@ -72,7 +82,8 @@ class MainActivity : AppCompatActivity() {
                     AppNavigation(
                         viewModel = viewModel,
                         openDial = ::openDial,
-                        mailTo = ::mailTo
+                        mailTo = ::mailTo,
+                        changeLocales = ::changeLocales
                     )
                 }
             }
@@ -98,13 +109,29 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(mailIntent)
     }
+
+    fun changeLocales(languageCode: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            applicationContext.getSystemService(LocaleManager::class.java).applicationLocales =
+                LocaleList.forLanguageTags(languageCode)
+        }
+        else {
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
+
+        }
+        // Done here has saveLanguage is a suspend function
+        lifecycleScope.launch {
+            viewModel.saveLanguage(languageCode)
+        }
+    }
 }
 
 @Composable
 fun AppNavigation(
     viewModel: ActivityViewModel,
     openDial: (Int) -> Unit,
-    mailTo: (String) -> Unit
+    mailTo: (String) -> Unit,
+    changeLocales: (String) -> Unit
 ) {
     // Defining NavController
     val navController = rememberNavController()
@@ -130,7 +157,7 @@ fun AppNavigation(
             AddCliente(navController, viewModel)
         }
         composable("preferencias") {
-            Preferencias(navController = navController, viewModel = viewModel)
+            Preferencias(navController = navController, changeLocale = changeLocales)
         }
         composable(
             "viewCliente/{nombreCliente}",

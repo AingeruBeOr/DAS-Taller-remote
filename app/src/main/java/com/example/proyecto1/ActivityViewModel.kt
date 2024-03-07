@@ -117,10 +117,15 @@ class ActivityViewModel @Inject constructor(
        return actualServicio
     }
 
-    fun getCurrentLanguage(): String {
+    suspend fun getSavedLanguage(): String {
         viewModelScope.launch {
-            currentLanguage = preferencesRepository.getCurrentLanguage() ?: "es"
+            currentLanguage = preferencesRepository.getSavedLanguage()
         }
+        Log.d("viewModel", "getSavedLanguage() returns: $currentLanguage")
         return currentLanguage
+    }
+
+    suspend fun saveLanguage(languageCode: String) {
+        preferencesRepository.saveLanguage(languageCode)
     }
 }

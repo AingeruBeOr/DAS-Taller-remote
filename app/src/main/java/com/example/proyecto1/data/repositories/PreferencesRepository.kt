@@ -1,10 +1,12 @@
 package com.example.proyecto1.data.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -22,9 +24,13 @@ class PreferencesRepository @Inject constructor(
 
 
     // --- LANGUAGE PREFERENCES ---
-    suspend fun getCurrentLanguage() = context.dataStore.data.first()[LANGUAGE]
+    // Get saved language. If not exits, returns the device default
+    suspend fun getSavedLanguage(): String {
+        Log.d("PreferencesRepository", context.dataStore.data.first()[LANGUAGE] ?: "no hay")
+        return context.dataStore.data.first()[LANGUAGE] ?: Locale.getDefault().language
+    }
 
-    suspend fun setLanguage(language: String) {
+    suspend fun saveLanguage(language: String) {
         context.dataStore.edit { preferences ->
             preferences[LANGUAGE] = language
         }

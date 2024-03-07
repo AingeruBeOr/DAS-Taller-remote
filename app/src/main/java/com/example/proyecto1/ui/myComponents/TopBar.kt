@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,9 +21,10 @@ fun TopBar(
     showBackNavArrow: Boolean = false,
     navController: NavController
 ) {
+    val context = LocalContext.current
     TopAppBar(
         title = {
-            Text(text = title)
+            Text(text = title + context.resources.configuration.locales)
         },
         actions = {
             if (showSettings) {

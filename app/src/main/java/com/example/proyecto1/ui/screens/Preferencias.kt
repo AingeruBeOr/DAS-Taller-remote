@@ -25,7 +25,10 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
-fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
+fun Preferencias(
+    navController: NavController,
+    changeLocale: (String) -> Unit
+) {
     //Input values
     val idiomasPosibles = listOf("Euskera", "Castellano", "Inglés")
     var idiomaSeleccionado by remember {
@@ -64,7 +67,11 @@ fun Preferencias(navController: NavController, viewModel: ActivityViewModel) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {
-                    // TODO guardar preferencias
+                    when (idiomaSeleccionado) {
+                        "Euskera" -> changeLocale("eu")
+                        "Castellano" -> changeLocale("es")
+                        "Inglés" -> changeLocale("en")
+                    }
                     navController.popBackStack()
                 }) {
                     Text(text = "Guardar")
