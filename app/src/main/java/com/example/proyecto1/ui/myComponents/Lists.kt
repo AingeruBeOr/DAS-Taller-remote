@@ -59,33 +59,35 @@ fun ListServicios(
                         .fillMaxWidth()
                         .padding(6.dp)
                 ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                    Column (
+                        modifier = Modifier.fillMaxWidth().padding(10.dp)
                     ) {
-                        Column (
-                            modifier = Modifier.padding(all = 10.dp)
+                        Row (
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text = servicio.descripcion)
-                            Text(text = servicio.fecha)
-                            Text(text = servicio.matricula)
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
-                        }
-                        IconButton(
-                            onClick = {
-                                deletingServicio = servicio
-                                showDeleteAlertDialog = true
+                            Column {
+                                Text(text = servicio.fecha)
+                                Text(text = servicio.matricula)
                             }
+                            Spacer(modifier = Modifier.weight(1f))
+                            IconButton(onClick = { /*TODO*/ }) {
+                                Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                            }
+                            IconButton(
+                                onClick = {
+                                    deletingServicio = servicio
+                                    showDeleteAlertDialog = true
+                                }
                             ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Delete,
-                                contentDescription = "Eliminar",
-                            )
+                                Icon(
+                                    imageVector = Icons.Rounded.Delete,
+                                    contentDescription = "Eliminar",
+                                )
+                            }
                         }
+                        Text(text = servicio.descripcion, maxLines = 1)
                     }
                 }
             }
