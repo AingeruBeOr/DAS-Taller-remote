@@ -24,11 +24,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.TopBar
 
@@ -65,7 +67,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo vehículo", showSettings = false, navController = navController)
+            TopBar(title = stringResource(id = R.string.TopBarAddVehicle), showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (
@@ -76,19 +78,19 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
             TextField(
                 value = matricula,
                 onValueChange = { matricula = it },
-                label = { Text(text = "Matrícula") },
+                label = { Text(text = stringResource(id = R.string.Plate)) },
                 modifier = modifierForInputs
             )
             TextField(
                 value = marca,
                 onValueChange = { marca = it },
-                label = { Text(text = "Marca") },
+                label = { Text(text = stringResource(id = R.string.Brand)) },
                 modifier = modifierForInputs
             )
             TextField(
                 value = modelo,
                 onValueChange = { modelo = it },
-                label = { Text(text = "Modelo") },
+                label = { Text(text = stringResource(id = R.string.Model)) },
                 modifier = modifierForInputs
             )
             ExposedDropdownMenuBox (
@@ -98,7 +100,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 TextField(
                     value = nombreCliente,
                     onValueChange = { nombreCliente = it },
-                    label = { Text("Cliente") },
+                    label = { Text(stringResource(id = R.string.Client)) },
                     trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
                     readOnly = true,
                     modifier = Modifier
@@ -125,13 +127,13 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 OutlinedButton(onClick = {
                     navController.popBackStack()
                 },) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.Cancel))
                 }
                 Button(onClick = {
                     viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
                     navController.popBackStack()
                 }) {
-                    Text(text = "Guardar")
+                    Text(text = stringResource(id = R.string.Save))
                 }
             }
         }

@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.proyecto1.R
 
@@ -28,7 +29,7 @@ fun BottomBar(
     NavigationBar {
         NavigationBarItem(
             icon = { Icon(Icons.Rounded.Build, contentDescription = "Servicios") },
-            label = { Text(text = "Servicios") },
+            label = { Text(text = stringResource(id = R.string.ServicesTitle)) },
             selected = (selectedScreen == 0),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia
@@ -38,7 +39,7 @@ fun BottomBar(
         )
         NavigationBarItem(
             icon = { Icon(painterResource(R.drawable.round_car_repair_24), contentDescription = "Vehículos") },
-            label = { Text(text = "Vehículos") },
+            label = { Text(text = stringResource(id = R.string.VehiclesTitle)) },
             selected = (selectedScreen == 1),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia
@@ -48,7 +49,7 @@ fun BottomBar(
         )
         NavigationBarItem(
             icon = { Icon(Icons.Rounded.Person, contentDescription = "Clientes") },
-            label = { Text(text = "Clientes") },
+            label = { Text(text = stringResource(id = R.string.ClientsTitle)) },
             selected = (selectedScreen == 2),
             onClick = {
                 // TODO consultar la documentación para hacer esto de una forma más limpia

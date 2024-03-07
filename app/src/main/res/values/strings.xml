@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Proyecto1</string>
+    <string name="TopBarAddClient">Añadir nuevo cliente</string>
+    <string name="TopBarAddService">Añadir nuevo servicio</string>
+    <string name="TopBarAddVehicle">Añadir nuevo vehículo</string>
+    <string name="PreferencesTitle">Preferencias</string>
+    <string name="ServicesTitle">Servicios</string>
+    <string name="VehiclesTitle">Vehículos</string>
+    <string name="ClientsTitle">Clientes</string>
+    <string name="name">Nombre</string>
+    <string name="phone">Teléfono</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="Cancel">Cancelar</string>
+    <string name="Save">Guardar</string>
+    <string name="Change_date">Cambiar fecha</string>
+    <string name="Plate">Matrícula</string>
+    <string name="Description">Descripción</string>
+    <string name="Confirm">Confirmar</string>
+    <string name="Brand">Marca</string>
+    <string name="Model">Modelo</string>
+    <string name="Client">Cliente</string>
+    <string name="LanguageChoose">Elige un idioma</string>
+    <string name="Basque_lang">Euskera</string>
+    <string name="Spanish_lang">Castellano</string>
+    <string name="Engilsh_lang">Inglés</string>
+    <string name="Info_client">Información del cliente</string>
+    <string name="Call">Llamar</string>
+    <string name="Send_mail">Escribir correo</string>
 </resources>

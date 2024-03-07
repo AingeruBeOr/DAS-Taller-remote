@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Proyecto1</string>
+    <string name="TopBarAddClient">Bezero berria sartu</string>
+    <string name="TopBarAddService">Zerbitzu berria sartu</string>
+    <string name="TopBarAddVehicle">Ibilgailu berri sartu</string>
+    <string name="PreferencesTitle">Ezarpenak</string>
+    <string name="ServicesTitle">Zerbitzuak</string>
+    <string name="VehiclesTitle">Ibilgailuak</string>
+    <string name="ClientsTitle">Bezeroak</string>
+    <string name="name">Izena</string>
+    <string name="phone">Telefonoa</string>
+    <string name="Cancel">Itxi</string>
+    <string name="Save">Gorde</string>
+    <string name="Change_date">Aldatu data</string>
+    <string name="Plate">Matrikula</string>
+    <string name="Description">Deskribapena</string>
+    <string name="Confirm">Baieztatu</string>
+    <string name="Brand">Marka</string>
+    <string name="Model">Modeloa</string>
+    <string name="Client">Bezeroa</string>
+    <string name="LanguageChoose">Aukeratu hizkuntza bat</string>
+    <string name="Basque_lang">Esukara</string>
+    <string name="Spanish_lang">Gaztelera</string>
+    <string name="Engilsh_lang">Ingelesa</string>
+    <string name="Info_client">Bezeroaren informazioa</string>
+    <string name="Call">Deitu</string>
+    <string name="Send_mail">Korreoa idatzi</string>
+</resources>

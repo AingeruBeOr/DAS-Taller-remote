@@ -27,11 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.ui.myComponents.TopBar
 import java.text.SimpleDateFormat
@@ -70,7 +72,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo servicio", showSettings = false, navController = navController)
+            TopBar(title = stringResource(id = R.string.TopBarAddService), showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (
@@ -86,7 +88,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                 Button(onClick = {
                     showDateDialog = true
                 }) {
-                    Text(text = "Cambiar fecha")
+                    Text(text = stringResource(id = R.string.Change_date))
                 }
             }
             ExposedDropdownMenuBox (
@@ -96,7 +98,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                 TextField(
                     value = matricula,
                     onValueChange = { matricula = it },
-                    label = { Text("Matricula") },
+                    label = { Text(stringResource(id = R.string.Plate)) },
                     trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
                     readOnly = true,
                     modifier = Modifier
@@ -119,7 +121,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
             TextField(
                 value = descripcion,
                 onValueChange = { descripcion = it },
-                label = { Text(text = "Descripción") },
+                label = { Text(text = stringResource(id = R.string.Description)) },
                 modifier = modifierForInputs,
                 maxLines = 10
             )
@@ -128,7 +130,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                 modifier = modifierForInputs
             ) {
                 OutlinedButton(onClick = { navController.popBackStack() }) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.Cancel))
                 }
                 Button(onClick = {
                     viewModel.addNewServicio(
@@ -136,7 +138,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                     )
                     navController.popBackStack()
                 }) {
-                    Text(text = "Guardar")
+                    Text(text = stringResource(id = R.string.Save))
                 }
             }
             if (showDateDialog) {
@@ -151,7 +153,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                             }
                             showDateDialog = false
                         }) {
-                            Text(text = "Confirmar")
+                            Text(text = stringResource(id = R.string.Confirm))
                         }
                     }
                 ) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Proyecto1</string>
+    <string name="TopBarAddClient">Add new client</string>
+    <string name="TopBarAddService">Add new service</string>
+    <string name="TopBarAddVehicle">Add new vehicle</string>
+    <string name="PreferencesTitle">Preferences</string>
+    <string name="ServicesTitle">Services</string>
+    <string name="VehiclesTitle">Vehicles</string>
+    <string name="ClientsTitle">Clients</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Save">Save</string>
+    <string name="Change_date">Change date</string>
+    <string name="Plate">Plate</string>
+    <string name="Description">Description</string>
+    <string name="Confirm">Confirm</string>
+    <string name="Brand">Brand</string>
+    <string name="Model">Model</string>
+    <string name="Client">Client</string>
+    <string name="LanguageChoose">Choose a language</string>
+    <string name="Basque_lang">Basque</string>
+    <string name="Spanish_lang">Spanish</string>
+    <string name="Engilsh_lang">Engilsh</string>
+    <string name="Info_client">Client\'s information</string>
+    <string name="Call">Call</string>
+    <string name="Send_mail">Write email</string>
+</resources>

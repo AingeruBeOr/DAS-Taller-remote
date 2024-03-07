@@ -68,10 +68,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            changeLocales(viewModel.getSavedLanguage())
-        }
-
         setContent {
             Proyecto1Theme {
                 // A surface container using the 'background' color from the theme
@@ -87,6 +83,10 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            changeLocales(viewModel.getSavedLanguage())
         }
     }
 

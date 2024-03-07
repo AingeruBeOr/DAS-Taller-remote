@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,7 +76,7 @@ fun ViewCliente(
     Scaffold (
         topBar = {
             TopBar(
-                title = "Información del cliente",
+                title = stringResource(id = R.string.Info_client),
                 showSettings = false,
                 showBackNavArrow = true,
                 navController = navController
@@ -103,7 +104,7 @@ fun ViewCliente(
                 Button(onClick = {
                     openDial(cliente.telefono)
                 }) {
-                    Text(text = "Llamar")
+                    Text(text = stringResource(id = R.string.Call))
                 }
             }
             Row (
@@ -115,7 +116,7 @@ fun ViewCliente(
                 Button(onClick = {
                     sendMail(cliente.email)
                 }) {
-                    Text(text = "Escribir correo")
+                    Text(text = stringResource(id = R.string.Send_mail))
                 }
             }
             Text(

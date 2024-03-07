@@ -22,10 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.ui.myComponents.TopBar
 
@@ -50,7 +52,7 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
 
     Scaffold (
         topBar = {
-            TopBar(title = "Añadir nuevo cliente", showSettings = false, navController = navController)
+            TopBar(title = stringResource(id = R.string.TopBarAddClient), showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (
@@ -61,14 +63,14 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
             TextField(
                 value = nombre,
                 onValueChange = { nombre = it },
-                label = { Text(text = "Nombre") },
+                label = { Text(text = stringResource(id = R.string.name)) },
                 leadingIcon = { Icon(Icons.Rounded.Person, contentDescription = "Nombre") },
                 modifier = modifierForInputs
             )
             TextField(
                 value = telefono,
                 onValueChange = { telefono = it },
-                label = { Text(text = "Teléfono") },
+                label = { Text(text = stringResource(id = R.string.phone)) },
                 leadingIcon = { Icon(Icons.Rounded.Phone, contentDescription = "Teléfono") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = modifierForInputs
@@ -76,7 +78,7 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
             TextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text(text = "Email") },
+                label = { Text(text = stringResource(id = R.string.email)) },
                 leadingIcon = { Icon(Icons.Rounded.Email, contentDescription = "Email") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = modifierForInputs
@@ -88,13 +90,13 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
                 OutlinedButton(onClick = {
                     navController.popBackStack()
                 }) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.Cancel))
                 }
                 Button(onClick = {
                     viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
                     navController.popBackStack()
                 }) {
-                    Text(text = "Guardar")
+                    Text(text = stringResource(id = R.string.Save))
                 }
             }
         }

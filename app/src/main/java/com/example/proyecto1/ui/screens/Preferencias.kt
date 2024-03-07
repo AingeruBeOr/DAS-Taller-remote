@@ -17,11 +17,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
@@ -30,21 +32,24 @@ fun Preferencias(
     changeLocale: (String) -> Unit
 ) {
     //Input values
-    val idiomasPosibles = listOf("Euskera", "Castellano", "Inglés")
+    val idiomasPosibles = listOf(
+        stringResource(id = R.string.Basque_lang),
+        stringResource(id = R.string.Spanish_lang),
+        stringResource(id = R.string.Engilsh_lang))
     var idiomaSeleccionado by remember {
         mutableStateOf(idiomasPosibles[0])
     }
-    // TODO
-
     Scaffold (
         topBar = {
-            TopBar(title = "Preferencias", showSettings = false, navController = navController)
+            TopBar(title = stringResource(id = R.string.PreferencesTitle), showSettings = false, navController = navController)
         }
     ) { innerPadding ->
         Column (
-            modifier = Modifier.padding(innerPadding).padding(15.dp)
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(15.dp)
         ) {
-            Text(text = "Elige un idioma", modifier = Modifier.padding(bottom = 10.dp))
+            Text(text = stringResource(id = R.string.LanguageChoose), modifier = Modifier.padding(bottom = 10.dp))
             for (idioma in idiomasPosibles) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                     RadioButton(
@@ -64,7 +69,7 @@ fun Preferencias(
                 OutlinedButton(onClick = {
                     navController.popBackStack()
                 }) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.Cancel))
                 }
                 Button(onClick = {
                     when (idiomaSeleccionado) {
@@ -74,7 +79,7 @@ fun Preferencias(
                     }
                     navController.popBackStack()
                 }) {
-                    Text(text = "Guardar")
+                    Text(text = stringResource(id = R.string.Save))
                 }
             }
         }

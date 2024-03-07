@@ -13,8 +13,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.ui.myComponents.BottomBar
 import com.example.proyecto1.ui.myComponents.ListClientes
 import com.example.proyecto1.ui.myComponents.ListServicios
@@ -39,7 +41,11 @@ fun MainView(modifier: Modifier = Modifier,
     Scaffold (
         // Barra superior
         topBar = {
-            TopBar(tipo, showSettings = true, navController = navController)
+            when (tipo) {
+                "Servicios" -> TopBar(title = stringResource(id = R.string.ServicesTitle), showSettings = true, navController = navController)
+                "Vehículos" -> TopBar(title = stringResource(id = R.string.VehiclesTitle), showSettings = true, navController = navController)
+                "Clientes" -> TopBar(title = stringResource(id = R.string.ClientsTitle), showSettings = true, navController = navController)
+            }
         },
         // Barra inferior
         bottomBar = {
