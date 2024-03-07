@@ -70,7 +70,7 @@ fun MainView(modifier: Modifier = Modifier,
         }
         else if (tipo == "Vehículos") {
             selectedScreen = 1
-            ListVehículos(innerPadding = innerPadding, viewModel = viewModel)
+            ListVehículos(innerPadding = innerPadding, viewModel = viewModel, navController = navController)
         }
         else if (tipo == "Clientes") {
             selectedScreen = 2

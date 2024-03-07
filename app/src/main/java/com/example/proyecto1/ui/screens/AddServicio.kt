@@ -131,7 +131,9 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                     Text(text = "Cancelar")
                 }
                 Button(onClick = {
-                    viewModel.addNewServicio(Servicio(fecha, matricula, descripcion))
+                    viewModel.addNewServicio(
+                        Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
+                    )
                     navController.popBackStack()
                 }) {
                     Text(text = "Guardar")

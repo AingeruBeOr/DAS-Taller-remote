@@ -32,6 +32,7 @@ import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
+import com.example.proyecto1.ui.screens.ViewVehiculo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.reflect.KFunction1
 
@@ -136,6 +137,17 @@ fun AppNavigation(
                 openDial = openDial,
                 sendMail = mailTo
             )
+        }
+        composable(
+            "viewVehiculo/{matricula}",
+            arguments = listOf(navArgument(name = "matricula") {
+                type = NavType.StringType
+            })
+        ) {
+            ViewVehiculo(
+                navController = navController,
+                viewModel = viewModel,
+                matricula = it.arguments?.getString("matricula"))
         }
     }
 }

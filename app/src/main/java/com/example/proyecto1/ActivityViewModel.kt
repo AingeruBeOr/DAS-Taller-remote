@@ -43,6 +43,7 @@ class ActivityViewModel @Inject constructor(
     var clientes = clienteRepository.getAllClientes()
 
     var actualCiente = Cliente("a", 1, "a")
+    var actualVehiculo = Vehiculo(matricula = "a", "a", "a", "a")
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -92,5 +93,16 @@ class ActivityViewModel @Inject constructor(
 
     fun getClientVehicles(nombreCliente: String): Flow<List<Vehiculo>> {
         return clienteRepository.getClientVehicles(nombreCliente)
+    }
+
+    fun getVehicleDataFromMatricula(matricula: String): Vehiculo {
+        viewModelScope.launch {
+            actualVehiculo = vehiculoRepository.getInfoFromMatricula(matricula)
+        }
+        return actualVehiculo
+    }
+
+    fun getVehicleServices(matricula: String): Flow<List<Servicio>> {
+        return vehiculoRepository.getVehicleServices(matricula)
     }
 }

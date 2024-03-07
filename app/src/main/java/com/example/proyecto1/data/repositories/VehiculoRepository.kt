@@ -1,6 +1,7 @@
 package com.example.proyecto1.data.repositories
 
 import com.example.proyecto1.data.database.dao.VehiculoDao
+import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -10,6 +11,14 @@ class VehiculoRepository @Inject constructor(
 ) {
     fun getAllVehiculos(): Flow<List<Vehiculo>> {
         return vehiculoDao.getAllVehiculos()
+    }
+
+    suspend fun getInfoFromMatricula(matricula: String): Vehiculo {
+        return vehiculoDao.getInfoFromMatricula(matricula)
+    }
+
+    fun getVehicleServices(matricula: String) : Flow<List<Servicio>> {
+        return vehiculoDao.getServicesFromVehiculo(matricula)
     }
 
     suspend fun insertVehiculo(vehiculo: Vehiculo) {
