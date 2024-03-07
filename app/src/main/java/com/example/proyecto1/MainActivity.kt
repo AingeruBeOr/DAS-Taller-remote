@@ -32,6 +32,7 @@ import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
+import com.example.proyecto1.ui.screens.ViewService
 import com.example.proyecto1.ui.screens.ViewVehiculo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.reflect.KFunction1
@@ -148,6 +149,18 @@ fun AppNavigation(
                 navController = navController,
                 viewModel = viewModel,
                 matricula = it.arguments?.getString("matricula"))
+        }
+        composable(
+            "viewServicio/{fecha}",
+            arguments = listOf(navArgument(name = "fecha") {
+                type = NavType.StringType
+            })
+        ) {
+            ViewService(
+                navController = navController,
+                viewModel = viewModel,
+                fecha = it.arguments?.getString("fecha")?.replace("-", "/")
+            )
         }
     }
 }

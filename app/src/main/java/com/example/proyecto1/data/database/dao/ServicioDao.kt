@@ -12,6 +12,9 @@ interface ServicioDao {
     @Query("SELECT * FROM servicios")
     fun getAllServicios(): Flow<List<Servicio>>
 
+    @Query("SELECT * FROM servicios WHERE servicios.fecha = :fecha")
+    suspend fun getServicioFromFecha(fecha: String) : Servicio
+
     @Insert
     suspend fun insertServicio(servicio: Servicio)
 

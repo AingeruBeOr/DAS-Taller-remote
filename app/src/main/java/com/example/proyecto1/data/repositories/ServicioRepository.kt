@@ -8,9 +8,9 @@ import javax.inject.Inject
 class ServicioRepository @Inject constructor (
     val servicioDao: ServicioDao
 ) {
-    fun getAllServicios(): Flow<List<Servicio>> {
-        return servicioDao.getAllServicios()
-    }
+    fun getAllServicios(): Flow<List<Servicio>> = servicioDao.getAllServicios()
+
+    suspend fun getServicioFromFecha(fecha: String) : Servicio = servicioDao.getServicioFromFecha(fecha)
 
     suspend fun insertServicio(servicio: Servicio) {
         servicioDao.insertServicio(servicio)

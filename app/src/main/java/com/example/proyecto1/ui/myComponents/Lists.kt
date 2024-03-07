@@ -35,6 +35,7 @@ import com.example.proyecto1.data.database.entities.Vehiculo
 
 @Composable
 fun ListServicios(
+    navController: NavController,
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
     viewModel: ActivityViewModel,
@@ -72,7 +73,10 @@ fun ListServicios(
                                 Text(text = servicio.matricula)
                             }
                             Spacer(modifier = Modifier.weight(1f))
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(onClick = {
+                                val servicioParaEnviar = servicio.fecha.replace("/", "-")
+                                navController.navigate("viewServicio/$servicioParaEnviar")
+                            }) {
                                 Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                             }
                             IconButton(
