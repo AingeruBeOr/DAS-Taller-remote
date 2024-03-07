@@ -1,5 +1,7 @@
 package com.example.proyecto1.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
@@ -42,7 +45,9 @@ import com.example.proyecto1.ui.myComponents.TopBar
 fun ViewCliente(
     navController: NavController,
     viewModel: ActivityViewModel,
-    nombreCliente: String?
+    nombreCliente: String?,
+    openDial: (Int) -> Unit,
+    sendMail: (String) -> Unit
 ) {
     var cliente by remember {
         mutableStateOf(Cliente("a", 1, "1"))
@@ -95,7 +100,9 @@ fun ViewCliente(
             ) {
                 Icon(Icons.Rounded.Phone, contentDescription = "Teléfono")
                 Text(text = cliente.telefono.toString())
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    openDial(cliente.telefono)
+                }) {
                     Text(text = "Llamar")
                 }
             }
@@ -105,7 +112,9 @@ fun ViewCliente(
             )  {
                 Icon(Icons.Rounded.Email, contentDescription = "Email")
                 Text(text = cliente.email)
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    sendMail(cliente.email)
+                }) {
                     Text(text = "Escribir correo")
                 }
             }
@@ -113,7 +122,8 @@ fun ViewCliente(
                 text = "Vehículos del cliente",
                 fontSize = 20.sp,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center
+            )
             LazyColumn {
                 if (vehiculosDelCliente != null) {
                     for (vehiculo in vehiculosDelCliente) {

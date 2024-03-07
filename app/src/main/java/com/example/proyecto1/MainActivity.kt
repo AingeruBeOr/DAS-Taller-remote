@@ -1,25 +1,16 @@
 package com.example.proyecto1
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -42,6 +33,7 @@ import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.reflect.KFunction1
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
@@ -68,15 +60,43 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation(viewModel = viewModel)
+                    AppNavigation(
+                        viewModel = viewModel,
+                        openDial = ::openDial,
+                        mailTo = ::mailTo
+                    )
                 }
             }
         }
     }
+
+    fun openDial(tel: Int) {
+        // Crear el Intent para abrir el Dial con el número del cliente
+        val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$tel")
+        }
+
+        // Iniciamos la actividad que abre el Dial
+        startActivity(dialIntent)
+    }
+
+    fun mailTo(mail: String) {
+        val mailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            Log.d("Intent", "dirección de mail: $mail")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+        }
+
+        startActivity(mailIntent)
+    }
 }
 
 @Composable
-fun AppNavigation(viewModel: ActivityViewModel) {
+fun AppNavigation(
+    viewModel: ActivityViewModel,
+    openDial: (Int) -> Unit,
+    mailTo: (String) -> Unit
+) {
     // Defining NavController
     val navController = rememberNavController()
 
@@ -109,7 +129,13 @@ fun AppNavigation(viewModel: ActivityViewModel) {
                 type = NavType.StringType
             })
         ) {
-            ViewCliente(navController, viewModel, it.arguments?.getString("nombreCliente"))
+            ViewCliente(
+                navController = navController,
+                viewModel = viewModel,
+                nombreCliente = it.arguments?.getString("nombreCliente"),
+                openDial = openDial,
+                sendMail = mailTo
+            )
         }
     }
 }
