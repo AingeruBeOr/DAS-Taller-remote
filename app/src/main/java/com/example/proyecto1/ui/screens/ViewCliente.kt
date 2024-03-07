@@ -120,7 +120,7 @@ fun ViewCliente(
                 }
             }
             Text(
-                text = "Vehículos del cliente",
+                text = stringResource(id = R.string.Client_vehicles),
                 fontSize = 20.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
@@ -173,19 +173,19 @@ fun ViewCliente(
             }
             if (showDeleteAlertDialog) {
                 AlertDialog(
-                    title = { Text(text = "¿Estás seguro?") },
-                    text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
+                    title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
+                    text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
                     confirmButton = {
                         Button(onClick = {
                             showDeleteAlertDialog = false
                             viewModel.deleteVehiculo(deletingVehiculo)
                         }) {
-                            Text(text = "Confirmar")
+                            Text(text = stringResource(id = R.string.Confirm))
                         }
                     },
                     dismissButton = {
                         Button(onClick = { showDeleteAlertDialog = false }) {
-                            Text(text = "Cancelar")
+                            Text(text = stringResource(id = R.string.Cancel))
                         }
                     },
                     onDismissRequest = { showDeleteAlertDialog = false },

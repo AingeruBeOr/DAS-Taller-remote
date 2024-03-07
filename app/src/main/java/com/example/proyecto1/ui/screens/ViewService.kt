@@ -10,12 +10,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
+import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.ui.myComponents.TopBar
 
@@ -36,7 +38,7 @@ fun ViewService(
     Scaffold (
         topBar = {
             TopBar(
-                title = "Información del servicio",
+                title = stringResource(id = R.string.Info_service),
                 showSettings = false,
                 showBackNavArrow = true,
                 navController = navController
@@ -48,11 +50,11 @@ fun ViewService(
                 .padding(innerPadding)
                 .padding(all = 15.dp)
         ) {
-            Text(text = "Cliente:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = stringResource(id = R.string.Client) + ":", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             Text(text = servicio.matricula, modifier = Modifier.padding(bottom = 10.dp))
-            Text(text = "Fecha:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = stringResource(id = R.string.Date) + ":", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             Text(text = servicio.fecha, modifier = Modifier.padding(bottom = 10.dp))
-            Text(text = "Descripción:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = stringResource(id = R.string.Description) + ":", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             Text(text = servicio.descripcion)
         }
     }

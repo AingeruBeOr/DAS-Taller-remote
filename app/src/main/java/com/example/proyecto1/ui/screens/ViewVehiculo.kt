@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +67,7 @@ fun ViewVehiculo(
     Scaffold (
         topBar = {
             TopBar(
-                title = "Información del vehículo",
+                title = stringResource(id = R.string.Info_vehicle),
                 showSettings = false,
                 showBackNavArrow = true,
                 navController = navController
@@ -103,7 +104,7 @@ fun ViewVehiculo(
                 Text(text = vehiculo.modelo)
             }
             Text(
-                text = "Servicios del vehículo",
+                text = stringResource(id = R.string.Vehicle_services),
                 fontSize = 20.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
