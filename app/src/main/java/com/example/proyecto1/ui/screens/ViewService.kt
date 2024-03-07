@@ -10,7 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.data.database.entities.Servicio
@@ -45,9 +48,33 @@ fun ViewService(
                 .padding(innerPadding)
                 .padding(all = 15.dp)
         ) {
-            Text(text = servicio.matricula)
-            Text(text = servicio.fecha)
+            Text(text = "Cliente:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = servicio.matricula, modifier = Modifier.padding(bottom = 10.dp))
+            Text(text = "Fecha:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(text = servicio.fecha, modifier = Modifier.padding(bottom = 10.dp))
+            Text(text = "Descripción:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             Text(text = servicio.descripcion)
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ViewServicePreview() {
+    val servicio = Servicio(
+        fecha = "15/1/3021",
+        descripcion = "Le he hecho un cambio de aceite porque ya le tocaba de hacía tiempo",
+        matricula = "1234ABC"
+    )
+    Column (
+        modifier = Modifier
+            .padding(all = 15.dp)
+    ) {
+        Text(text = "Cliente:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = servicio.matricula, modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = "Fecha:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = servicio.fecha, modifier = Modifier.padding(bottom = 10.dp))
+        Text(text = "Descripción:", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text(text = servicio.descripcion)
     }
 }
