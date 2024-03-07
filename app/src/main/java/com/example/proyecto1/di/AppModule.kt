@@ -3,6 +3,7 @@ package com.example.proyecto1.di
 import android.content.Context
 import androidx.room.Room
 import com.example.proyecto1.data.database.AppDatabase
+import com.example.proyecto1.data.repositories.PreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class) // Indicamos el alcance. SingletonComponent indica a nivel de aplicación
 object AppModule {
+
+
+    // --- ROOM ----
 
     /**
      * Cremos la función proveedora de la base de datos
@@ -46,4 +50,15 @@ object AppModule {
     @Singleton
     @Provides
     fun provideServicioDao(db: AppDatabase) = db.servicioDao()
+
+
+
+
+    // ---- DataStore ---
+
+    // We need to do this in order to inject ApplicationContext to PreferencesRepository
+    @Singleton
+    @Provides
+    fun providePreferencesRepository(@ApplicationContext applicationContext: Context) =
+        PreferencesRepository(applicationContext)
 }

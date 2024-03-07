@@ -7,6 +7,7 @@ import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.data.repositories.ClienteRepository
+import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +37,8 @@ import javax.inject.Inject
 class ActivityViewModel @Inject constructor(
     val clienteRepository: ClienteRepository,
     val servicioRepository: ServicioRepository,
-    val vehiculoRepository: VehiculoRepository
+    val vehiculoRepository: VehiculoRepository,
+    val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
     val servicios = servicioRepository.getAllServicios()
     val vehiculos = vehiculoRepository.getAllVehiculos()
@@ -45,6 +47,7 @@ class ActivityViewModel @Inject constructor(
     private var actualCiente = Cliente("a", 1, "a")
     private var actualVehiculo = Vehiculo(matricula = "a", "a", "a", "a")
     private var actualServicio = Servicio("a", "a", "a")
+    private var currentLanguage = "es"
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -112,5 +115,12 @@ class ActivityViewModel @Inject constructor(
            actualServicio = servicioRepository.getServicioFromFecha(fecha)
        }
        return actualServicio
+    }
+
+    fun getCurrentLanguage(): String {
+        viewModelScope.launch {
+            currentLanguage = preferencesRepository.getCurrentLanguage() ?: "es"
+        }
+        return currentLanguage
     }
 }
