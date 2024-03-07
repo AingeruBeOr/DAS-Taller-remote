@@ -147,7 +147,9 @@ fun ViewCliente(
                                         Text(text = vehiculo.nombreCliente)
                                     }
                                     Spacer(modifier = Modifier.weight(1f))
-                                    IconButton(onClick = { /*TODO*/ }) {
+                                    IconButton(onClick = {
+                                        navController.navigate("viewVehiculo/${vehiculo.matricula}")
+                                    }) {
                                         Icon(
                                             painterResource(id = R.drawable.baseline_remove_red_eye_24),
                                             contentDescription = "Ver"
