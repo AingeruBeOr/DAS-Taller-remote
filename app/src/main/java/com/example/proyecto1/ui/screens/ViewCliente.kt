@@ -1,6 +1,7 @@
 package com.example.proyecto1.ui.screens
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -73,97 +75,237 @@ fun ViewCliente(
         mutableStateOf(false)
     }
 
-    Scaffold (
-        topBar = {
-            TopBar(
-                title = stringResource(id = R.string.Info_client),
-                showSettings = false,
-                showBackNavArrow = true,
-                navController = navController
-            )
-        }
-    ) { innerPadding ->
-        Column (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(all = 15.dp)
-        ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        Scaffold (
+            topBar = {
+                TopBar(
+                    title = stringResource(id = R.string.Info_client),
+                    showSettings = false,
+                    showBackNavArrow = true,
+                    navController = navController
+                )
+            }
+        ) { innerPadding ->
+            Column (
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(all = 15.dp)
             ) {
-                Icon(Icons.Rounded.Person, contentDescription = "Nombre")
-                Text(text = cliente.nombre)
-            }
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            ) {
-                Icon(Icons.Rounded.Phone, contentDescription = "Teléfono")
-                Text(text = cliente.telefono.toString())
-                Button(onClick = {
-                    openDial(cliente.telefono)
-                }) {
-                    Text(text = stringResource(id = R.string.Call))
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(all = 10.dp)
+                ) {
+                    Icon(Icons.Rounded.Person, contentDescription = "Nombre")
+                    Text(text = cliente.nombre)
                 }
-            }
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            )  {
-                Icon(Icons.Rounded.Email, contentDescription = "Email")
-                Text(text = cliente.email)
-                Button(onClick = {
-                    sendMail(cliente.email)
-                }) {
-                    Text(text = stringResource(id = R.string.Send_mail))
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(all = 10.dp)
+                ) {
+                    Icon(Icons.Rounded.Phone, contentDescription = "Teléfono")
+                    Text(text = cliente.telefono.toString())
+                    Button(onClick = {
+                        openDial(cliente.telefono)
+                    }) {
+                        Text(text = stringResource(id = R.string.Call))
+                    }
                 }
-            }
-            Text(
-                text = stringResource(id = R.string.Client_vehicles),
-                fontSize = 20.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            LazyColumn {
-                if (vehiculosDelCliente != null) {
-                    for (vehiculo in vehiculosDelCliente) {
-                        item {
-                            ElevatedCard (
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(6.dp)
-                            ) {
-                                Row (
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxWidth()
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(all = 10.dp)
+                )  {
+                    Icon(Icons.Rounded.Email, contentDescription = "Email")
+                    Text(text = cliente.email)
+                    Button(onClick = {
+                        sendMail(cliente.email)
+                    }) {
+                        Text(text = stringResource(id = R.string.Send_mail))
+                    }
+                }
+                Text(
+                    text = stringResource(id = R.string.Client_vehicles),
+                    fontSize = 20.sp,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                LazyColumn {
+                    if (vehiculosDelCliente != null) {
+                        for (vehiculo in vehiculosDelCliente) {
+                            item {
+                                ElevatedCard (
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(6.dp)
                                 ) {
-                                    Column (
-                                        modifier = Modifier.padding(all = 10.dp)
+                                    Row (
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        Text(text = vehiculo.marca)
-                                        Text(text = vehiculo.modelo)
-                                        Text(text = vehiculo.matricula)
-                                        Text(text = vehiculo.nombreCliente)
+                                        Column (
+                                            modifier = Modifier.padding(all = 10.dp)
+                                        ) {
+                                            Text(text = vehiculo.marca)
+                                            Text(text = vehiculo.modelo)
+                                            Text(text = vehiculo.matricula)
+                                            Text(text = vehiculo.nombreCliente)
+                                        }
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        IconButton(onClick = {
+                                            navController.navigate("viewVehiculo/${vehiculo.matricula}")
+                                        }) {
+                                            Icon(
+                                                painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                                                contentDescription = "Ver"
+                                            )
+                                        }
+                                        IconButton(onClick = {
+                                            showDeleteAlertDialog = true
+                                            deletingVehiculo = vehiculo
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Delete,
+                                                contentDescription = "Eliminar",
+                                            )
+                                        }
                                     }
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    IconButton(onClick = {
-                                        navController.navigate("viewVehiculo/${vehiculo.matricula}")
-                                    }) {
-                                        Icon(
-                                            painterResource(id = R.drawable.baseline_remove_red_eye_24),
-                                            contentDescription = "Ver"
-                                        )
-                                    }
-                                    IconButton(onClick = {
-                                        showDeleteAlertDialog = true
-                                        deletingVehiculo = vehiculo
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.Delete,
-                                            contentDescription = "Eliminar",
-                                        )
+                                }
+                            }
+                        }
+                    }
+                }
+                if (showDeleteAlertDialog) {
+                    AlertDialog(
+                        title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
+                        text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
+                        confirmButton = {
+                            Button(onClick = {
+                                showDeleteAlertDialog = false
+                                viewModel.deleteVehiculo(deletingVehiculo)
+                            }) {
+                                Text(text = stringResource(id = R.string.Confirm))
+                            }
+                        },
+                        dismissButton = {
+                            Button(onClick = { showDeleteAlertDialog = false }) {
+                                Text(text = stringResource(id = R.string.Cancel))
+                            }
+                        },
+                        onDismissRequest = { showDeleteAlertDialog = false },
+                    )
+                }
+            }
+        }
+    }
+    else {
+        Scaffold (
+            topBar = {
+                TopBar(
+                    title = stringResource(id = R.string.Info_client),
+                    showSettings = false,
+                    showBackNavArrow = true,
+                    navController = navController
+                )
+            }
+        ) { innerPadding ->
+            Row (
+                modifier = Modifier.padding(innerPadding).padding(10.dp)
+            ) {
+                Column {
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(Icons.Rounded.Person, contentDescription = "Nombre")
+                        Text(text = cliente.nombre)
+                    }
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(Icons.Rounded.Phone, contentDescription = "Teléfono")
+                        Text(text = cliente.telefono.toString())
+                        Button(onClick = {
+                            openDial(cliente.telefono)
+                        }) {
+                            Text(text = stringResource(id = R.string.Call))
+                        }
+                    }
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                    )  {
+                        Icon(Icons.Rounded.Email, contentDescription = "Email")
+                        Text(text = cliente.email)
+                        Button(onClick = {
+                            sendMail(cliente.email)
+                        }) {
+                            Text(text = stringResource(id = R.string.Send_mail))
+                        }
+                    }
+                    if (showDeleteAlertDialog) {
+                        AlertDialog(
+                            title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
+                            text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
+                            confirmButton = {
+                                Button(onClick = {
+                                    showDeleteAlertDialog = false
+                                    viewModel.deleteVehiculo(deletingVehiculo)
+                                }) {
+                                    Text(text = stringResource(id = R.string.Confirm))
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = { showDeleteAlertDialog = false }) {
+                                    Text(text = stringResource(id = R.string.Cancel))
+                                }
+                            },
+                            onDismissRequest = { showDeleteAlertDialog = false },
+                        )
+                    }
+                }
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.Client_vehicles),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    LazyColumn {
+                        if (vehiculosDelCliente != null) {
+                            for (vehiculo in vehiculosDelCliente) {
+                                item {
+                                    ElevatedCard (
+                                    ) {
+                                        Row (
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Column (
+                                                modifier = Modifier.padding(all = 10.dp)
+                                            ) {
+                                                Text(text = vehiculo.marca)
+                                                Text(text = vehiculo.modelo)
+                                                Text(text = vehiculo.matricula)
+                                                Text(text = vehiculo.nombreCliente)
+                                            }
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            IconButton(onClick = {
+                                                navController.navigate("viewVehiculo/${vehiculo.matricula}")
+                                            }) {
+                                                Icon(
+                                                    painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                                                    contentDescription = "Ver"
+                                                )
+                                            }
+                                            IconButton(onClick = {
+                                                showDeleteAlertDialog = true
+                                                deletingVehiculo = vehiculo
+                                            }) {
+                                                Icon(
+                                                    imageVector = Icons.Rounded.Delete,
+                                                    contentDescription = "Eliminar",
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -171,26 +313,11 @@ fun ViewCliente(
                     }
                 }
             }
-            if (showDeleteAlertDialog) {
-                AlertDialog(
-                    title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
-                    text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
-                    confirmButton = {
-                        Button(onClick = {
-                            showDeleteAlertDialog = false
-                            viewModel.deleteVehiculo(deletingVehiculo)
-                        }) {
-                            Text(text = stringResource(id = R.string.Confirm))
-                        }
-                    },
-                    dismissButton = {
-                        Button(onClick = { showDeleteAlertDialog = false }) {
-                            Text(text = stringResource(id = R.string.Cancel))
-                        }
-                    },
-                    onDismissRequest = { showDeleteAlertDialog = false },
-                )
-            }
         }
     }
+}
+
+@Composable
+fun VehiculosDelCliente() {
+
 }
