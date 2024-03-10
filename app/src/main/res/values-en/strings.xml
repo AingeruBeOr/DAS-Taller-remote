@@ -27,7 +27,6 @@
     <string name="Call">Call</string>
     <string name="Send_mail">Write email</string>
     <string name="Delete_dialog_title">Are you sure?</string>
-    <string name="Delete_dialog_text">The selected elements will be deletes. Are you sure?</string>
     <string name="Delete_dialog_text">The selected element will be deleted. Are you sure?</string>
     <string name="Info_service">Service information</string>
     <string name="Date">Date</string>

@@ -47,6 +47,7 @@ import com.example.proyecto1.ui.screens.ViewService
 import com.example.proyecto1.ui.screens.ViewVehiculo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.reflect.KFunction1
 
 /**
@@ -68,6 +69,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // TODO quitar esto, igual se queda guardado
+        runBlocking {
+            Log.d("Language", "MainActivity onCreate(): DataStore language is ${viewModel.getSavedLanguage()}")
+            changeLocales(viewModel.getSavedLanguage())
+        }
+
         setContent {
             Proyecto1Theme {
                 // A surface container using the 'background' color from the theme
@@ -83,10 +90,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
             }
-        }
-
-        lifecycleScope.launch {
-            changeLocales(viewModel.getSavedLanguage())
         }
     }
 
@@ -111,14 +114,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun changeLocales(languageCode: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            applicationContext.getSystemService(LocaleManager::class.java).applicationLocales =
-                LocaleList.forLanguageTags(languageCode)
-        }
-        else {
-            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
 
-        }
         // Done here has saveLanguage is a suspend function
         lifecycleScope.launch {
             viewModel.saveLanguage(languageCode)
