@@ -43,6 +43,18 @@ import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.TopBar
 
+data class ClientInfoState(
+    val navController: NavController,
+    val viewModel: ActivityViewModel,
+    val openDial: (Int) -> Unit,
+    val sendMail: (String) -> Unit,
+    var cliente: Cliente = Cliente("a", 1, "1"),
+    val nombreCliente: String?,
+    var vehiculosDelCliente: List<Vehiculo>?,
+    val deletingVehiculo: MutableState<Vehiculo>,
+    val showDeleteAlertDialog: MutableState<Boolean>
+)
+
 @Composable
 fun ViewCliente(
     navController: NavController,
@@ -51,27 +63,30 @@ fun ViewCliente(
     openDial: (Int) -> Unit,
     sendMail: (String) -> Unit
 ) {
-    var cliente by remember {
-        mutableStateOf(Cliente("a", 1, "1"))
-    }
-
-    if (nombreCliente != null) {
-        cliente = viewModel.getUserDataFromName(nombreCliente)
-    }
-
-    val vehiculosDelCliente = nombreCliente?.let {
-        viewModel.getClientVehicles(it).collectAsState(initial = emptyList()).value
-    }
-
-    var deletingVehiculo = remember {
+    val state by remember {
         mutableStateOf(
-            Vehiculo(
-            matricula = "1234abc", marca = "Mercedes", modelo = "A45 AMG", nombreCliente = "Pepe")
+            ClientInfoState(
+                navController = navController,
+                viewModel = viewModel,
+                nombreCliente = nombreCliente,
+                openDial = openDial,
+                sendMail = sendMail,
+                deletingVehiculo = mutableStateOf(
+                    Vehiculo(
+                        matricula = "1234abc", marca = "Mercedes", modelo = "A45 AMG", nombreCliente = "Pepe")
+                ),
+                showDeleteAlertDialog = mutableStateOf(false),
+                vehiculosDelCliente = emptyList()
+            )
         )
     }
 
-    var showDeleteAlertDialog = remember {
-        mutableStateOf(false)
+    if (nombreCliente != null) {
+        state.cliente = viewModel.getUserDataFromName(nombreCliente)
+    }
+
+    state.vehiculosDelCliente = nombreCliente?.let {
+        viewModel.getClientVehicles(it).collectAsState(initial = emptyList()).value
     }
 
     Scaffold (
@@ -85,34 +100,14 @@ fun ViewCliente(
         }
     ) { innerPadding ->
         if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            PortraitLayout(
-                innerPadding = innerPadding,
-                cliente = cliente,
-                openDial = openDial,
-                sendMail = sendMail,
-                vehiculosDelCliente = vehiculosDelCliente,
-                navController = navController,
-                showDeleteAlertDialog = showDeleteAlertDialog,
-                deletingVehiculo = deletingVehiculo
-            )
+            PortraitLayout(innerPadding = innerPadding, state = state)
         }
-        else {
-            LandscapeLayout(
-                innerPadding = innerPadding,
-                cliente = cliente,
-                openDial = openDial,
-                sendMail = sendMail,
-                vehiculosDelCliente = vehiculosDelCliente,
-                navController = navController,
-                showDeleteAlertDialog = showDeleteAlertDialog,
-                deletingVehiculo = deletingVehiculo
-            )
-        }
-        if (showDeleteAlertDialog.value) {
+        else LandscapeLayout(innerPadding = innerPadding, state = state)
+        if (state.showDeleteAlertDialog.value) {
             DeleteAlertDialog(
-                showDeleteAlertDialog = showDeleteAlertDialog,
+                showDeleteAlertDialog = state.showDeleteAlertDialog,
                 viewModel = viewModel,
-                deletingVehiculo = deletingVehiculo
+                deletingVehiculo = state.deletingVehiculo
             )
         }
     }
@@ -121,20 +116,14 @@ fun ViewCliente(
 @Composable
 fun PortraitLayout(
     innerPadding: PaddingValues,
-    cliente: Cliente,
-    openDial: (Int) -> Unit,
-    sendMail: (String) -> Unit,
-    vehiculosDelCliente: List<Vehiculo>?,
-    navController: NavController,
-    showDeleteAlertDialog: MutableState<Boolean>,
-    deletingVehiculo: MutableState<Vehiculo>
+    state: ClientInfoState
 ) {
     Column (
         modifier = Modifier
             .padding(innerPadding)
             .padding(all = 15.dp)
     ) {
-        ClientInfo(cliente = cliente, openDial = openDial, sendMail = sendMail)
+        ClientInfo(cliente = state.cliente, openDial = state.openDial, sendMail = state.sendMail)
         Text(
             text = stringResource(id = R.string.Client_vehicles),
             fontSize = 20.sp,
@@ -142,10 +131,10 @@ fun PortraitLayout(
             textAlign = TextAlign.Center
         )
         VehiculosDelCliente(
-            vehiculosDelCliente = vehiculosDelCliente,
-            navController = navController,
-            showDeleteAlertDialog = showDeleteAlertDialog,
-            deletingVehiculo = deletingVehiculo
+            vehiculosDelCliente = state.vehiculosDelCliente,
+            navController = state.navController,
+            showDeleteAlertDialog = state.showDeleteAlertDialog,
+            deletingVehiculo = state.deletingVehiculo
         )
 
     }
@@ -154,20 +143,14 @@ fun PortraitLayout(
 @Composable
 fun LandscapeLayout(
     innerPadding: PaddingValues,
-    cliente: Cliente,
-    openDial: (Int) -> Unit,
-    sendMail: (String) -> Unit,
-    vehiculosDelCliente: List<Vehiculo>?,
-    navController: NavController,
-    showDeleteAlertDialog: MutableState<Boolean>,
-    deletingVehiculo: MutableState<Vehiculo>
+    state: ClientInfoState
 ) {
     Row (
         modifier = Modifier
             .padding(innerPadding)
             .padding(10.dp)
     ) {
-        ClientInfo(cliente = cliente, openDial = openDial, sendMail = sendMail)
+        ClientInfo(cliente = state.cliente, openDial = state.openDial, sendMail = state.sendMail)
         Column {
             Text(
                 text = stringResource(id = R.string.Client_vehicles),
@@ -176,10 +159,10 @@ fun LandscapeLayout(
                 modifier = Modifier.fillMaxWidth()
             )
             VehiculosDelCliente(
-                vehiculosDelCliente = vehiculosDelCliente,
-                navController = navController,
-                showDeleteAlertDialog = showDeleteAlertDialog,
-                deletingVehiculo = deletingVehiculo
+                vehiculosDelCliente = state.vehiculosDelCliente,
+                navController = state.navController,
+                showDeleteAlertDialog = state.showDeleteAlertDialog,
+                deletingVehiculo = state.deletingVehiculo
             )
         }
     }
