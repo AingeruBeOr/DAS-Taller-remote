@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -79,30 +80,10 @@ fun ViewVehiculo(
                 .padding(innerPadding)
                 .padding(all = 15.dp)
         ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            ) {
-                Text(text = vehiculo.nombreCliente)
-            }
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            ) {
-                Text(text = vehiculo.matricula)
-            }
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            )  {
-                Text(text = vehiculo.marca)
-            }
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(all = 10.dp)
-            )  {
-                Text(text = vehiculo.modelo)
-            }
+            Row { Text(text = "Nombre cliente: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.nombreCliente) }
+            Row { Text(text = "Matrícula: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.matricula) }
+            Row { Text(text = "Marca: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.marca) }
+            Row { Text(text = "Modelo: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.modelo) }
             Text(
                 text = stringResource(id = R.string.Vehicle_services),
                 fontSize = 20.sp,
@@ -118,33 +99,39 @@ fun ViewVehiculo(
                                     .fillMaxWidth()
                                     .padding(6.dp)
                             ) {
-                                Row (
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxWidth()
+                                Column (
+                                    modifier = Modifier.padding(10.dp)
                                 ) {
-                                    Column (
-                                        modifier = Modifier.padding(all = 10.dp)
+                                    Row (
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        Text(text = servicio.fecha)
-                                        Text(text = servicio.descripcion)
+                                        Column {
+                                            Text(text = servicio.fecha)
+
+                                        }
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        IconButton(onClick = {
+                                            val servicioParaEnviar = servicio.fecha.replace("/", "-")
+                                            navController.navigate("viewServicio/$servicioParaEnviar")
+                                        }) {
+                                            Icon(
+                                                painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                                                contentDescription = "Ver"
+                                            )
+                                        }
+                                        IconButton(onClick = {
+                                            showDeleteAlertDialog = true
+                                            deletingServicio = servicio
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Delete,
+                                                contentDescription = "Eliminar",
+                                            )
+                                        }
                                     }
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    IconButton(onClick = { /*TODO*/ }) {
-                                        Icon(
-                                            painterResource(id = R.drawable.baseline_remove_red_eye_24),
-                                            contentDescription = "Ver"
-                                        )
-                                    }
-                                    IconButton(onClick = {
-                                        showDeleteAlertDialog = true
-                                        deletingServicio = servicio
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.Delete,
-                                            contentDescription = "Eliminar",
-                                        )
-                                    }
+                                    Text(text = servicio.descripcion, maxLines = 1)
                                 }
                             }
                         }
