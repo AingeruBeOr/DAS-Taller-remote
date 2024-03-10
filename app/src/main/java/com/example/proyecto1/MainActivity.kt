@@ -1,12 +1,8 @@
 package com.example.proyecto1
 
-import android.app.LocaleManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.LocaleList
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,40 +11,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.LocaleListCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import androidx.room.Room
-import com.example.proyecto1.data.database.AppDatabase
+import com.example.proyecto1.ui.AppNavigation
 import com.example.proyecto1.ui.theme.Proyecto1Theme
-import com.example.proyecto1.ui.myComponents.TopBar
-import com.example.proyecto1.ui.myComponents.BottomBar
-import com.example.proyecto1.ui.myComponents.ListClientes
-import com.example.proyecto1.ui.myComponents.ListServicios
-import com.example.proyecto1.ui.myComponents.ListVehículos
-import com.example.proyecto1.ui.screens.AddCliente
-import com.example.proyecto1.ui.screens.AddServicio
-import com.example.proyecto1.ui.screens.AddVehiculo
-import com.example.proyecto1.ui.screens.MainView
-import com.example.proyecto1.ui.screens.Preferencias
-import com.example.proyecto1.ui.screens.ViewCliente
-import com.example.proyecto1.ui.screens.ViewService
-import com.example.proyecto1.ui.screens.ViewVehiculo
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlin.reflect.KFunction1
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
@@ -119,79 +89,6 @@ class MainActivity : AppCompatActivity() {
         // Done here has saveLanguage is a suspend function
         lifecycleScope.launch {
             viewModel.saveLanguage(languageCode)
-        }
-    }
-}
-
-@Composable
-fun AppNavigation(
-    viewModel: ActivityViewModel,
-    openDial: (Int) -> Unit,
-    mailTo: (String) -> Unit,
-    changeLocales: (String) -> Unit
-) {
-    // Defining NavController
-    val navController = rememberNavController()
-
-    // Defining NavHost. This is the navigation graph
-    NavHost(navController = navController, startDestination = "servicios") {
-        composable("servicios") {
-            MainView(viewModel = viewModel, tipoPantalla = "Servicios", navController = navController)
-        }
-        composable("vehiculos") {
-            MainView(viewModel = viewModel, tipoPantalla = "Vehículos", navController = navController)
-        }
-        composable("clientes") {
-            MainView(viewModel = viewModel, tipoPantalla = "Clientes", navController = navController)
-        }
-        composable("newServicio") {
-            AddServicio(navController, viewModel)
-        }
-        composable("newVehiculo") {
-            AddVehiculo(navController, viewModel)
-        }
-        composable("newCliente") {
-            AddCliente(navController, viewModel)
-        }
-        composable("preferencias") {
-            Preferencias(navController = navController, changeLocale = changeLocales)
-        }
-        composable(
-            "viewCliente/{nombreCliente}",
-            arguments = listOf(navArgument(name = "nombreCliente") {
-                type = NavType.StringType
-            })
-        ) {
-            ViewCliente(
-                navController = navController,
-                viewModel = viewModel,
-                nombreCliente = it.arguments?.getString("nombreCliente"),
-                openDial = openDial,
-                sendMail = mailTo
-            )
-        }
-        composable(
-            "viewVehiculo/{matricula}",
-            arguments = listOf(navArgument(name = "matricula") {
-                type = NavType.StringType
-            })
-        ) {
-            ViewVehiculo(
-                navController = navController,
-                viewModel = viewModel,
-                matricula = it.arguments?.getString("matricula"))
-        }
-        composable(
-            "viewServicio/{fecha}",
-            arguments = listOf(navArgument(name = "fecha") {
-                type = NavType.StringType
-            })
-        ) {
-            ViewService(
-                navController = navController,
-                viewModel = viewModel,
-                fecha = it.arguments?.getString("fecha")?.replace("-", "/")
-            )
         }
     }
 }
