@@ -41,6 +41,7 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
+import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 import com.example.proyecto1.ui.myComponents.TopBar
 
 data class ClientInfoState(
@@ -106,8 +107,8 @@ fun ViewCliente(
         if (state.showDeleteAlertDialog.value) {
             DeleteAlertDialog(
                 showDeleteAlertDialog = state.showDeleteAlertDialog,
-                viewModel = viewModel,
-                deletingVehiculo = state.deletingVehiculo
+                deleteElement = viewModel::deleteVehiculo,
+                deletingElement = state.deletingVehiculo
             )
         }
     }
@@ -261,30 +262,4 @@ fun VehiculosDelCliente(
             }
         }
     }
-}
-
-@Composable
-fun DeleteAlertDialog(
-    showDeleteAlertDialog: MutableState<Boolean>,
-    viewModel: ActivityViewModel,
-    deletingVehiculo: MutableState<Vehiculo>
-) {
-    AlertDialog(
-        title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
-        text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
-        confirmButton = {
-            Button(onClick = {
-                showDeleteAlertDialog.value = false
-                viewModel.deleteVehiculo(deletingVehiculo.value)
-            }) {
-                Text(text = stringResource(id = R.string.Confirm))
-            }
-        },
-        dismissButton = {
-            Button(onClick = { showDeleteAlertDialog.value = false }) {
-                Text(text = stringResource(id = R.string.Cancel))
-            }
-        },
-        onDismissRequest = { showDeleteAlertDialog.value = false },
-    )
 }

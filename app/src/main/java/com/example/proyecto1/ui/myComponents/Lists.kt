@@ -40,12 +40,12 @@ fun ListServicios(
     innerPadding: PaddingValues,
     viewModel: ActivityViewModel,
 ) {
-    var showDeleteAlertDialog by remember {
+    var showDeleteAlertDialog = remember {
         mutableStateOf(false)
     }
 
     // TODO esto se puede inicializar de otra manera y no a algo random
-    var deletingServicio by remember {
+    var deletingServicio = remember {
         mutableStateOf(Servicio("a", "a", "a"))
     }
 
@@ -61,7 +61,9 @@ fun ListServicios(
                         .padding(6.dp)
                 ) {
                     Column (
-                        modifier = Modifier.fillMaxWidth().padding(10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
                     ) {
                         Row (
                             horizontalArrangement = Arrangement.Center,
@@ -81,8 +83,8 @@ fun ListServicios(
                             }
                             IconButton(
                                 onClick = {
-                                    deletingServicio = servicio
-                                    showDeleteAlertDialog = true
+                                    deletingServicio.value = servicio
+                                    showDeleteAlertDialog.value = true
                                 }
                             ) {
                                 Icon(
@@ -98,24 +100,11 @@ fun ListServicios(
         }
     }
 
-    if (showDeleteAlertDialog) {
-        AlertDialog(
-            title = { Text(text = "¿Estás seguro?") },
-            text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
-            confirmButton = {
-                Button(onClick = {
-                    viewModel.deleteServicio(deletingServicio)
-                    showDeleteAlertDialog = false
-                }) {
-                    Text(text = "Confirmar")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { showDeleteAlertDialog = false }) {
-                    Text(text = "Cancelar")
-                }
-            },
-            onDismissRequest = { showDeleteAlertDialog = false },
+    if (showDeleteAlertDialog.value) {
+        DeleteAlertDialog(
+            showDeleteAlertDialog = showDeleteAlertDialog,
+            deletingElement = deletingServicio,
+            deleteElement = viewModel::deleteServicio
         )
     }
 }
@@ -127,12 +116,11 @@ fun ListVehículos(
     viewModel: ActivityViewModel,
     navController: NavController
 ) {
-    var showDeleteAlertDialog by remember {
+    var showDeleteAlertDialog = remember {
         mutableStateOf(false)
     }
 
-    // TODO esto se puede inicializar de otra manera y no a algo random
-    var deletingVehiculo by remember {
+    var deletingVehiculo = remember {
         mutableStateOf(Vehiculo(
             matricula = "1234abc", marca = "Mercedes", modelo = "A45 AMG", nombreCliente = "Pepe")
         )
@@ -171,8 +159,8 @@ fun ListVehículos(
                             )
                         }
                         IconButton(onClick = {
-                            showDeleteAlertDialog = true
-                            deletingVehiculo = vehiculo
+                            showDeleteAlertDialog.value = true
+                            deletingVehiculo.value = vehiculo
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
@@ -185,24 +173,11 @@ fun ListVehículos(
         }
     }
 
-    if (showDeleteAlertDialog) {
-        AlertDialog(
-            title = { Text(text = "¿Estás seguro?") },
-            text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
-            confirmButton = {
-                Button(onClick = {
-                    showDeleteAlertDialog = false
-                    viewModel.deleteVehiculo(deletingVehiculo)
-                }) {
-                    Text(text = "Confirmar")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { showDeleteAlertDialog = false }) {
-                    Text(text = "Cancelar")
-                }
-            },
-            onDismissRequest = { showDeleteAlertDialog = false },
+    if (showDeleteAlertDialog.value) {
+        DeleteAlertDialog(
+            showDeleteAlertDialog = showDeleteAlertDialog,
+            deletingElement = deletingVehiculo,
+            deleteElement = viewModel::deleteVehiculo
         )
     }
 }
@@ -214,12 +189,11 @@ fun ListClientes(
     viewModel: ActivityViewModel,
     navController: NavController
 ) {
-    var showDeleteAlertDialog by remember {
+    var showDeleteAlertDialog = remember {
         mutableStateOf(false)
     }
 
-    // TODO esto se puede inicializar de otra manera y no a algo random
-    var deletingCliente by remember {
+    var deletingCliente = remember {
         mutableStateOf(Cliente("a", 1, email = "1"))
     }
 
@@ -252,8 +226,8 @@ fun ListClientes(
                             Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                         }
                         IconButton(onClick = {
-                            deletingCliente = cliente
-                            showDeleteAlertDialog = true
+                            deletingCliente.value = cliente
+                            showDeleteAlertDialog.value = true
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
@@ -266,24 +240,11 @@ fun ListClientes(
         }
     }
 
-    if (showDeleteAlertDialog) {
-        AlertDialog(
-            title = { Text(text = "¿Estás seguro?") },
-            text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
-            confirmButton = {
-                Button(onClick = {
-                    showDeleteAlertDialog = false
-                    viewModel.deleteCliente(deletingCliente)
-                }) {
-                    Text(text = "Confirmar")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { showDeleteAlertDialog = false }) {
-                    Text(text = "Cancelar")
-                }
-            },
-            onDismissRequest = { showDeleteAlertDialog = false },
+    if (showDeleteAlertDialog.value) {
+        DeleteAlertDialog(
+            showDeleteAlertDialog = showDeleteAlertDialog,
+            deletingElement = deletingCliente,
+            deleteElement = viewModel::deleteCliente
         )
     }
 }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +38,7 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.TopBar
+import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 
 @Composable
 fun ViewVehiculo(
@@ -103,8 +102,8 @@ fun ViewVehiculo(
     if (showDeleteAlertDialog.value) {
         DeleteAlertDialog(
             showDeleteAlertDialog = showDeleteAlertDialog,
-            viewModel = viewModel,
-            deletingServicio = deletingServicio
+            deletingElement = deletingServicio,
+            deleteElement = viewModel::deleteServicio
         )
     }
 }
@@ -243,30 +242,4 @@ fun VehicleServices(
             }
         }
     }
-}
-
-@Composable
-fun DeleteAlertDialog(
-    showDeleteAlertDialog: MutableState<Boolean>,
-    viewModel: ActivityViewModel,
-    deletingServicio: MutableState<Servicio>
-) {
-    AlertDialog(
-        title = { Text(text = "¿Estás seguro?") },
-        text = { Text(text = "¿Estás seguro de que deseas eliminar el elemento seleccionado?") },
-        confirmButton = {
-            Button(onClick = {
-                showDeleteAlertDialog.value = false
-                viewModel.deleteServicio(deletingServicio.value)
-            }) {
-                Text(text = "Confirmar")
-            }
-        },
-        dismissButton = {
-            Button(onClick = { showDeleteAlertDialog.value = false }) {
-                Text(text = "Cancelar")
-            }
-        },
-        onDismissRequest = { showDeleteAlertDialog.value = false },
-    )
 }
