@@ -1,7 +1,12 @@
 package com.example.proyecto1
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -12,6 +17,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.proyecto1.ui.AppNavigation
@@ -36,8 +45,15 @@ class MainActivity : AppCompatActivity() {
     // Re-created activities receive the same ActivityViewModel.kt instance created by the first activity.
     private val viewModel: ActivityViewModel by viewModels()
 
+    private val NOTIFICATION_CHANNEL_ID = "1"
+    private val CLIENT_ADDED_NOTIFICATION_ID = 1
+    private val VEHICLE_ADDED_NOTIFICATION_ID = 2
+    private val SERVICE_ADDED_NOTIFICATION_ID = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        createNotificationChannel()
 
         // TODO quitar esto, igual se queda guardado
         runBlocking {
@@ -56,7 +72,8 @@ class MainActivity : AppCompatActivity() {
                         viewModel = viewModel,
                         openDial = ::openDial,
                         mailTo = ::mailTo,
-                        changeLocales = ::changeLocales
+                        changeLocales = ::changeLocales,
+                        sendNotification = ::sendAddedNotification
                     )
                 }
             }
@@ -89,6 +106,66 @@ class MainActivity : AppCompatActivity() {
         // Done here has saveLanguage is a suspend function
         lifecycleScope.launch {
             viewModel.saveLanguage(languageCode)
+        }
+    }
+
+    // --- NOTIFICATIONS ---
+    /**
+     * This channel will be used to manage notifications when a new element is added.
+     *
+     * Despite being call on each onCreate(), if the CHANNEL_ID already exists, it doesn't create
+     * a new one.
+     */
+    fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel.
+            val name = getString(R.string.Notification_channel_name)
+            val descriptionText = getString(R.string.Notification_channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val mChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance)
+            mChannel.description = descriptionText
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
+    }
+
+    fun sendAddedNotification(type: String) {
+        var textContent = ""
+        var NOTIFICATION_ID = 0
+
+        when (type) {
+            "client" -> {
+                textContent = getString(R.string.Notification_added_client)
+                NOTIFICATION_ID = CLIENT_ADDED_NOTIFICATION_ID
+            }
+            "vehicle" -> {
+                textContent = getString(R.string.Notification_added_vehicle)
+                NOTIFICATION_ID = VEHICLE_ADDED_NOTIFICATION_ID
+            }
+            "service" -> {
+                textContent = getString(R.string.Notification_added_service)
+                NOTIFICATION_ID = SERVICE_ADDED_NOTIFICATION_ID
+            }
+        }
+
+        var builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.round_car_repair_24)
+            .setContentTitle(getString(R.string.Notification_title))
+            .setContentText(textContent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        with(NotificationManagerCompat.from(this)){
+            // Comprobamos si la aplicación tiene permisos para la notificación
+            if (ActivityCompat.checkSelfPermission(
+                    this@MainActivity,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return@with
+            }
+            notify(NOTIFICATION_ID, builder.build())
         }
     }
 }

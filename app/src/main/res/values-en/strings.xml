@@ -33,4 +33,10 @@
     <string name="Client_vehicles">Client vehicles</string>
     <string name="Info_vehicle">Vehicle information</string>
     <string name="Vehicle_services">Vehicle services</string>
+    <string name="Notification_channel_name">Added element</string>
+    <string name="Notification_channel_description">This channel manages the notifications shown when a new element is added.</string>
+    <string name="Notification_added_client">A new client has been added</string>
+    <string name="Notification_added_vehicle">A new vehicle has been added</string>
+    <string name="Notification_added_service">A new service has been added</string>
+    <string name="Notification_title">A new element has been added</string>
 </resources>

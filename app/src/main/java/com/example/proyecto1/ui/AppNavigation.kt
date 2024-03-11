@@ -21,7 +21,8 @@ fun AppNavigation(
     viewModel: ActivityViewModel,
     openDial: (Int) -> Unit,
     mailTo: (String) -> Unit,
-    changeLocales: (String) -> Unit
+    changeLocales: (String) -> Unit,
+    sendNotification: (String) -> Unit
 ) {
     // Defining NavController
     val navController = rememberNavController()
@@ -38,13 +39,13 @@ fun AppNavigation(
             MainView(viewModel = viewModel, tipoPantalla = "Clientes", navController = navController)
         }
         composable("newServicio") {
-            AddServicio(navController, viewModel)
+            AddServicio(navController, viewModel, sendNotification)
         }
         composable("newVehiculo") {
-            AddVehiculo(navController, viewModel)
+            AddVehiculo(navController, viewModel, sendNotification)
         }
         composable("newCliente") {
-            AddCliente(navController, viewModel)
+            AddCliente(navController, viewModel, sendNotification)
         }
         composable("preferencias") {
             Preferencias(navController = navController, changeLocale = changeLocales)

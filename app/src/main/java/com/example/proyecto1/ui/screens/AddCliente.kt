@@ -32,7 +32,11 @@ import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
-fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
+fun AddCliente(
+    navController: NavController,
+    viewModel: ActivityViewModel,
+    sendNotification: (String) -> Unit
+) {
     // Input values
     var nombre by remember {
         mutableStateOf("")
@@ -94,6 +98,7 @@ fun AddCliente(navController: NavController, viewModel: ActivityViewModel) {
                 }
                 Button(onClick = {
                     viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
+                    sendNotification("client")
                     navController.popBackStack()
                 }) {
                     Text(text = stringResource(id = R.string.Save))

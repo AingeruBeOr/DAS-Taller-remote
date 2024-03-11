@@ -36,7 +36,11 @@ import com.example.proyecto1.ui.myComponents.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
+fun AddVehiculo(
+    navController: NavController,
+    viewModel: ActivityViewModel,
+    sendNotification: (String) -> Unit
+) {
     // Input values
     var matricula by remember {
         mutableStateOf("")
@@ -131,6 +135,7 @@ fun AddVehiculo(navController: NavController, viewModel: ActivityViewModel) {
                 }
                 Button(onClick = {
                     viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
+                    sendNotification("vehicle")
                     navController.popBackStack()
                 }) {
                     Text(text = stringResource(id = R.string.Save))

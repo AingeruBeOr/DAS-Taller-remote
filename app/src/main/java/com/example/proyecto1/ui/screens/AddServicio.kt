@@ -41,7 +41,11 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
+fun AddServicio(
+    navController: NavController,
+    viewModel: ActivityViewModel,
+    sendNotification: (String) -> Unit
+) {
     // Input values
     var descripcion by remember {
         mutableStateOf("")
@@ -136,6 +140,7 @@ fun AddServicio(navController: NavController, viewModel: ActivityViewModel) {
                     viewModel.addNewServicio(
                         Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
                     )
+                    sendNotification("service")
                     navController.popBackStack()
                 }) {
                     Text(text = stringResource(id = R.string.Save))
