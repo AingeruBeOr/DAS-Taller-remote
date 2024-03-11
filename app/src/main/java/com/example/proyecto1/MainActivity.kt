@@ -56,12 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         createNotificationChannel()
 
-        // TODO quitar esto, igual se queda guardado
-        runBlocking {
-            Log.d("Language", "MainActivity onCreate(): DataStore language is ${viewModel.getSavedLanguage()}")
-            changeLocales(viewModel.getSavedLanguage())
-        }
-
         setContent {
             Proyecto1Theme {
                 // A surface container using the 'background' color from the theme
@@ -76,13 +70,6 @@ class MainActivity : AppCompatActivity() {
                         changeLocales = ::changeLocales,
                         mailTo = ::mailTo
                     )
-                    /*AppNavigation(
-                        viewModel = viewModel,
-                        openDial = ::openDial,
-                        mailTo = ::mailTo,
-                        changeLocales = ::changeLocales,
-                        sendNotification = ::sendAddedNotification
-                    )*/
                 }
             }
         }
@@ -109,12 +96,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun changeLocales(languageCode: String) {
+        // The Locale is saved into App Settings so when the app is started again, the Locale
+        // is taken from App Settings
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
-
-        // Done here has saveLanguage is a suspend function
-        lifecycleScope.launch {
-            viewModel.saveLanguage(languageCode)
-        }
     }
 
     // --- NOTIFICATIONS ---

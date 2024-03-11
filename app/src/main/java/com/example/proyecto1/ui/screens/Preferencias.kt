@@ -1,5 +1,6 @@
 package com.example.proyecto1.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,7 +38,8 @@ fun Preferencias(
     val idiomasPosibles = listOf(
         stringResource(id = R.string.Basque_lang),
         stringResource(id = R.string.Spanish_lang),
-        stringResource(id = R.string.Engilsh_lang))
+        stringResource(id = R.string.Engilsh_lang)
+    )
     var idiomaSeleccionado by remember {
         mutableStateOf(idiomasPosibles[0])
     }
@@ -71,9 +73,9 @@ fun Preferencias(
             }
             Button(onClick = {
                 when (idiomaSeleccionado) {
-                    "Euskera" -> changeLocale("eu")
-                    "Castellano" -> changeLocale("es")
-                    "Inglés" -> changeLocale("en")
+                    idiomasPosibles[0] -> changeLocale("eu")
+                    idiomasPosibles[1] -> changeLocale("es")
+                    idiomasPosibles[2] -> changeLocale("en")
                 }
                 navController.popBackStack()
             }) {
