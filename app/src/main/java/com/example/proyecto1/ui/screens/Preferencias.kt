@@ -2,6 +2,7 @@ package com.example.proyecto1.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,8 @@ import com.example.proyecto1.ui.myComponents.TopBar
 @Composable
 fun Preferencias(
     navController: NavController,
-    changeLocale: (String) -> Unit
+    changeLocale: (String) -> Unit,
+    innerPadding: PaddingValues
 ) {
     //Input values
     val idiomasPosibles = listOf(
@@ -39,48 +41,43 @@ fun Preferencias(
     var idiomaSeleccionado by remember {
         mutableStateOf(idiomasPosibles[0])
     }
-    Scaffold (
-        topBar = {
-            TopBar(navController = navController)
-        }
-    ) { innerPadding ->
-        Column (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(15.dp)
-        ) {
-            Text(text = stringResource(id = R.string.LanguageChoose), modifier = Modifier.padding(bottom = 10.dp))
-            for (idioma in idiomasPosibles) {
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    RadioButton(
-                        selected = (idioma == idiomaSeleccionado),
-                        onClick = { idiomaSeleccionado = idioma }
-                    )
-                    Text(
-                        text = idioma,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+
+    Column (
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(15.dp)
+    ) {
+        Text(text = stringResource(id = R.string.LanguageChoose), modifier = Modifier.padding(bottom = 10.dp))
+        for (idioma in idiomasPosibles) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                RadioButton(
+                    selected = (idioma == idiomaSeleccionado),
+                    onClick = { idiomaSeleccionado = idioma }
+                )
+                Text(
+                    text = idioma,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
-            Row (
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                OutlinedButton(onClick = {
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Cancel))
+        }
+        Row (
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OutlinedButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Cancel))
+            }
+            Button(onClick = {
+                when (idiomaSeleccionado) {
+                    "Euskera" -> changeLocale("eu")
+                    "Castellano" -> changeLocale("es")
+                    "Inglés" -> changeLocale("en")
                 }
-                Button(onClick = {
-                    when (idiomaSeleccionado) {
-                        "Euskera" -> changeLocale("eu")
-                        "Castellano" -> changeLocale("es")
-                        "Inglés" -> changeLocale("en")
-                    }
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Save))
-                }
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Save))
             }
         }
     }

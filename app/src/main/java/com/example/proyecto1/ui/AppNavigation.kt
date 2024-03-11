@@ -78,7 +78,11 @@ fun AppNavigation(
             )
         }
         composable("preferencias") {
-            Preferencias(navController = navController, changeLocale = changeLocales)
+            Preferencias(
+                navController = navController,
+                changeLocale = changeLocales,
+                innerPadding = innerPadding
+            )
         }
         composable(
             "viewCliente/{nombreCliente}",
