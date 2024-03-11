@@ -22,9 +22,6 @@ import com.example.proyecto1.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
-    // TODO esto es solo una prueba para ver en todo momento el idioma
-    val context = LocalContext.current
-
     // Subscribe (observer) to navBackStackEntry, required to get current route
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     // Get the route (get only the text before the first '/')
@@ -95,7 +92,7 @@ fun TopBar(navController: NavController) {
 
     TopAppBar(
         title = {
-            Text(text = titleText.value + context.resources.configuration.locales)
+            Text(text = titleText.value)
         },
         actions = {
             if (showSettings.value) {
@@ -115,4 +112,3 @@ fun TopBar(navController: NavController) {
         }
     )
 }
-
