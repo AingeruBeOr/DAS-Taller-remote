@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.proyecto1.R
 
@@ -33,9 +34,10 @@ fun BottomBar(navController: NavController) {
             label = { Text(text = stringResource(id = R.string.ServicesTitle)) },
             selected = (currentRoute == "servicios"),
             onClick = {
-                // TODO consultar la documentación para hacer esto de una forma más limpia
-                navController.popBackStack()
-                navController.navigate("servicios")
+                // Navigate and remove the previous Composable from the back stack
+                navController.navigate("servicios") {
+                    popUpTo(0)
+                }
             }
         )
         NavigationBarItem(
@@ -43,9 +45,10 @@ fun BottomBar(navController: NavController) {
             label = { Text(text = stringResource(id = R.string.VehiclesTitle)) },
             selected = (currentRoute == "vehiculos"),
             onClick = {
-                // TODO consultar la documentación para hacer esto de una forma más limpia
-                navController.popBackStack()
-                navController.navigate("vehiculos")
+                // Navigate and remove the previous Composable from the back stack
+                navController.navigate("vehiculos") {
+                    popUpTo(0)
+                }
             }
         )
         NavigationBarItem(
@@ -53,9 +56,10 @@ fun BottomBar(navController: NavController) {
             label = { Text(text = stringResource(id = R.string.ClientsTitle)) },
             selected = (currentRoute == "clientes"),
             onClick = {
-                // TODO consultar la documentación para hacer esto de una forma más limpia
-                navController.popBackStack()
-                navController.navigate("clientes")
+                // Navigate and remove the previous Composable from the back stack
+                navController.navigate("clientes") {
+                    popUpTo(0)
+                }
             }
         )
     }
