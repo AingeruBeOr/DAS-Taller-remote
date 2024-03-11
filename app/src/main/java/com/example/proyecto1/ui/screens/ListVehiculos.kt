@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,45 +52,18 @@ fun ListVehículos(
     LazyColumn(modifier = modifier.padding(innerPadding)){
         for (vehiculo in stateVehiculos.value) {
             item {
-                ElevatedCard (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column (
-                            modifier = Modifier.padding(all = 10.dp)
-                        ) {
-                            Text(text = vehiculo.marca)
-                            Text(text = vehiculo.modelo)
-                            Text(text = vehiculo.matricula)
-                            Text(text = vehiculo.nombreCliente)
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = {
-                            navController.navigate("viewVehiculo/${vehiculo.matricula}")
-                        }) {
-                            Icon(
-                                painterResource(id = R.drawable.baseline_remove_red_eye_24),
-                                contentDescription = "Ver"
-                            )
-                        }
-                        IconButton(onClick = {
-                            showDeleteAlertDialog.value = true
-                            deletingVehiculo.value = vehiculo
-                        }) {
-                            Icon(
-                                imageVector = Icons.Rounded.Delete,
-                                contentDescription = "Eliminar",
-                            )
-                        }
-                    }
-                }
+                VehiculoCard(
+                    vehiculo = vehiculo,
+                    navController = navController,
+                    showDeleteAlertDialog = showDeleteAlertDialog,
+                    deletingVehiculo = deletingVehiculo
+                )
             }
+        }
+        // This Spacer allows LazyColumn to scroll down more so that the last card buttons are not
+        // behind the '+' button
+        item {
+            Spacer(modifier = Modifier.padding(bottom = 75.dp))
         }
     }
 
@@ -99,5 +73,52 @@ fun ListVehículos(
             deletingElement = deletingVehiculo,
             deleteElement = viewModel::deleteVehiculo
         )
+    }
+}
+
+@Composable
+fun VehiculoCard(
+    vehiculo: Vehiculo,
+    navController: NavController,
+    showDeleteAlertDialog: MutableState<Boolean>,
+    deletingVehiculo: MutableState<Vehiculo>
+) {
+    ElevatedCard (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(6.dp)
+    ) {
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column (
+                modifier = Modifier.padding(all = 10.dp)
+            ) {
+                Text(text = vehiculo.marca)
+                Text(text = vehiculo.modelo)
+                Text(text = vehiculo.matricula)
+                Text(text = vehiculo.nombreCliente)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(onClick = {
+                navController.navigate("viewVehiculo/${vehiculo.matricula}")
+            }) {
+                Icon(
+                    painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                    contentDescription = "Ver"
+                )
+            }
+            IconButton(onClick = {
+                showDeleteAlertDialog.value = true
+                deletingVehiculo.value = vehiculo
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Delete,
+                    contentDescription = "Eliminar",
+                )
+            }
+        }
     }
 }

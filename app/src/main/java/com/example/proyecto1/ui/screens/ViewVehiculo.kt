@@ -188,48 +188,63 @@ fun VehicleServices(
         if (serviciosDelVehiculo != null) {
             for (servicio in serviciosDelVehiculo) {
                 item {
-                    ElevatedCard (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(6.dp)
-                    ) {
-                        Column (
-                            modifier = Modifier.padding(10.dp)
-                        ) {
-                            Row (
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Column {
-                                    Text(text = servicio.fecha)
-
-                                }
-                                Spacer(modifier = Modifier.weight(1f))
-                                IconButton(onClick = {
-                                    val servicioParaEnviar = servicio.fecha.replace("/", "-")
-                                    navController.navigate("viewServicio/$servicioParaEnviar")
-                                }) {
-                                    Icon(
-                                        painterResource(id = R.drawable.baseline_remove_red_eye_24),
-                                        contentDescription = "Ver"
-                                    )
-                                }
-                                IconButton(onClick = {
-                                    showDeleteAlertDialog.value = true
-                                    deletingServicio.value = servicio
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Delete,
-                                        contentDescription = "Eliminar",
-                                    )
-                                }
-                            }
-                            Text(text = servicio.descripcion, maxLines = 1)
-                        }
-                    }
+                   ServicioCard(
+                       servicio = servicio,
+                       navController = navController,
+                       deletingServicio = deletingServicio,
+                       showDeleteAlertDialog = showDeleteAlertDialog
+                   )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ServiceCard(
+    servicio: Servicio,
+    navController: NavController,
+    showDeleteAlertDialog: MutableState<Boolean>,
+    deletingServicio: MutableState<Servicio>
+) {
+    ElevatedCard (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(6.dp)
+    ) {
+        Column (
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Row (
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column {
+                    Text(text = servicio.fecha)
+
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {
+                    val servicioParaEnviar = servicio.fecha.replace("/", "-")
+                    navController.navigate("viewServicio/$servicioParaEnviar")
+                }) {
+                    Icon(
+                        painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                        contentDescription = "Ver"
+                    )
+                }
+                IconButton(onClick = {
+                    showDeleteAlertDialog.value = true
+                    deletingServicio.value = servicio
+                }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = "Eliminar",
+                    )
+                }
+            }
+            Text(text = servicio.descripcion, maxLines = 1)
         }
     }
 }

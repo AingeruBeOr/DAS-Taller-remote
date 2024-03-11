@@ -14,12 +14,10 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -42,7 +39,6 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
-import com.example.proyecto1.ui.myComponents.TopBar
 
 data class ClientInfoState(
     val navController: NavController,
@@ -211,44 +207,58 @@ fun VehiculosDelCliente(
         if (vehiculosDelCliente != null) {
             for (vehiculo in vehiculosDelCliente) {
                 item {
-                    ElevatedCard (
-                        modifier = Modifier
-                            .padding(6.dp)
-                    ) {
-                        Row (
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column (
-                                modifier = Modifier.padding(all = 10.dp)
-                            ) {
-                                Text(text = vehiculo.marca)
-                                Text(text = vehiculo.modelo)
-                                Text(text = vehiculo.matricula)
-                                Text(text = vehiculo.nombreCliente)
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            IconButton(onClick = {
-                                navController.navigate("viewVehiculo/${vehiculo.matricula}")
-                            }) {
-                                Icon(
-                                    painterResource(id = R.drawable.baseline_remove_red_eye_24),
-                                    contentDescription = "Ver"
-                                )
-                            }
-                            IconButton(onClick = {
-                                showDeleteAlertDialog.value = true
-                                deletingVehiculo.value = vehiculo
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Delete,
-                                    contentDescription = "Eliminar",
-                                )
-                            }
-                        }
-                    }
+                    VehicleCard(
+                       vehiculo = vehiculo,
+                       navController = navController,
+                       showDeleteAlertDialog = showDeleteAlertDialog,
+                       deletingVehiculo = deletingVehiculo
+                   )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun VehicleCard(
+    vehiculo: Vehiculo,
+    navController: NavController,
+    showDeleteAlertDialog: MutableState<Boolean>,
+    deletingVehiculo: MutableState<Vehiculo>
+) {
+    ElevatedCard (
+        modifier = Modifier
+            .padding(6.dp)
+    ) {
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column (
+                modifier = Modifier.padding(all = 10.dp)
+            ) {
+                Text(text = vehiculo.marca)
+                Text(text = vehiculo.modelo)
+                Text(text = vehiculo.matricula)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(onClick = {
+                navController.navigate("viewVehiculo/${vehiculo.matricula}")
+            }) {
+                Icon(
+                    painterResource(id = R.drawable.baseline_remove_red_eye_24),
+                    contentDescription = "Ver"
+                )
+            }
+            IconButton(onClick = {
+                showDeleteAlertDialog.value = true
+                deletingVehiculo.value = vehiculo
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Delete,
+                    contentDescription = "Eliminar",
+                )
             }
         }
     }

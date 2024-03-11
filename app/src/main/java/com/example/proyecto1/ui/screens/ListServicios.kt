@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,48 +51,18 @@ fun ListServicios(
     LazyColumn(modifier = modifier.padding(innerPadding)){
         for (servicio in stateServicios.value) {
             item {
-                ElevatedCard (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp)
-                ) {
-                    Column (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                    ) {
-                        Row (
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column {
-                                Text(text = servicio.fecha)
-                                Text(text = servicio.matricula)
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            IconButton(onClick = {
-                                val servicioParaEnviar = servicio.fecha.replace("/", "-")
-                                navController.navigate("viewServicio/$servicioParaEnviar")
-                            }) {
-                                Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
-                            }
-                            IconButton(
-                                onClick = {
-                                    deletingServicio.value = servicio
-                                    showDeleteAlertDialog.value = true
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Delete,
-                                    contentDescription = "Eliminar",
-                                )
-                            }
-                        }
-                        Text(text = servicio.descripcion, maxLines = 1)
-                    }
-                }
+                ServicioCard(
+                    servicio = servicio,
+                    navController = navController,
+                    deletingServicio = deletingServicio,
+                    showDeleteAlertDialog = showDeleteAlertDialog
+                )
             }
+        }
+        // This Spacer allows LazyColumn to scroll down more so that the last card buttons are not
+        // behind the '+' button
+        item {
+            Spacer(modifier = Modifier.padding(bottom = 120.dp))
         }
     }
 
@@ -101,5 +72,55 @@ fun ListServicios(
             deletingElement = deletingServicio,
             deleteElement = viewModel::deleteServicio
         )
+    }
+}
+
+@Composable
+fun ServicioCard(
+    servicio: Servicio,
+    navController: NavController,
+    deletingServicio: MutableState<Servicio>,
+    showDeleteAlertDialog: MutableState<Boolean>
+) {
+    ElevatedCard (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(6.dp)
+    ) {
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Row (
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column {
+                    Text(text = servicio.fecha)
+                    Text(text = servicio.matricula)
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {
+                    val servicioParaEnviar = servicio.fecha.replace("/", "-")
+                    navController.navigate("viewServicio/$servicioParaEnviar")
+                }) {
+                    Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
+                }
+                IconButton(
+                    onClick = {
+                        deletingServicio.value = servicio
+                        showDeleteAlertDialog.value = true
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = "Eliminar",
+                    )
+                }
+            }
+            Text(text = servicio.descripcion, maxLines = 1)
+        }
     }
 }
