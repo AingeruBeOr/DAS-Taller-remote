@@ -27,9 +27,9 @@ import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
 fun ViewService(
-    navController: NavController,
     viewModel: ActivityViewModel,
-    fecha: String?
+    fecha: String?,
+    innerPadding: PaddingValues
 ) {
     var servicio by remember {
         mutableStateOf(Servicio("a", "a", "a"))
@@ -39,22 +39,11 @@ fun ViewService(
         servicio = viewModel.getServicioFromFecha(fecha)
     }
 
-    Scaffold (
-        topBar = {
-            TopBar(
-                title = stringResource(id = R.string.Info_service),
-                showSettings = false,
-                showBackNavArrow = true,
-                navController = navController
-            )
-        }
-    ) { innerPadding ->
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            PortraitLayout(servicio = servicio, innerPadding = innerPadding)
-        }
-        else {
-            LandscapeLayout(servicio = servicio, innerPadding = innerPadding)
-        }
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitLayout(servicio = servicio, innerPadding = innerPadding)
+    }
+    else {
+        LandscapeLayout(servicio = servicio, innerPadding = innerPadding)
     }
 }
 

@@ -41,7 +41,7 @@ fun Preferencias(
     }
     Scaffold (
         topBar = {
-            TopBar(title = stringResource(id = R.string.PreferencesTitle), showSettings = false, navController = navController)
+            TopBar(navController = navController)
         }
     ) { innerPadding ->
         Column (

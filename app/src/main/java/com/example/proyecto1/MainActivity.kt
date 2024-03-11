@@ -24,6 +24,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.proyecto1.ui.AppNavigation
+import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.theme.Proyecto1Theme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -68,13 +69,20 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation(
+                    MainView(
+                        viewModel = viewModel,
+                        sendNotification = ::sendAddedNotification,
+                        openDial = ::openDial,
+                        changeLocales = ::changeLocales,
+                        mailTo = ::mailTo
+                    )
+                    /*AppNavigation(
                         viewModel = viewModel,
                         openDial = ::openDial,
                         mailTo = ::mailTo,
                         changeLocales = ::changeLocales,
                         sendNotification = ::sendAddedNotification
-                    )
+                    )*/
                 }
             }
         }

@@ -44,7 +44,8 @@ import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 fun ViewVehiculo(
     navController: NavController,
     viewModel: ActivityViewModel,
-    matricula: String?
+    matricula: String?,
+    innerPadding: PaddingValues
 ) {
     var vehiculo by remember {
         mutableStateOf(Vehiculo("a", "a", "1", "a"))
@@ -68,36 +69,25 @@ fun ViewVehiculo(
         mutableStateOf(false)
     }
 
-    Scaffold (
-        topBar = {
-            TopBar(
-                title = stringResource(id = R.string.Info_vehicle),
-                showSettings = false,
-                showBackNavArrow = true,
-                navController = navController
-            )
-        }
-    ) { innerPadding ->
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            PortraitLayout(
-                innerPadding = innerPadding,
-                vehiculo = vehiculo,
-                serviciosDelVehiculo = serviciosDelVehiculo,
-                navController = navController,
-                showDeleteAlertDialog = showDeleteAlertDialog,
-                deletingServicio = deletingServicio
-            )
-        }
-        else {
-            LandscapeLayout(
-                innerPadding = innerPadding,
-                vehiculo = vehiculo,
-                serviciosDelVehiculo = serviciosDelVehiculo,
-                navController = navController,
-                showDeleteAlertDialog = showDeleteAlertDialog,
-                deletingServicio = deletingServicio
-            )
-        }
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitLayout(
+            innerPadding = innerPadding,
+            vehiculo = vehiculo,
+            serviciosDelVehiculo = serviciosDelVehiculo,
+            navController = navController,
+            showDeleteAlertDialog = showDeleteAlertDialog,
+            deletingServicio = deletingServicio
+        )
+    }
+    else {
+        LandscapeLayout(
+            innerPadding = innerPadding,
+            vehiculo = vehiculo,
+            serviciosDelVehiculo = serviciosDelVehiculo,
+            navController = navController,
+            showDeleteAlertDialog = showDeleteAlertDialog,
+            deletingServicio = deletingServicio
+        )
     }
     if (showDeleteAlertDialog.value) {
         DeleteAlertDialog(

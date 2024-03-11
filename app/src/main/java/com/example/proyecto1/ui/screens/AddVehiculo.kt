@@ -2,6 +2,7 @@ package com.example.proyecto1.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,6 +38,7 @@ import com.example.proyecto1.ui.myComponents.TopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddVehiculo(
+    innerPadding: PaddingValues,
     navController: NavController,
     viewModel: ActivityViewModel,
     sendNotification: (String) -> Unit
@@ -69,77 +71,71 @@ fun AddVehiculo(
         .fillMaxWidth()
         .padding(top = 15.dp)
 
-    Scaffold (
-        topBar = {
-            TopBar(title = stringResource(id = R.string.TopBarAddVehicle), showSettings = false, navController = navController)
-        }
-    ) { innerPadding ->
-        Column (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(15.dp)
+    Column (
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(15.dp)
+    ) {
+        TextField(
+            value = matricula,
+            onValueChange = { matricula = it },
+            label = { Text(text = stringResource(id = R.string.Plate)) },
+            modifier = modifierForInputs
+        )
+        TextField(
+            value = marca,
+            onValueChange = { marca = it },
+            label = { Text(text = stringResource(id = R.string.Brand)) },
+            modifier = modifierForInputs
+        )
+        TextField(
+            value = modelo,
+            onValueChange = { modelo = it },
+            label = { Text(text = stringResource(id = R.string.Model)) },
+            modifier = modifierForInputs
+        )
+        ExposedDropdownMenuBox (
+            expanded = dropdownIsExtended,
+            onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
         ) {
             TextField(
-                value = matricula,
-                onValueChange = { matricula = it },
-                label = { Text(text = stringResource(id = R.string.Plate)) },
-                modifier = modifierForInputs
+                value = nombreCliente,
+                onValueChange = { nombreCliente = it },
+                label = { Text(stringResource(id = R.string.Client)) },
+                trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
+                readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+                    .padding(top = 15.dp)
             )
-            TextField(
-                value = marca,
-                onValueChange = { marca = it },
-                label = { Text(text = stringResource(id = R.string.Brand)) },
-                modifier = modifierForInputs
-            )
-            TextField(
-                value = modelo,
-                onValueChange = { modelo = it },
-                label = { Text(text = stringResource(id = R.string.Model)) },
-                modifier = modifierForInputs
-            )
-            ExposedDropdownMenuBox (
+            ExposedDropdownMenu(
                 expanded = dropdownIsExtended,
-                onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
+                onDismissRequest = { dropdownIsExtended = false }
             ) {
-                TextField(
-                    value = nombreCliente,
-                    onValueChange = { nombreCliente = it },
-                    label = { Text(stringResource(id = R.string.Client)) },
-                    trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
-                    readOnly = true,
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(top = 15.dp)
-                )
-                ExposedDropdownMenu(
-                    expanded = dropdownIsExtended,
-                    onDismissRequest = { dropdownIsExtended = false }
-                ) {
-                    for (cliente in listaClientes) {
-                        DropdownMenuItem(
-                            text = { Text(text = cliente.nombre) },
-                            onClick = { nombreCliente = cliente.nombre; dropdownIsExtended = false }
-                        )
-                    }
+                for (cliente in listaClientes) {
+                    DropdownMenuItem(
+                        text = { Text(text = cliente.nombre) },
+                        onClick = { nombreCliente = cliente.nombre; dropdownIsExtended = false }
+                    )
                 }
             }
-            Row (
-                horizontalArrangement = Arrangement.End,
-                modifier = modifierForInputs
-            ) {
-                OutlinedButton(onClick = {
-                    navController.popBackStack()
-                },) {
-                    Text(text = stringResource(id = R.string.Cancel))
-                }
-                Button(onClick = {
-                    viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
-                    sendNotification("vehicle")
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Save))
-                }
+        }
+        Row (
+            horizontalArrangement = Arrangement.End,
+            modifier = modifierForInputs
+        ) {
+            OutlinedButton(onClick = {
+                navController.popBackStack()
+            },) {
+                Text(text = stringResource(id = R.string.Cancel))
+            }
+            Button(onClick = {
+                viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
+                sendNotification("vehicle")
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Save))
             }
         }
     }

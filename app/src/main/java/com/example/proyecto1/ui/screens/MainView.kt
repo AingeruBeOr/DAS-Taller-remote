@@ -8,79 +8,70 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
+import com.example.proyecto1.ui.AppNavigation
 import com.example.proyecto1.ui.myComponents.BottomBar
-import com.example.proyecto1.ui.myComponents.ListClientes
-import com.example.proyecto1.ui.myComponents.ListServicios
-import com.example.proyecto1.ui.myComponents.ListVehículos
 import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
-fun MainView(modifier: Modifier = Modifier,
-             viewModel: ActivityViewModel,
-             tipoPantalla: String,
-             navController: NavController
+fun MainView(
+    viewModel: ActivityViewModel,
+    openDial: (Int) -> Unit,
+    mailTo: (String) -> Unit,
+    changeLocales: (String) -> Unit,
+    sendNotification: (String) -> Unit
 ) {
-    val tipo by remember {
-        mutableStateOf(tipoPantalla)
-    }
-
-    var selectedScreen by remember {
-        mutableIntStateOf(0)
-    }
+    // Defining NavController
+    val navController = rememberNavController()
+    // Subscribe (observer) to navBackStackEntry, required to get current route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    // Get the route (get only the text before the first '/')
+    val currentRoute = navBackStackEntry?.destination?.route?.split("/")?.get(0)
 
     // Componente layout para incluir barra superior, inferior y botón flotante
     Scaffold (
         // Barra superior
         topBar = {
-            when (tipo) {
-                "Servicios" -> TopBar(title = stringResource(id = R.string.ServicesTitle), showSettings = true, navController = navController)
-                "Vehículos" -> TopBar(title = stringResource(id = R.string.VehiclesTitle), showSettings = true, navController = navController)
-                "Clientes" -> TopBar(title = stringResource(id = R.string.ClientsTitle), showSettings = true, navController = navController)
-            }
+            TopBar(navController = navController)
         },
         // Barra inferior
         bottomBar = {
-            BottomBar(navController = navController)
+            if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
+                BottomBar(navController = navController)
+            }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                // Get the current route (current screen)
-                val currentRoute = navController.currentDestination?.route
-                Log.d("Routing", "Current route: $currentRoute")
+            if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
+                FloatingActionButton(onClick = {
+                    // Get the current route (current screen)
+                    Log.d("Routing", "Current route: $currentRoute")
 
-                // Change screen depending on currentRoute (current screen)
-                when (currentRoute) {
-                    "servicios" -> navController.navigate("newServicio")
-                    "vehiculos" -> navController.navigate("newVehiculo")
-                    "clientes" -> navController.navigate("newCliente")
+                    // Change screen depending on currentRoute (current screen)
+                    when (currentRoute) {
+                        "servicios" -> navController.navigate("newServicio")
+                        "vehiculos" -> navController.navigate("newVehiculo")
+                        "clientes" -> navController.navigate("newCliente")
+                    }
+                }) {
+                    Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
                 }
-            }) {
-                Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
             }
         }
     ) {
         // Contenido principal
         innerPadding  ->
-        if (tipo == "Servicios") {
-            selectedScreen = 0
-            ListServicios(innerPadding = innerPadding, viewModel = viewModel, navController = navController)
-        }
-        else if (tipo == "Vehículos") {
-            selectedScreen = 1
-            ListVehículos(innerPadding = innerPadding, viewModel = viewModel, navController = navController)
-        }
-        else if (tipo == "Clientes") {
-            selectedScreen = 2
-            ListClientes(innerPadding = innerPadding, viewModel = viewModel, navController = navController)
-        }
+        AppNavigation(
+            viewModel = viewModel,
+            openDial = openDial,
+            mailTo = mailTo,
+            changeLocales = changeLocales,
+            sendNotification = sendNotification,
+            navController = navController,
+            innerPadding = innerPadding
+        )
     }
 }

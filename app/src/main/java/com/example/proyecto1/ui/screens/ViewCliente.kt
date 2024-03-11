@@ -62,7 +62,8 @@ fun ViewCliente(
     viewModel: ActivityViewModel,
     nombreCliente: String?,
     openDial: (Int) -> Unit,
-    sendMail: (String) -> Unit
+    sendMail: (String) -> Unit,
+    innerPadding: PaddingValues
 ) {
     val state by remember {
         mutableStateOf(
@@ -90,27 +91,16 @@ fun ViewCliente(
         viewModel.getClientVehicles(it).collectAsState(initial = emptyList()).value
     }
 
-    Scaffold (
-        topBar = {
-            TopBar(
-                title = stringResource(id = R.string.Info_client),
-                showSettings = false,
-                showBackNavArrow = true,
-                navController = navController
-            )
-        }
-    ) { innerPadding ->
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            PortraitLayout(innerPadding = innerPadding, state = state)
-        }
-        else LandscapeLayout(innerPadding = innerPadding, state = state)
-        if (state.showDeleteAlertDialog.value) {
-            DeleteAlertDialog(
-                showDeleteAlertDialog = state.showDeleteAlertDialog,
-                deleteElement = viewModel::deleteVehiculo,
-                deletingElement = state.deletingVehiculo
-            )
-        }
+    if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitLayout(innerPadding = innerPadding, state = state)
+    }
+    else LandscapeLayout(innerPadding = innerPadding, state = state)
+    if (state.showDeleteAlertDialog.value) {
+        DeleteAlertDialog(
+            showDeleteAlertDialog = state.showDeleteAlertDialog,
+            deleteElement = viewModel::deleteVehiculo,
+            deletingElement = state.deletingVehiculo
+        )
     }
 }
 

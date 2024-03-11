@@ -2,6 +2,7 @@ package com.example.proyecto1.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -42,6 +43,7 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddServicio(
+    innerPadding: PaddingValues,
     navController: NavController,
     viewModel: ActivityViewModel,
     sendNotification: (String) -> Unit
@@ -74,96 +76,90 @@ fun AddServicio(
         .fillMaxWidth()
         .padding(top = 15.dp)
 
-    Scaffold (
-        topBar = {
-            TopBar(title = stringResource(id = R.string.TopBarAddService), showSettings = false, navController = navController)
-        }
-    ) { innerPadding ->
-        Column (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(15.dp)
+    Column (
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(15.dp)
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = fecha, modifier = Modifier
-                    .padding(10.dp))
-                Button(onClick = {
-                    showDateDialog = true
-                }) {
-                    Text(text = stringResource(id = R.string.Change_date))
-                }
+            Text(text = fecha, modifier = Modifier
+                .padding(10.dp))
+            Button(onClick = {
+                showDateDialog = true
+            }) {
+                Text(text = stringResource(id = R.string.Change_date))
             }
-            ExposedDropdownMenuBox (
-                expanded = dropdownIsExtended,
-                onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
-            ) {
-                TextField(
-                    value = matricula,
-                    onValueChange = { matricula = it },
-                    label = { Text(stringResource(id = R.string.Plate)) },
-                    trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
-                    readOnly = true,
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth()
-                        .padding(top = 15.dp)
-                )
-                ExposedDropdownMenu(
-                    expanded = dropdownIsExtended,
-                    onDismissRequest = { dropdownIsExtended = false }
-                ) {
-                    for (vehiculo in listaVehiculos) {
-                        DropdownMenuItem(
-                            text = { Text(text = vehiculo.matricula) },
-                            onClick = { matricula = vehiculo.matricula; dropdownIsExtended = false }
-                        )
-                    }
-                }
-            }
+        }
+        ExposedDropdownMenuBox (
+            expanded = dropdownIsExtended,
+            onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
+        ) {
             TextField(
-                value = descripcion,
-                onValueChange = { descripcion = it },
-                label = { Text(text = stringResource(id = R.string.Description)) },
-                modifier = modifierForInputs,
-                maxLines = 10
+                value = matricula,
+                onValueChange = { matricula = it },
+                label = { Text(stringResource(id = R.string.Plate)) },
+                trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
+                readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
+                    .padding(top = 15.dp)
             )
-            Row (
-                horizontalArrangement = Arrangement.End,
-                modifier = modifierForInputs
+            ExposedDropdownMenu(
+                expanded = dropdownIsExtended,
+                onDismissRequest = { dropdownIsExtended = false }
             ) {
-                OutlinedButton(onClick = { navController.popBackStack() }) {
-                    Text(text = stringResource(id = R.string.Cancel))
-                }
-                Button(onClick = {
-                    viewModel.addNewServicio(
-                        Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
+                for (vehiculo in listaVehiculos) {
+                    DropdownMenuItem(
+                        text = { Text(text = vehiculo.matricula) },
+                        onClick = { matricula = vehiculo.matricula; dropdownIsExtended = false }
                     )
-                    sendNotification("service")
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Save))
                 }
             }
-            if (showDateDialog) {
-                DatePickerDialog(
-                    onDismissRequest = { showDateDialog = false },
-                    confirmButton = {
-                        Button(onClick = {
-                            val millis = datePickerState.selectedDateMillis
-                            millis?.let {
-                                val formatter = SimpleDateFormat("dd/MM/yyyy")
-                                fecha = formatter.format(Date(millis))
-                            }
-                            showDateDialog = false
-                        }) {
-                            Text(text = stringResource(id = R.string.Confirm))
+        }
+        TextField(
+            value = descripcion,
+            onValueChange = { descripcion = it },
+            label = { Text(text = stringResource(id = R.string.Description)) },
+            modifier = modifierForInputs,
+            maxLines = 10
+        )
+        Row (
+            horizontalArrangement = Arrangement.End,
+            modifier = modifierForInputs
+        ) {
+            OutlinedButton(onClick = { navController.popBackStack() }) {
+                Text(text = stringResource(id = R.string.Cancel))
+            }
+            Button(onClick = {
+                viewModel.addNewServicio(
+                    Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
+                )
+                sendNotification("service")
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Save))
+            }
+        }
+        if (showDateDialog) {
+            DatePickerDialog(
+                onDismissRequest = { showDateDialog = false },
+                confirmButton = {
+                    Button(onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        millis?.let {
+                            val formatter = SimpleDateFormat("dd/MM/yyyy")
+                            fecha = formatter.format(Date(millis))
                         }
+                        showDateDialog = false
+                    }) {
+                        Text(text = stringResource(id = R.string.Confirm))
                     }
-                ) {
-                    DatePicker(state = datePickerState)
                 }
+            ) {
+                DatePicker(state = datePickerState)
             }
         }
     }

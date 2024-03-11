@@ -1,6 +1,9 @@
 package com.example.proyecto1.ui
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +13,9 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.ui.screens.AddCliente
 import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
+import com.example.proyecto1.ui.screens.ListClientes
+import com.example.proyecto1.ui.screens.ListServicios
+import com.example.proyecto1.ui.screens.ListVehículos
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
@@ -22,30 +28,54 @@ fun AppNavigation(
     openDial: (Int) -> Unit,
     mailTo: (String) -> Unit,
     changeLocales: (String) -> Unit,
-    sendNotification: (String) -> Unit
+    sendNotification: (String) -> Unit,
+    innerPadding: PaddingValues,
+    navController: NavHostController
 ) {
-    // Defining NavController
-    val navController = rememberNavController()
-
     // Defining NavHost. This is the navigation graph
     NavHost(navController = navController, startDestination = "servicios") {
         composable("servicios") {
-            MainView(viewModel = viewModel, tipoPantalla = "Servicios", navController = navController)
+            ListServicios(
+                navController = navController,
+                innerPadding = innerPadding,
+                viewModel = viewModel)
         }
         composable("vehiculos") {
-            MainView(viewModel = viewModel, tipoPantalla = "Vehículos", navController = navController)
+            ListVehículos(
+                innerPadding = innerPadding,
+                viewModel = viewModel,
+                navController = navController)
         }
         composable("clientes") {
-            MainView(viewModel = viewModel, tipoPantalla = "Clientes", navController = navController)
+            ListClientes(
+                innerPadding = innerPadding,
+                viewModel = viewModel,
+                navController = navController
+            )
         }
         composable("newServicio") {
-            AddServicio(navController, viewModel, sendNotification)
+            AddServicio(
+                navController = navController,
+                viewModel = viewModel,
+                sendNotification = sendNotification,
+                innerPadding = innerPadding
+            )
         }
         composable("newVehiculo") {
-            AddVehiculo(navController, viewModel, sendNotification)
+            AddVehiculo(
+                navController = navController,
+                viewModel = viewModel,
+                sendNotification = sendNotification,
+                innerPadding = innerPadding
+            )
         }
         composable("newCliente") {
-            AddCliente(navController, viewModel, sendNotification)
+            AddCliente(
+                navController = navController,
+                viewModel = viewModel,
+                sendNotification = sendNotification,
+                innerPadding = innerPadding
+            )
         }
         composable("preferencias") {
             Preferencias(navController = navController, changeLocale = changeLocales)
@@ -61,7 +91,8 @@ fun AppNavigation(
                 viewModel = viewModel,
                 nombreCliente = it.arguments?.getString("nombreCliente"),
                 openDial = openDial,
-                sendMail = mailTo
+                sendMail = mailTo,
+                innerPadding = innerPadding
             )
         }
         composable(
@@ -73,7 +104,8 @@ fun AppNavigation(
             ViewVehiculo(
                 navController = navController,
                 viewModel = viewModel,
-                matricula = it.arguments?.getString("matricula"))
+                matricula = it.arguments?.getString("matricula"),
+                innerPadding = innerPadding)
         }
         composable(
             "viewServicio/{fecha}",
@@ -82,9 +114,9 @@ fun AppNavigation(
             })
         ) {
             ViewService(
-                navController = navController,
                 viewModel = viewModel,
-                fecha = it.arguments?.getString("fecha")?.replace("-", "/")
+                fecha = it.arguments?.getString("fecha")?.replace("-", "/"),
+                innerPadding = innerPadding
             )
         }
     }

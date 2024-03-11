@@ -2,6 +2,7 @@ package com.example.proyecto1.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,6 +34,7 @@ import com.example.proyecto1.ui.myComponents.TopBar
 
 @Composable
 fun AddCliente(
+    innerPadding: PaddingValues,
     navController: NavController,
     viewModel: ActivityViewModel,
     sendNotification: (String) -> Unit
@@ -54,55 +56,49 @@ fun AddCliente(
         .fillMaxWidth()
         .padding(top = 15.dp)
 
-    Scaffold (
-        topBar = {
-            TopBar(title = stringResource(id = R.string.TopBarAddClient), showSettings = false, navController = navController)
-        }
-    ) { innerPadding ->
-        Column (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(all = 15.dp)
+    Column (
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(all = 15.dp)
+    ) {
+        TextField(
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text(text = stringResource(id = R.string.name)) },
+            leadingIcon = { Icon(Icons.Rounded.Person, contentDescription = "Nombre") },
+            modifier = modifierForInputs
+        )
+        TextField(
+            value = telefono,
+            onValueChange = { telefono = it },
+            label = { Text(text = stringResource(id = R.string.phone)) },
+            leadingIcon = { Icon(Icons.Rounded.Phone, contentDescription = "Teléfono") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            modifier = modifierForInputs
+        )
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(text = stringResource(id = R.string.email)) },
+            leadingIcon = { Icon(Icons.Rounded.Email, contentDescription = "Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            modifier = modifierForInputs
+        )
+        Row (
+            horizontalArrangement = Arrangement.End,
+            modifier = modifierForInputs
         ) {
-            TextField(
-                value = nombre,
-                onValueChange = { nombre = it },
-                label = { Text(text = stringResource(id = R.string.name)) },
-                leadingIcon = { Icon(Icons.Rounded.Person, contentDescription = "Nombre") },
-                modifier = modifierForInputs
-            )
-            TextField(
-                value = telefono,
-                onValueChange = { telefono = it },
-                label = { Text(text = stringResource(id = R.string.phone)) },
-                leadingIcon = { Icon(Icons.Rounded.Phone, contentDescription = "Teléfono") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                modifier = modifierForInputs
-            )
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(text = stringResource(id = R.string.email)) },
-                leadingIcon = { Icon(Icons.Rounded.Email, contentDescription = "Email") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = modifierForInputs
-            )
-            Row (
-                horizontalArrangement = Arrangement.End,
-                modifier = modifierForInputs
-            ) {
-                OutlinedButton(onClick = {
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Cancel))
-                }
-                Button(onClick = {
-                    viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
-                    sendNotification("client")
-                    navController.popBackStack()
-                }) {
-                    Text(text = stringResource(id = R.string.Save))
-                }
+            OutlinedButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Cancel))
+            }
+            Button(onClick = {
+                viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
+                sendNotification("client")
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.Save))
             }
         }
     }
