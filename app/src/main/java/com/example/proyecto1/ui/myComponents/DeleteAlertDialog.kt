@@ -25,7 +25,7 @@ fun <T> DeleteAlertDialog(
     deleteElement: (T) -> Unit
 ) {
     AlertDialog(
-        title = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
+        title = { Text(text = stringResource(id = R.string.Delete_dialog_title)) },
         text = { Text(text = stringResource(id = R.string.Delete_dialog_text)) },
         confirmButton = {
             Button(onClick = {
