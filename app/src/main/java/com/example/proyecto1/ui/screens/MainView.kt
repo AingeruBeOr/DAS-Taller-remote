@@ -49,7 +49,7 @@ fun MainView(modifier: Modifier = Modifier,
         },
         // Barra inferior
         bottomBar = {
-            BottomBar(navController = navController, selectedScreen = selectedScreen)
+            BottomBar(navController = navController)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
