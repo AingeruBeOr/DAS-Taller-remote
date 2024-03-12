@@ -1,23 +1,39 @@
 package com.example.proyecto1.domain
 
 import android.os.Build
+import android.os.Environment
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.repositories.ServicioRepository
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 import java.time.LocalDate
 import java.time.Month
 import javax.inject.Inject
 
+
 class DownloadMonthServices @Inject constructor(
     val servicioRepository: ServicioRepository
 ){
+
+    private fun List<Servicio>.toText() : String {
+        var returnString = ""
+        for (servicio in this) {
+            returnString += "%%% ${servicio.fecha} -- ${servicio.matricula} %%%\n" +
+                            "${servicio.descripcion}\n\n"
+        }
+        return returnString
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun downloadMonthServices() {
         val currentMonth = getCurrentMonth()
         val currentYear = getCurrentYear()
         val allServices = servicioRepository.getAllServiciosAsList()
         val monthServices = getMonthServices(currentMonth, currentYear, allServices)
-        
+        downloadToTxt(monthServices.toText(), currentMonth.value, currentYear)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,5 +62,26 @@ class DownloadMonthServices @Inject constructor(
             if (year == currentYear && month == currentMonth.value) monthServices.add(it)
         }
         return monthServices
+    }
+
+    private fun downloadToTxt(
+        text: String,
+        currentMonth: Int,
+        currentYear: Int
+    ) {
+        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val fileName = "$currentMonth-$currentYear.txt"
+
+        val file = File(dir.path, fileName)
+        if (file.exists()) file.delete()
+        try {
+            val buf = BufferedWriter(FileWriter(file, true))
+            buf.append(text)
+            buf.newLine()
+            buf.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        Log.d("Download", "File downloaded successfully in: ${dir.path}/$currentMonth-$currentYear.txt")
     }
 }
