@@ -29,14 +29,15 @@ import com.example.proyecto1.ui.myComponents.TopBar
 fun ViewService(
     viewModel: ActivityViewModel,
     fecha: String?,
+    matricula: String?,
     innerPadding: PaddingValues
 ) {
     var servicio by remember {
         mutableStateOf(Servicio("a", "a", "a"))
     }
 
-    if (fecha != null) {
-        servicio = viewModel.getServicioFromFecha(fecha)
+    if (fecha != null && matricula != null) {
+        servicio = viewModel.getServicioFromFecha(fecha, matricula)
     }
 
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {

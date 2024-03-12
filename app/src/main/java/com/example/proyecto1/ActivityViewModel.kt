@@ -114,9 +114,9 @@ class ActivityViewModel @Inject constructor(
         return vehiculoRepository.getVehicleServices(matricula)
     }
 
-    fun getServicioFromFecha(fecha: String) : Servicio {
+    fun getServicioFromFecha(fecha: String, matricula: String) : Servicio {
        viewModelScope.launch {
-           actualServicio = servicioRepository.getServicioFromFecha(fecha)
+           actualServicio = servicioRepository.getServicioFromFechaMatricula(fecha, matricula)
        }
        return actualServicio
     }

@@ -188,7 +188,7 @@ fun VehicleServices(
         if (serviciosDelVehiculo != null) {
             for (servicio in serviciosDelVehiculo) {
                 item {
-                   ServicioCard(
+                    ServiceCard(
                        servicio = servicio,
                        navController = navController,
                        deletingServicio = deletingServicio,

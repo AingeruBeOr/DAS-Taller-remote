@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 
 // DEFINING data classes AND ROOM DATABASE TABLES
 
-@Entity(tableName = "servicios")
+@Entity(tableName = "servicios", primaryKeys = ["fecha", "descripcion"])
 data class Servicio(
-    @PrimaryKey val fecha: String,
+    val fecha: String,
     val descripcion: String,
     val matricula: String,
 )

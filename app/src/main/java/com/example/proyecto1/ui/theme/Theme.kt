@@ -127,12 +127,7 @@ fun TallerTheme(
                 if (darkTheme) PurpleDarkColorScheme else PurpleLightColorScheme
             }
             "Blue" -> {
-                if (darkTheme) {
-                    BlueDarkColorScheme
-                }
-                else {
-                    BlueLightColorScheme
-                }
+                if (darkTheme) BlueDarkColorScheme else BlueLightColorScheme
             }
             "Green" -> {
                 if (darkTheme) GreenDarkColorScheme else GreenLightColorScheme

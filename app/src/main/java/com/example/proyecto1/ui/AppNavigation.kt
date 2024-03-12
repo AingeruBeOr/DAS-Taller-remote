@@ -110,14 +110,16 @@ fun AppNavigation(
                 innerPadding = innerPadding)
         }
         composable(
-            "viewServicio/{fecha}",
-            arguments = listOf(navArgument(name = "fecha") {
-                type = NavType.StringType
-            })
+            "viewServicio/{fecha}/{matricula}",
+            arguments = listOf(
+                navArgument(name = "fecha") {type = NavType.StringType},
+                navArgument(name = "matricula") {type = NavType.StringType}
+            )
         ) {
             ViewService(
                 viewModel = viewModel,
                 fecha = it.arguments?.getString("fecha")?.replace("-", "/"),
+                matricula = it.arguments?.getString("matricula"),
                 innerPadding = innerPadding
             )
         }

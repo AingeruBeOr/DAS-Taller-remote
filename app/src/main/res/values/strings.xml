@@ -25,12 +25,12 @@
     <string name="Engilsh_lang">Inglés</string>
     <string name="Info_client">Información del cliente</string>
     <string name="Call">Llamar</string>
-    <string name="Send_mail">Escribir correo</string>
+    <string name="Send_mail">Enivar</string>
     <string name="Delete_dialog_title">¿Estás seguro?</string>
     <string name="Delete_dialog_text">¿Estás seguro de que deseas eliminar el elemento seleccionado?</string>
     <string name="Info_service">Información del servicio</string>
     <string name="Date">Fecha</string>
-    <string name="Client_vehicles">Vehiculos del cliente</string>
+    <string name="Client_vehicles">Vehículos del cliente</string>
     <string name="Info_vehicle">Información del vehículo</string>
     <string name="Vehicle_services">Servicios del vehículo</string>
     <string name="Notification_channel_name">Archivo descargado</string>

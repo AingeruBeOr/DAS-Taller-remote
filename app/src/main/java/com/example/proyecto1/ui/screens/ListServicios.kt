@@ -104,7 +104,7 @@ fun ServicioCard(
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = {
                     val servicioParaEnviar = servicio.fecha.replace("/", "-")
-                    navController.navigate("viewServicio/$servicioParaEnviar")
+                    navController.navigate("viewServicio/$servicioParaEnviar/${servicio.matricula}")
                 }) {
                     Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                 }

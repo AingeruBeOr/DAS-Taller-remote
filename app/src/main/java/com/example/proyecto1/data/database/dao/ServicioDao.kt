@@ -16,8 +16,8 @@ interface ServicioDao {
     @Query("SELECT * FROM servicios")
     suspend fun getAllServiciosAsList(): List<Servicio>
 
-    @Query("SELECT * FROM servicios WHERE servicios.fecha = :fecha")
-    suspend fun getServicioFromFecha(fecha: String) : Servicio
+    @Query("SELECT * FROM servicios WHERE servicios.fecha = :fecha and servicios.matricula = :matricula")
+    suspend fun getServicioFromFechaMatricula(fecha: String, matricula: String) : Servicio
 
     /*@Query("SELECT * " +
             "FROM servicios " +

@@ -25,7 +25,7 @@
     <string name="Engilsh_lang">Ingelesa</string>
     <string name="Info_client">Bezeroaren informazioa</string>
     <string name="Call">Deitu</string>
-    <string name="Send_mail">Korreoa idatzi</string>
+    <string name="Send_mail">Bidali</string>
     <string name="Delete_dialog_title">Ziur zaude?</string>
     <string name="Delete_dialog_text">Ziur zaude hautatuko elementua ezabatu nahi duzula?</string>
     <string name="Info_service">Zerbitzuaren infromazioa</string>

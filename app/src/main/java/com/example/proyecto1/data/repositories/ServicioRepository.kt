@@ -12,7 +12,10 @@ class ServicioRepository @Inject constructor (
 
     suspend fun getAllServiciosAsList(): List<Servicio> = servicioDao.getAllServiciosAsList()
 
-    suspend fun getServicioFromFecha(fecha: String) : Servicio = servicioDao.getServicioFromFecha(fecha)
+    suspend fun getServicioFromFechaMatricula(
+        fecha: String,
+        matricula: String
+    ) : Servicio = servicioDao.getServicioFromFechaMatricula(fecha, matricula)
 
     suspend fun insertServicio(servicio: Servicio) {
         servicioDao.insertServicio(servicio)

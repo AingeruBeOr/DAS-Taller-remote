@@ -14,6 +14,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -143,7 +144,9 @@ fun LandscapeLayout(
                 text = stringResource(id = R.string.Client_vehicles),
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
             )
             VehiculosDelCliente(
                 vehiculosDelCliente = state.vehiculosDelCliente,
@@ -167,18 +170,19 @@ fun ClientInfo(
             modifier = Modifier.padding(all = 10.dp)
         ) {
             Icon(Icons.Rounded.Person, contentDescription = "Nombre")
-            Text(text = cliente.nombre)
+            Text(text = cliente.nombre, modifier = Modifier.padding(start = 10.dp))
         }
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(all = 10.dp)
         ) {
             Icon(Icons.Rounded.Phone, contentDescription = "Teléfono")
-            Text(text = cliente.telefono.toString())
+            Text(text = cliente.telefono.toString(), modifier = Modifier.padding(start = 10.dp))
             Button(onClick = {
                 openDial(cliente.telefono)
-            }) {
-                Text(text = stringResource(id = R.string.Call))
+            },
+                modifier = Modifier.padding(start = 10.dp)) {
+                Icon(painterResource(id = R.drawable.call_outcoming_icon), contentDescription = "Call")
             }
         }
         Row (
@@ -186,11 +190,11 @@ fun ClientInfo(
             modifier = Modifier.padding(all = 10.dp)
         )  {
             Icon(Icons.Rounded.Email, contentDescription = "Email")
-            Text(text = cliente.email)
+            Text(text = cliente.email, modifier = Modifier.padding(start = 10.dp))
             Button(onClick = {
                 sendMail(cliente.email)
-            }) {
-                Text(text = stringResource(id = R.string.Send_mail))
+            }, modifier = Modifier.padding(start = 10.dp)) {
+                Icon(Icons.Rounded.Send, contentDescription = "Send")
             }
         }
     }
