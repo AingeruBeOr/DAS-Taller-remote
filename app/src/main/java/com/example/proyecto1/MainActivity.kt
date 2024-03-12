@@ -25,7 +25,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import com.example.proyecto1.ui.screens.MainView
-import com.example.proyecto1.ui.theme.Proyecto1Theme
+import com.example.proyecto1.ui.theme.TallerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         requestPushNotifcations()
 
         setContent {
-            Proyecto1Theme {
+            TallerTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -200,7 +200,7 @@ fun ServiciosPreview() {
     viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
     viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
 
-    Proyecto1Theme {
+    TallerTheme {
         MainView(modifier, viewModel, "Servicios", navController = rememberNavController())
     }
 }
@@ -216,7 +216,7 @@ fun VehiculosPreview() {
     viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
     viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
 
-    Proyecto1Theme {
+    TallerTheme {
         MainView(modifier, viewModel, "Vehículos", navController = rememberNavController())
     }
 }
@@ -232,7 +232,7 @@ fun ClientesPreview() {
     viewModel.addNewCliente(Cliente(email = "pedro@upv.ehu", nombre = "Pedro", telefono = 123456789))
     viewModel.addNewCliente(Cliente(email = "antton@upv.ehu", nombre = "Antton", telefono = 123456789))
 
-    Proyecto1Theme {
+    TallerTheme {
         MainView(modifier, viewModel, "Clientes", navController = rememberNavController())
     }
 }*/
