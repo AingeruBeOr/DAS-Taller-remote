@@ -34,7 +34,7 @@ fun ListServicios(
     navController: NavController,
     modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
-    viewModel: ActivityViewModel,
+    viewModel: ActivityViewModel
 ) {
     var showDeleteAlertDialog = remember {
         mutableStateOf(false)

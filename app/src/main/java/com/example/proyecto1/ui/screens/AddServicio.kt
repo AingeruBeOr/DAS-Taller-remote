@@ -45,8 +45,7 @@ import java.util.Date
 fun AddServicio(
     innerPadding: PaddingValues,
     navController: NavController,
-    viewModel: ActivityViewModel,
-    sendNotification: (String) -> Unit
+    viewModel: ActivityViewModel
 ) {
     // Input values
     var descripcion by remember {
@@ -137,7 +136,6 @@ fun AddServicio(
                 viewModel.addNewServicio(
                     Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
                 )
-                sendNotification("service")
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))

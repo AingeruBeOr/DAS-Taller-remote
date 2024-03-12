@@ -38,7 +38,7 @@ fun MainView(
     openDial: (Int) -> Unit,
     mailTo: (String) -> Unit,
     changeLocales: (String) -> Unit,
-    sendNotification: (String) -> Unit
+    sendNotification: () -> Unit
 ) {
     // Defining NavController
     val navController = rememberNavController()
@@ -72,6 +72,7 @@ fun MainView(
                                 corutineScope.launch {
                                     viewModel.downloadMonthServices()
                                 }
+                                sendNotification()
                             },
                             modifier = Modifier.padding(bottom = 5.dp)
                         ) {
@@ -102,7 +103,6 @@ fun MainView(
             openDial = openDial,
             mailTo = mailTo,
             changeLocales = changeLocales,
-            sendNotification = sendNotification,
             navController = navController,
             innerPadding = innerPadding
         )

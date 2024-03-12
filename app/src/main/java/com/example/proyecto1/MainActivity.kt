@@ -17,18 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.LocaleListCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.proyecto1.ui.AppNavigation
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.theme.Proyecto1Theme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
@@ -47,9 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: ActivityViewModel by viewModels()
 
     private val NOTIFICATION_CHANNEL_ID = "1"
-    private val CLIENT_ADDED_NOTIFICATION_ID = 1
-    private val VEHICLE_ADDED_NOTIFICATION_ID = 2
-    private val SERVICE_ADDED_NOTIFICATION_ID = 3
+    private val NOTIFICATION_ID = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     MainView(
                         viewModel = viewModel,
-                        sendNotification = ::sendAddedNotification,
+                        sendNotification = ::sendDownloadNotification,
                         openDial = ::openDial,
                         changeLocales = ::changeLocales,
                         mailTo = ::mailTo
@@ -123,29 +116,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun sendAddedNotification(type: String) {
-        var textContent = ""
-        var NOTIFICATION_ID = 0
-
-        when (type) {
-            "client" -> {
-                textContent = getString(R.string.Notification_added_client)
-                NOTIFICATION_ID = CLIENT_ADDED_NOTIFICATION_ID
-            }
-            "vehicle" -> {
-                textContent = getString(R.string.Notification_added_vehicle)
-                NOTIFICATION_ID = VEHICLE_ADDED_NOTIFICATION_ID
-            }
-            "service" -> {
-                textContent = getString(R.string.Notification_added_service)
-                NOTIFICATION_ID = SERVICE_ADDED_NOTIFICATION_ID
-            }
-        }
-
+    fun sendDownloadNotification() {
         var builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.round_car_repair_24)
             .setContentTitle(getString(R.string.Notification_title))
-            .setContentText(textContent)
+            .setContentText(getString(R.string.Notification_content))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         with(NotificationManagerCompat.from(this)){

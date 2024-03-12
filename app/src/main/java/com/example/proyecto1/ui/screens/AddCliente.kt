@@ -37,7 +37,6 @@ fun AddCliente(
     innerPadding: PaddingValues,
     navController: NavController,
     viewModel: ActivityViewModel,
-    sendNotification: (String) -> Unit
 ) {
     // Input values
     var nombre by remember {
@@ -95,7 +94,6 @@ fun AddCliente(
             }
             Button(onClick = {
                 viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
-                sendNotification("client")
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))

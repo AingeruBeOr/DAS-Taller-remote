@@ -28,7 +28,6 @@ fun AppNavigation(
     openDial: (Int) -> Unit,
     mailTo: (String) -> Unit,
     changeLocales: (String) -> Unit,
-    sendNotification: (String) -> Unit,
     innerPadding: PaddingValues,
     navController: NavHostController
 ) {
@@ -57,7 +56,6 @@ fun AppNavigation(
             AddServicio(
                 navController = navController,
                 viewModel = viewModel,
-                sendNotification = sendNotification,
                 innerPadding = innerPadding
             )
         }
@@ -65,7 +63,6 @@ fun AppNavigation(
             AddVehiculo(
                 navController = navController,
                 viewModel = viewModel,
-                sendNotification = sendNotification,
                 innerPadding = innerPadding
             )
         }
@@ -73,7 +70,6 @@ fun AppNavigation(
             AddCliente(
                 navController = navController,
                 viewModel = viewModel,
-                sendNotification = sendNotification,
                 innerPadding = innerPadding
             )
         }

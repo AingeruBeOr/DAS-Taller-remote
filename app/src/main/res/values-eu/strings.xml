@@ -35,8 +35,6 @@
     <string name="Vehicle_services">Ibilgailuaren zerbitzuak</string>
     <string name="Notification_channel_name">Elementua sartuta</string>
     <string name="Notification_channel_description">Kanal honek elementu berri bat sartzean agertzen diren jakinarazpenak kudeatzen ditu.</string>
-    <string name="Notification_added_client">Bezero berria gehitu da</string>
-    <string name="Notification_added_vehicle">Ibilgailu berria gehitu da</string>
-    <string name="Notification_added_service">Zerbitzu berria gehitu da</string>
-    <string name="Notification_title">Elementu berria gehitu da</string>
+    <string name="Notification_content">Fitxategia ondo gorde da Deskargetan</string>
+    <string name="Notification_title">Fitxategia deskargatuta</string>
 </resources>

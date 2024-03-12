@@ -40,8 +40,7 @@ import com.example.proyecto1.ui.myComponents.TopBar
 fun AddVehiculo(
     innerPadding: PaddingValues,
     navController: NavController,
-    viewModel: ActivityViewModel,
-    sendNotification: (String) -> Unit
+    viewModel: ActivityViewModel
 ) {
     // Input values
     var matricula by remember {
@@ -132,7 +131,6 @@ fun AddVehiculo(
             }
             Button(onClick = {
                 viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente))
-                sendNotification("vehicle")
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))
