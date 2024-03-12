@@ -10,6 +10,8 @@ class ServicioRepository @Inject constructor (
 ) {
     fun getAllServicios(): Flow<List<Servicio>> = servicioDao.getAllServicios()
 
+    suspend fun getAllServiciosAsList(): List<Servicio> = servicioDao.getAllServiciosAsList()
+
     suspend fun getServicioFromFecha(fecha: String) : Servicio = servicioDao.getServicioFromFecha(fecha)
 
     suspend fun insertServicio(servicio: Servicio) {

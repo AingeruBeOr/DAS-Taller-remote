@@ -1,6 +1,8 @@
 package com.example.proyecto1
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -10,6 +12,7 @@ import com.example.proyecto1.data.repositories.ClienteRepository
 import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
+import com.example.proyecto1.domain.DownloadMonthServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -38,7 +41,8 @@ class ActivityViewModel @Inject constructor(
     val clienteRepository: ClienteRepository,
     val servicioRepository: ServicioRepository,
     val vehiculoRepository: VehiculoRepository,
-    val preferencesRepository: PreferencesRepository
+    val preferencesRepository: PreferencesRepository,
+    val downloadMonthServices: DownloadMonthServices
 ) : ViewModel() {
     val servicios = servicioRepository.getAllServicios()
     val vehiculos = vehiculoRepository.getAllVehiculos()
@@ -115,5 +119,10 @@ class ActivityViewModel @Inject constructor(
            actualServicio = servicioRepository.getServicioFromFecha(fecha)
        }
        return actualServicio
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun downloadMonthServices() {
+        downloadMonthServices.downloadMonthServices()
     }
 }

@@ -1,6 +1,8 @@
 package com.example.proyecto1.ui.screens
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,7 +27,11 @@ import com.example.proyecto1.R
 import com.example.proyecto1.ui.AppNavigation
 import com.example.proyecto1.ui.myComponents.BottomBar
 import com.example.proyecto1.ui.myComponents.TopBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainView(
     viewModel: ActivityViewModel,
@@ -39,6 +46,8 @@ fun MainView(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     // Get the route (get only the text before the first '/')
     val currentRoute = navBackStackEntry?.destination?.route?.split("/")?.get(0)
+
+    val corutineScope = rememberCoroutineScope()
 
     // Componente layout para incluir barra superior, inferior y botón flotante
     Scaffold (
@@ -60,7 +69,9 @@ fun MainView(
                     if (currentRoute == "servicios") {
                         SmallFloatingActionButton(
                             onClick = {
-                                // TODO
+                                corutineScope.launch {
+                                    viewModel.downloadMonthServices()
+                                }
                             },
                             modifier = Modifier.padding(bottom = 5.dp)
                         ) {
