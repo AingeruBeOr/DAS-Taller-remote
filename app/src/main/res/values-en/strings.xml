@@ -33,8 +33,8 @@
     <string name="Client_vehicles">Client vehicles</string>
     <string name="Info_vehicle">Vehicle information</string>
     <string name="Vehicle_services">Vehicle services</string>
-    <string name="Notification_channel_name">Added element</string>
-    <string name="Notification_channel_description">This channel manages the notifications shown when a new element is added.</string>
+    <string name="Notification_channel_name">File downloaded</string>
+    <string name="Notification_channel_description">This channel manages the notifications sended when a file is downloaded.</string>
     <string name="Notification_content">The file has been successfully downloaded in Downloads</string>
     <string name="Notification_title">File downloaded</string>
 </resources>
