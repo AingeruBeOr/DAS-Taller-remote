@@ -128,11 +128,9 @@ fun TallerTheme(
             }
             "Blue" -> {
                 if (darkTheme) {
-                    Log.d("Theme", "Select color scheme is BlueDarkColorScheme")
                     BlueDarkColorScheme
                 }
                 else {
-                    Log.d("Theme", "Select color scheme is BlueLightColorScheme")
                     BlueLightColorScheme
                 }
             }
@@ -143,8 +141,6 @@ fun TallerTheme(
                 if (darkTheme) PurpleDarkColorScheme else PurpleLightColorScheme
             }
         }
-    Log.d("Theme", "Select primary color is $selectedPrimaryColor")
-    Log.d("Theme", "Select color schme is $colorScheme")
 
     MaterialTheme(
         colorScheme = colorScheme,

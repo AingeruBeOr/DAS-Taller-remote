@@ -37,4 +37,8 @@
     <string name="Notification_channel_description">Kanal honek fitxategi bat deskargatzean bidaltzen den notifikazioak kudeatzen ditu.</string>
     <string name="Notification_content">Fitxategia ondo gorde da Deskargetan</string>
     <string name="Notification_title">Fitxategia deskargatuta</string>
+    <string name="Choose_theme">Aukeratu gaiaren kolore nagusia:</string>
+    <string name="Blue">Urdina</string>
+    <string name="Green">Berdea</string>
+    <string name="Purple">Morea</string>
 </resources>

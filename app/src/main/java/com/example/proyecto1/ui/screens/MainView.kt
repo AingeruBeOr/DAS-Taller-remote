@@ -38,7 +38,8 @@ fun MainView(
     openDial: (Int) -> Unit,
     mailTo: (String) -> Unit,
     changeLocales: (String) -> Unit,
-    sendNotification: () -> Unit
+    sendNotification: () -> Unit,
+    changeColor: (String) -> Unit
 ) {
     // Defining NavController
     val navController = rememberNavController()
@@ -104,7 +105,8 @@ fun MainView(
             mailTo = mailTo,
             changeLocales = changeLocales,
             navController = navController,
-            innerPadding = innerPadding
+            innerPadding = innerPadding,
+            changeColor = changeColor
         )
     }
 }

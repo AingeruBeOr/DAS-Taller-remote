@@ -51,7 +51,7 @@ class ActivityViewModel @Inject constructor(
     private var actualCiente = Cliente("a", 1, "a")
     private var actualVehiculo = Vehiculo(matricula = "a", "a", "a", "a")
     private var actualServicio = Servicio("a", "a", "a")
-    private var currentLanguage = "es"
+    var currentTheme = preferencesRepository.getUserTheme()
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -124,5 +124,11 @@ class ActivityViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun downloadMonthServices() {
         downloadMonthServices.downloadMonthServices()
+    }
+
+    fun changeColor(theme: String) {
+        viewModelScope.launch {
+            preferencesRepository.saveUserTheme(theme)
+        }
     }
 }

@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import java.util.Locale
 import javax.inject.Inject
@@ -20,27 +22,20 @@ import javax.inject.Inject
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class PreferencesRepository @Inject constructor(
-    val context: Context
+    private val context: Context
 ) {
     // Defining keys from DataStore
-    val LANGUAGE = stringPreferencesKey("lang")
+    private val THEME = stringPreferencesKey("theme")
 
-    val actualLanguage: String
-        get() = runBlocking {
-            Log.d("Language", "PreferencesRepository getSavedLanguage(): ${context.dataStore.data.first()[LANGUAGE]}" ?: "no hay")
-            return@runBlocking context.dataStore.data.first()[LANGUAGE] ?: Locale.getDefault().language
+    fun getUserTheme(): Flow<String> {
+        return context.dataStore.data.map { preferences ->
+            preferences[THEME] ?: "Blue"
         }
+    }
 
-
-    // --- LANGUAGE PREFERENCES ---
-    // Get saved language. If not exits, returns the device default
-    /*suspend fun getSavedLanguage(): String {
-    }*/
-
-    suspend fun saveLanguage(language: String) {
-        Log.d("Language", "PreferencesRepository saveLanguage(): Setting language to $language")
+    suspend fun saveUserTheme(theme: String) {
         context.dataStore.edit { preferences ->
-            preferences[LANGUAGE] = language
+            preferences[THEME] = theme
         }
     }
 }

@@ -37,4 +37,8 @@
     <string name="Notification_channel_description">Este canal administra las notificaciones que se mandan cuando un archivo se descarga.</string>
     <string name="Notification_content">El archivo se ha descargado correctamente en Descargas</string>
     <string name="Notification_title">Archivo descargado</string>
+    <string name="Choose_theme">Elige el color principal del tema:</string>
+    <string name="Blue">Azul</string>
+    <string name="Green">Verde</string>
+    <string name="Purple">Morado</string>
 </resources>

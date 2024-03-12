@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -75,8 +77,12 @@ class MainActivity : AppCompatActivity() {
 
         requestPushNotifcations()
 
+
         setContent {
-            TallerTheme {
+            val storedTheme by viewModel.currentTheme.collectAsState(initial = "Blue")
+            TallerTheme (
+                selectedPrimaryColor = storedTheme
+            ) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -87,7 +93,8 @@ class MainActivity : AppCompatActivity() {
                         sendNotification = ::sendDownloadNotification,
                         openDial = ::openDial,
                         changeLocales = ::changeLocales,
-                        mailTo = ::mailTo
+                        mailTo = ::mailTo,
+                        changeColor = ::changeTheme
                     )
                 }
             }
@@ -118,6 +125,11 @@ class MainActivity : AppCompatActivity() {
         // The Locale is saved into App Settings so when the app is started again, the Locale
         // is taken from App Settings
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
+    }
+
+    fun changeTheme(theme: String) {
+        viewModel.changeColor(theme)
+        recreate()
     }
 
     // --- NOTIFICATIONS ---

@@ -32,9 +32,10 @@ import com.example.proyecto1.ui.myComponents.TopBar
 fun Preferencias(
     navController: NavController,
     changeLocale: (String) -> Unit,
+    changeTheme: (String) -> Unit,
     innerPadding: PaddingValues
 ) {
-    //Input values
+    // Input values
     val idiomasPosibles = listOf(
         stringResource(id = R.string.Basque_lang),
         stringResource(id = R.string.Spanish_lang),
@@ -42,6 +43,14 @@ fun Preferencias(
     )
     var idiomaSeleccionado by remember {
         mutableStateOf(idiomasPosibles[0])
+    }
+    val coloresPosibles = listOf(
+        stringResource(id = R.string.Purple),
+        stringResource(id = R.string.Blue),
+        stringResource(id = R.string.Green)
+    )
+    var colorSeleccionado by remember {
+        mutableStateOf(coloresPosibles[0])
     }
 
     Column (
@@ -62,6 +71,19 @@ fun Preferencias(
                 )
             }
         }
+        Text(stringResource(id = R.string.Choose_theme))
+        for (color in coloresPosibles) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                RadioButton(
+                    selected = (color == colorSeleccionado),
+                    onClick = { colorSeleccionado = color }
+                )
+                Text(
+                    text = color,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
         Row (
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth()
@@ -76,6 +98,11 @@ fun Preferencias(
                     idiomasPosibles[0] -> changeLocale("eu")
                     idiomasPosibles[1] -> changeLocale("es")
                     idiomasPosibles[2] -> changeLocale("en")
+                }
+                when (colorSeleccionado) {
+                    coloresPosibles[0] -> changeTheme("Purple")
+                    coloresPosibles[1] -> changeTheme("Blue")
+                    coloresPosibles[2] -> changeTheme("Green")
                 }
                 navController.popBackStack()
             }) {

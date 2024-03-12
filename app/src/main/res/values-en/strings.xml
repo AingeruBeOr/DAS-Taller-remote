@@ -37,4 +37,8 @@
     <string name="Notification_channel_description">This channel manages the notifications sended when a file is downloaded.</string>
     <string name="Notification_content">The file has been successfully downloaded in Downloads</string>
     <string name="Notification_title">File downloaded</string>
+    <string name="Choose_theme">Choose the main color of the theme:</string>
+    <string name="Blue">Blue</string>
+    <string name="Green">Green</string>
+    <string name="Purple">Purple</string>
 </resources>

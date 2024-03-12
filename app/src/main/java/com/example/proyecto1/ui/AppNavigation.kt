@@ -29,7 +29,8 @@ fun AppNavigation(
     mailTo: (String) -> Unit,
     changeLocales: (String) -> Unit,
     innerPadding: PaddingValues,
-    navController: NavHostController
+    navController: NavHostController,
+    changeColor: (String) -> Unit
 ) {
     // Defining NavHost. This is the navigation graph
     NavHost(navController = navController, startDestination = "servicios") {
@@ -77,7 +78,8 @@ fun AppNavigation(
             Preferencias(
                 navController = navController,
                 changeLocale = changeLocales,
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                changeTheme = changeColor
             )
         }
         composable(
