@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Proyecto1</string>
     <string name="TopBarAddClient">Add new client</string>
     <string name="TopBarAddService">Add new service</string>
     <string name="TopBarAddVehicle">Add new vehicle</string>

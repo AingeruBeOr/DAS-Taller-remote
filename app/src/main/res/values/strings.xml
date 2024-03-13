@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proyecto1</string>
+    <string name="app_name" translatable="false">DASTaller</string>
     <string name="TopBarAddClient">Añadir nuevo cliente</string>
     <string name="TopBarAddService">Añadir nuevo servicio</string>
     <string name="TopBarAddVehicle">Añadir nuevo vehículo</string>
