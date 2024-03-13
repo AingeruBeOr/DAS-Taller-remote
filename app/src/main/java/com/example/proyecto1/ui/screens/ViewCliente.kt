@@ -85,9 +85,6 @@ fun ViewCliente(
         state.cliente = viewModel.getUserDataFromName(nombreCliente)
         state.vehiculosDelCliente = viewModel.getClientVehicles(nombreCliente).collectAsState(initial = emptyList()).value
     }
-
-    Log.d("Vehiculos", "Número de vehículos: ${state.vehiculosDelCliente?.size}")
-
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitLayout(innerPadding = innerPadding, state = state)
     }

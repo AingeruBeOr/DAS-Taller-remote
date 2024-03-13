@@ -33,6 +33,7 @@ object AppModule {
     @Provides
     fun provideDatabase(@ApplicationContext applicationContext: Context) =
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "taller-db")
+            .fallbackToDestructiveMigration() // re-create the database instead of crashing.
             .createFromAsset("database/taller-db.db") // used to prepopulate (default data in database)
             .build()
 
