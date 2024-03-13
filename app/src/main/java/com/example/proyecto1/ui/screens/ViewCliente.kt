@@ -1,6 +1,7 @@
 package com.example.proyecto1.ui.screens
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -82,11 +83,10 @@ fun ViewCliente(
 
     if (nombreCliente != null) {
         state.cliente = viewModel.getUserDataFromName(nombreCliente)
+        state.vehiculosDelCliente = viewModel.getClientVehicles(nombreCliente).collectAsState(initial = emptyList()).value
     }
 
-    state.vehiculosDelCliente = nombreCliente?.let {
-        viewModel.getClientVehicles(it).collectAsState(initial = emptyList()).value
-    }
+    Log.d("Vehiculos", "Número de vehículos: ${state.vehiculosDelCliente?.size}")
 
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitLayout(innerPadding = innerPadding, state = state)
