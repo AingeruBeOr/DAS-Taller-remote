@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,15 +49,14 @@ fun AddServicio(
     viewModel: ActivityViewModel
 ) {
     // Input values
-    var descripcion by remember {
+    // Van a ser rememberSaveable para que al girar la pantalla no se borren del formualario
+    var descripcion by rememberSaveable {
         mutableStateOf("")
     }
-
-    var fecha by remember {
+    var fecha by rememberSaveable {
         mutableStateOf("11/11/2011")
     }
-
-    var matricula by remember {
+    var matricula by rememberSaveable {
         mutableStateOf("")
     }
 
