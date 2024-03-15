@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
 
         requestPushNotifcations()
-
+        requestWriteInStoragePermission()
 
         setContent {
             val storedTheme by viewModel.currentTheme.collectAsState(initial = "Blue")
@@ -196,6 +196,13 @@ class MainActivity : AppCompatActivity() {
                 requestPermissionLauncher.launch(
                     Manifest.permission.POST_NOTIFICATIONS)
             }
+        }
+    }
+
+    fun requestWriteInStoragePermission() {
+        val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
     }
 }

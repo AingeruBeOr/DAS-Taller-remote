@@ -1,5 +1,6 @@
 package com.example.proyecto1.domain
 
+import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -9,6 +10,7 @@ import com.example.proyecto1.data.repositories.ServicioRepository
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.io.OutputStreamWriter
 import java.time.LocalDate
 import java.time.Month
 import javax.inject.Inject
