@@ -33,6 +33,10 @@ class PreferencesRepository @Inject constructor(
         }
     }
 
+    suspend fun getUserThemeSnapshot(): String {
+        return context.dataStore.data.first()[THEME] ?: "Blue"
+    }
+
     suspend fun saveUserTheme(theme: String) {
         context.dataStore.edit { preferences ->
             preferences[THEME] = theme

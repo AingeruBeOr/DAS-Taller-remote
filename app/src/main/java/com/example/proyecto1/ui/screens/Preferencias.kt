@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,22 +25,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.ui.myComponents.TopBar
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.concurrent.Flow
 
 @Composable
 fun Preferencias(
     navController: NavController,
     changeLocale: (String) -> Unit,
     changeTheme: (String) -> Unit,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    viewModel: ActivityViewModel
 ) {
+    val currentLocale = LocalContext.current.resources.configuration.locales[0]
+    //val currentColor2 = viewModel.currentTheme.collectAsStateWithLifecycle(initialValue = "Blue")
+    val currentColor = viewModel.getThemeSnapshot()
     // Input values
     // Van a ser rememberSaveable para que al girar la pantalla no se borren del formualario
     val idiomasPosibles = listOf(
@@ -48,7 +58,12 @@ fun Preferencias(
         stringResource(id = R.string.Engilsh_lang)
     )
     var idiomaSeleccionado = rememberSaveable {
-        mutableStateOf(idiomasPosibles[0])
+        when (currentLocale.toString()) {
+            "es" -> mutableStateOf(idiomasPosibles[1])
+            "eu" -> mutableStateOf(idiomasPosibles[0])
+            "en" -> mutableStateOf(idiomasPosibles[2])
+            else -> mutableStateOf(idiomasPosibles[1])
+        }
     }
     val coloresPosibles = listOf(
         stringResource(id = R.string.Purple),
@@ -56,7 +71,13 @@ fun Preferencias(
         stringResource(id = R.string.Green)
     )
     var colorSeleccionado = rememberSaveable {
-        mutableStateOf(coloresPosibles[0])
+        Log.d("Color", currentColor)
+        when (currentColor) {
+            "Blue" -> mutableStateOf(coloresPosibles[1])
+            "Purple" -> mutableStateOf(coloresPosibles[0])
+            "Green" -> mutableStateOf(coloresPosibles[2])
+            else -> mutableStateOf(coloresPosibles[1])
+        }
     }
 
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {

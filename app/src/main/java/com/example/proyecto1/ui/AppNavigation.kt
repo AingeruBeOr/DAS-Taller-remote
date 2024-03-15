@@ -1,7 +1,10 @@
 package com.example.proyecto1.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -79,7 +82,8 @@ fun AppNavigation(
                 navController = navController,
                 changeLocale = changeLocales,
                 innerPadding = innerPadding,
-                changeTheme = changeColor
+                changeTheme = changeColor,
+                viewModel = viewModel
             )
         }
         composable(

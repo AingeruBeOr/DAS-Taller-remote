@@ -52,6 +52,7 @@ class ActivityViewModel @Inject constructor(
     private var actualVehiculo = Vehiculo(matricula = "a", "a", "a", "a")
     private var actualServicio = Servicio("a", "a", "a")
     var currentTheme = preferencesRepository.getUserTheme()
+    var currentThemeSnapshot = "Blue"
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -130,5 +131,12 @@ class ActivityViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesRepository.saveUserTheme(theme)
         }
+    }
+
+    fun getThemeSnapshot(): String {
+        viewModelScope.launch {
+            currentThemeSnapshot = preferencesRepository.getUserThemeSnapshot()
+        }
+        return currentThemeSnapshot
     }
 }
