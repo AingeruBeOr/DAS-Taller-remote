@@ -40,4 +40,5 @@
     <string name="Blue">Blue</string>
     <string name="Green">Green</string>
     <string name="Purple">Purple</string>
+    <string name="Phone_too_long">The phone number is to long</string>
 </resources>

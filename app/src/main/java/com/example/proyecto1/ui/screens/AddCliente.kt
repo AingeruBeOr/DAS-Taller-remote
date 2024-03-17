@@ -1,5 +1,6 @@
 package com.example.proyecto1.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,10 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
@@ -60,6 +63,8 @@ fun AddCliente(
     val modifierForInputs = Modifier
         .fillMaxWidth()
         .padding(top = 15.dp)
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -103,8 +108,16 @@ fun AddCliente(
                 Text(text = stringResource(id = R.string.Cancel))
             }
             Button(onClick = {
-                viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
-                navController.popBackStack()
+                try {
+                    viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
+                    navController.popBackStack()
+                }
+                catch (e: NumberFormatException) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.Phone_too_long),
+                        Toast.LENGTH_SHORT).show()
+                }
             }) {
                 Text(text = stringResource(id = R.string.Save))
             }
