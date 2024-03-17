@@ -29,6 +29,10 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 
+
+/**
+ * Elemento Composable que muestra todos los clientes del taller.
+ */
 @Composable
 fun ListClientes(
     modifier: Modifier = Modifier,
@@ -46,6 +50,7 @@ fun ListClientes(
 
     var listaClientes = viewModel.clientes.collectAsState(initial = emptyList())
 
+    // Lista con todos los clientes
     LazyColumn(modifier = modifier.padding(innerPadding)){
         for (cliente in listaClientes.value) {
             item {
@@ -73,6 +78,10 @@ fun ListClientes(
     }
 }
 
+/**
+ * Elemento Composable tipo ElevatedCard que muetra la información del cliente con un botón de ver
+ * más información sobre el cliente y otro para borrar el cliente.
+ */
 @Composable
 fun ClientCard(
     cliente: Cliente,

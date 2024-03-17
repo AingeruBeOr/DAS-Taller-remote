@@ -14,7 +14,6 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -37,9 +36,11 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
-import com.example.proyecto1.ui.myComponents.TopBar
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 
+/**
+ * Elemento Composable que muestra la información de un vehículos con sus respectivos servicios
+ */
 @Composable
 fun ViewVehiculo(
     navController: NavController,
@@ -69,6 +70,7 @@ fun ViewVehiculo(
         mutableStateOf(false)
     }
 
+    // Si el dispositivo está en vertical
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitLayout(
             innerPadding = innerPadding,
@@ -79,6 +81,7 @@ fun ViewVehiculo(
             deletingServicio = deletingServicio
         )
     }
+    // Si el dispositivo está en horizontal
     else {
         LandscapeLayout(
             innerPadding = innerPadding,
@@ -98,6 +101,9 @@ fun ViewVehiculo(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositvo está en vertical
+ */
 @Composable
 fun PortraitLayout(
     innerPadding: PaddingValues,
@@ -128,6 +134,9 @@ fun PortraitLayout(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositivo está en modo horizontal
+ */
 @Composable
 fun LandscapeLayout(
     innerPadding: PaddingValues,
@@ -162,6 +171,9 @@ fun LandscapeLayout(
     }
 }
 
+/**
+ * Elemento Composable que muestra la información del vehículo
+ */
 @Composable
 fun VehicleInfo(
     vehiculo: Vehiculo,
@@ -177,6 +189,9 @@ fun VehicleInfo(
     }
 }
 
+/**
+ * Elemento Composable que muestra los servicios del vehículo
+ */
 @Composable
 fun VehicleServices(
     serviciosDelVehiculo: List<Servicio>?,

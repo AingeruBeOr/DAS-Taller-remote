@@ -26,13 +26,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.ui.myComponents.TopBar
 
+/**
+ * Este Composable define el contenido de la pantalla de añadir un cliente; es decir, un formulario
+ * y un par de botones.
+ */
 @Composable
 fun AddCliente(
     innerPadding: PaddingValues,
@@ -55,11 +61,12 @@ fun AddCliente(
         .fillMaxWidth()
         .padding(top = 15.dp)
 
-    Column (
+    Column(
         modifier = Modifier
             .padding(innerPadding)
             .padding(all = 15.dp)
     ) {
+        // Campo de texto para añadir el nombre
         TextField(
             value = nombre,
             onValueChange = { nombre = it },
@@ -67,6 +74,7 @@ fun AddCliente(
             leadingIcon = { Icon(Icons.Rounded.Person, contentDescription = "Nombre") },
             modifier = modifierForInputs
         )
+        // Campo de texto para añadir el teléfono
         TextField(
             value = telefono,
             onValueChange = { telefono = it },
@@ -75,6 +83,7 @@ fun AddCliente(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             modifier = modifierForInputs
         )
+        // Campo de texto para añadir el email
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -83,7 +92,8 @@ fun AddCliente(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = modifierForInputs
         )
-        Row (
+        // Linea para añadir los botones de "Cancelar" y "Guardar"
+        Row(
             horizontalArrangement = Arrangement.End,
             modifier = modifierForInputs
         ) {
@@ -101,10 +111,3 @@ fun AddCliente(
         }
     }
 }
-
-/**
-@Preview(showBackground = true)
-@Composable
-fun AddClientePreview() {
-    AddCliente(navController = rememberNavController(), viewModel = ActivityViewModel())
-}*/

@@ -1,16 +1,11 @@
 package com.example.proyecto1.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.ui.screens.AddCliente
@@ -19,12 +14,18 @@ import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.ListClientes
 import com.example.proyecto1.ui.screens.ListServicios
 import com.example.proyecto1.ui.screens.ListVehículos
-import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
 import com.example.proyecto1.ui.screens.ViewService
 import com.example.proyecto1.ui.screens.ViewVehiculo
 
+/**
+ * Este Composable implementa un NavHost que se utiliza para la navegación entre pantallas. Este
+ * elemento define el gráfico de navegación de la actividad (de la aplicación en este caso).
+ *
+ * Aquí se definien varias rutas que se llamarán mediante la clase NavHostController. Este elemento
+ * permite gestionar la navegación entre las pantallas.
+ */
 @Composable
 fun AppNavigation(
     viewModel: ActivityViewModel,

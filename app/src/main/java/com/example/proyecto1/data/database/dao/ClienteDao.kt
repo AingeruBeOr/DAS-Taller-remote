@@ -8,6 +8,10 @@ import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * DAO (Data Access Object) que accede a la base de datos para realizar transacciones sobre los
+ * clientes
+ */
 @Dao
 interface ClienteDao {
     @Query("SELECT * FROM clientes")

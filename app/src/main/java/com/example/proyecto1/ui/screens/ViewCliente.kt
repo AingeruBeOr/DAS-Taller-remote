@@ -1,7 +1,6 @@
 package com.example.proyecto1.ui.screens
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -54,6 +53,9 @@ data class ClientInfoState(
     val showDeleteAlertDialog: MutableState<Boolean>
 )
 
+/**
+ * Elemento Composable que muestra la información del clinete con su lista de vehículos.
+ */
 @Composable
 fun ViewCliente(
     navController: NavController,
@@ -85,10 +87,13 @@ fun ViewCliente(
         state.cliente = viewModel.getUserDataFromName(nombreCliente)
         state.vehiculosDelCliente = viewModel.getClientVehicles(nombreCliente).collectAsState(initial = emptyList()).value
     }
+    // Si el dispositivo está en vertical
     if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
         PortraitLayout(innerPadding = innerPadding, state = state)
     }
+    // Si el dipositivo está en horizontal
     else LandscapeLayout(innerPadding = innerPadding, state = state)
+    // Si mostrar alerta de eliminación
     if (state.showDeleteAlertDialog.value) {
         DeleteAlertDialog(
             showDeleteAlertDialog = state.showDeleteAlertDialog,
@@ -98,6 +103,9 @@ fun ViewCliente(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositvo está en vertical
+ */
 @Composable
 fun PortraitLayout(
     innerPadding: PaddingValues,
@@ -125,6 +133,9 @@ fun PortraitLayout(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositivo está en modo horizontal
+ */
 @Composable
 fun LandscapeLayout(
     innerPadding: PaddingValues,
@@ -155,6 +166,9 @@ fun LandscapeLayout(
     }
 }
 
+/**
+ * Elemento Composable que muestra la información del cliente
+ */
 @Composable
 fun ClientInfo(
     cliente: Cliente,
@@ -162,6 +176,7 @@ fun ClientInfo(
     sendMail: (String) -> Unit
 ) {
     Column {
+        // Nombre del cliente
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(all = 10.dp)
@@ -169,6 +184,7 @@ fun ClientInfo(
             Icon(Icons.Rounded.Person, contentDescription = "Nombre")
             Text(text = cliente.nombre, modifier = Modifier.padding(start = 10.dp))
         }
+        // Teléfono del cliente y botón para abrir el dial con el número del cliente
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(all = 10.dp)
@@ -182,6 +198,7 @@ fun ClientInfo(
                 Icon(painterResource(id = R.drawable.call_outcoming_icon), contentDescription = "Call")
             }
         }
+        // Email del cliente y botón para enviar un email al cliente
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(all = 10.dp)
@@ -197,6 +214,9 @@ fun ClientInfo(
     }
 }
 
+/**
+ * Elemento Composable que muestra la lista de vehículos de un cliente
+ */
 @Composable
 fun VehiculosDelCliente(
     vehiculosDelCliente: List<Vehiculo>?,
@@ -220,6 +240,10 @@ fun VehiculosDelCliente(
     }
 }
 
+/**
+ * Elemento Composable tipo ElevatedCard que muetra la información del cliente con un botón de ver
+ * más información sobre el cliente y otro para borrar el cliente.
+ */
 @Composable
 fun VehicleCard(
     vehiculo: Vehiculo,
@@ -236,6 +260,7 @@ fun VehicleCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
+            // Información del cliente
             Column (
                 modifier = Modifier.padding(all = 10.dp)
             ) {
@@ -244,6 +269,7 @@ fun VehicleCard(
                 Text(text = vehiculo.matricula)
             }
             Spacer(modifier = Modifier.weight(1f))
+            // Botón de ver más información sobre el cliente
             IconButton(onClick = {
                 navController.navigate("viewVehiculo/${vehiculo.matricula}")
             }) {
@@ -252,6 +278,7 @@ fun VehicleCard(
                     contentDescription = "Ver"
                 )
             }
+            // Botón de eliminar el cliente
             IconButton(onClick = {
                 showDeleteAlertDialog.value = true
                 deletingVehiculo.value = vehiculo

@@ -16,11 +16,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,17 +30,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
-import com.example.proyecto1.ui.myComponents.TopBar
+import com.example.proyecto1.data.database.entities.Vehiculo
 import java.text.SimpleDateFormat
 import java.util.Date
 
+/**
+ * Este Composable define el contenido de la pantalla de añadir un servicio; es decir, un formulario
+ * y un par de botones.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddServicio(
@@ -56,7 +58,7 @@ fun AddServicio(
     var fecha by rememberSaveable {
         mutableStateOf("11/11/2011")
     }
-    var matricula by rememberSaveable {
+    var matricula = rememberSaveable {
         mutableStateOf("")
     }
 
@@ -65,7 +67,7 @@ fun AddServicio(
         mutableStateOf(false)
     }
 
-    var dropdownIsExtended by remember {
+    var dropdownIsExtended = remember {
         mutableStateOf(false)
     }
 
@@ -91,33 +93,13 @@ fun AddServicio(
                 Text(text = stringResource(id = R.string.Change_date))
             }
         }
-        ExposedDropdownMenuBox (
-            expanded = dropdownIsExtended,
-            onExpandedChange = { dropdownIsExtended = !dropdownIsExtended }
-        ) {
-            TextField(
-                value = matricula,
-                onValueChange = { matricula = it },
-                label = { Text(stringResource(id = R.string.Plate)) },
-                trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
-                readOnly = true,
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth()
-                    .padding(top = 15.dp)
-            )
-            ExposedDropdownMenu(
-                expanded = dropdownIsExtended,
-                onDismissRequest = { dropdownIsExtended = false }
-            ) {
-                for (vehiculo in listaVehiculos) {
-                    DropdownMenuItem(
-                        text = { Text(text = vehiculo.matricula) },
-                        onClick = { matricula = vehiculo.matricula; dropdownIsExtended = false }
-                    )
-                }
-            }
-        }
+        // Selector de matrícula tipo ComboBox
+        MatriculaSelector(
+            dropdownIsExtended = dropdownIsExtended,
+            matricula = matricula,
+            listaVehiculos = listaVehiculos
+        )
+        // Campo de texto para añadir una descripción
         TextField(
             value = descripcion,
             onValueChange = { descripcion = it },
@@ -134,7 +116,7 @@ fun AddServicio(
             }
             Button(onClick = {
                 viewModel.addNewServicio(
-                    Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula)
+                    Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula.value)
                 )
                 navController.popBackStack()
             }) {
@@ -158,6 +140,42 @@ fun AddServicio(
                 }
             ) {
                 DatePicker(state = datePickerState)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MatriculaSelector(
+    dropdownIsExtended: MutableState<Boolean>,
+    matricula: MutableState<String>,
+    listaVehiculos: List<Vehiculo>
+) {
+    ExposedDropdownMenuBox (
+        expanded = dropdownIsExtended.value,
+        onExpandedChange = { dropdownIsExtended.value = !dropdownIsExtended.value }
+    ) {
+        TextField(
+            value = matricula.value,
+            onValueChange = { matricula.value = it },
+            label = { Text(stringResource(id = R.string.Plate)) },
+            trailingIcon = { Icon(Icons.Rounded.ArrowDropDown, contentDescription = "ArrowDropDown") },
+            readOnly = true,
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+                .padding(top = 15.dp)
+        )
+        ExposedDropdownMenu(
+            expanded = dropdownIsExtended.value,
+            onDismissRequest = { dropdownIsExtended.value = false }
+        ) {
+            for (vehiculo in listaVehiculos) {
+                DropdownMenuItem(
+                    text = { Text(text = vehiculo.matricula) },
+                    onClick = { matricula.value = vehiculo.matricula; dropdownIsExtended.value = false }
+                )
             }
         }
     }

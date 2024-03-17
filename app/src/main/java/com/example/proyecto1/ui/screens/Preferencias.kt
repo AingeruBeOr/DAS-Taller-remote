@@ -48,8 +48,8 @@ fun Preferencias(
     viewModel: ActivityViewModel
 ) {
     val currentLocale = LocalContext.current.resources.configuration.locales[0]
-    //val currentColor2 = viewModel.currentTheme.collectAsStateWithLifecycle(initialValue = "Blue")
     val currentColor = viewModel.getThemeSnapshot()
+
     // Input values
     // Van a ser rememberSaveable para que al girar la pantalla no se borren del formualario
     val idiomasPosibles = listOf(
@@ -86,8 +86,14 @@ fun Preferencias(
                 .padding(innerPadding)
                 .padding(15.dp)
         ) {
-            LanguageSelector(idiomaSeleccionado = idiomaSeleccionado, idiomasPosibles = idiomasPosibles)
-            MainColorSelector(coloresPosibles = coloresPosibles, colorSeleccionado = colorSeleccionado)
+            LanguageSelector(
+                idiomaSeleccionado = idiomaSeleccionado,
+                idiomasPosibles = idiomasPosibles
+            )
+            MainColorSelector(
+                coloresPosibles = coloresPosibles,
+                colorSeleccionado = colorSeleccionado
+            )
             Row (
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
@@ -163,6 +169,10 @@ fun Preferencias(
     }
 }
 
+/**
+ * Elemento Composable selector del idioma. Este elemento es una linea de texto y una lista con 3
+ * opciones para elegir entre los idiomas disponibles en la aplicación.
+ */
 @Composable
 fun LanguageSelector(
     idiomaSeleccionado: MutableState<String>,
@@ -188,6 +198,10 @@ fun LanguageSelector(
     }
 }
 
+/**
+ * Elemento Composable selector del color. Este elemento es una linea de texto y una lista con 3
+ * opciones para elegir entre los colores disponibles en la aplicación.
+ */
 @Composable
 fun MainColorSelector(
     coloresPosibles: List<String>,

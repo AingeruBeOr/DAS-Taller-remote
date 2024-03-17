@@ -6,9 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.stringResource
-import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
-import com.example.proyecto1.data.database.entities.Servicio
 
 
 /**
@@ -17,6 +15,9 @@ import com.example.proyecto1.data.database.entities.Servicio
  * - Vehiculo
  * - Servicio
  * - Cliente
+ *
+ * De está manera, conseguimos reducir el código al no tener que implementarlo en cada pantalla
+ * donde se usa.
  */
 @Composable
 fun <T> DeleteAlertDialog(

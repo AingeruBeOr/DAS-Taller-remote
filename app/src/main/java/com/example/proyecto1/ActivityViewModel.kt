@@ -20,12 +20,14 @@ import javax.inject.Inject
 
 
 /**
- * HILT (Dependency Injection) Explanation:
+ *  --- HILT (Dependency Injection) Explanation ---
  *
  * Este view model necesita crear los siguientes objetos:
  * - ClienteRepository
  * - VehiculoRepository
  * - ServicioRepository
+ * - PreferencesRepository
+ * - DownloadMonthServices
  *
  * Una manera sería, dentro de la clase, crear un objetos respository. Sin embargo, estos necesitan
  * sus DAOs respectivos en este caso. Por ese motivo y para evitar que el ViewModel se encargue de
@@ -34,8 +36,13 @@ import javax.inject.Inject
  * HILT por su parte, injecta las dependencias necesarias las cuales recibirá el ViewModel como
  * parámetros.
  *
+ *
+ * --- Función del ViewModel ---
+ *
+ * Los ViewModels son clases que permiten geestionar el estado y los eventos de los componentes
+ * de la IU. Para esta aplicación, se ha definidio un solo ViewModel para gestionar todos estos
+ * estados y eventos aunque se pueden definir varios específicos para diferentes componentes.
  */
-
 @HiltViewModel
 class ActivityViewModel @Inject constructor(
     val clienteRepository: ClienteRepository,
@@ -44,6 +51,7 @@ class ActivityViewModel @Inject constructor(
     val preferencesRepository: PreferencesRepository,
     val downloadMonthServices: DownloadMonthServices
 ) : ViewModel() {
+    // Variables que reciben un Flow de la base de datos con los datos actualizados al momento
     val servicios = servicioRepository.getAllServicios()
     val vehiculos = vehiculoRepository.getAllVehiculos()
     var clientes = clienteRepository.getAllClientes()

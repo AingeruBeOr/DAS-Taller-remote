@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-// DEFINING data classes AND ROOM DATABASE TABLES
+/* Se definien como data class las entidades de la base de datos, es decir, las tablas. */
 
 @Entity(tableName = "servicios", primaryKeys = ["fecha", "descripcion"])
 data class Servicio(

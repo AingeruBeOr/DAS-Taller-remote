@@ -29,6 +29,9 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 
+/**
+ * Elemento Composable que muestra todos los servicios realizados en el taller
+ */
 @Composable
 fun ListServicios(
     navController: NavController,
@@ -75,6 +78,10 @@ fun ListServicios(
     }
 }
 
+/**
+ * Elemento Composable tipo ElevatedCard que muestra la información del servicio con un botón de ver
+ * más información sobre el servicio y otro para borrar el servicio.
+ */
 @Composable
 fun ServicioCard(
     servicio: Servicio,
@@ -97,17 +104,20 @@ fun ServicioCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                // Información del servicio
                 Column {
                     Text(text = servicio.fecha)
                     Text(text = servicio.matricula)
                 }
                 Spacer(modifier = Modifier.weight(1f))
+                // Botón de ver más información
                 IconButton(onClick = {
                     val servicioParaEnviar = servicio.fecha.replace("/", "-")
                     navController.navigate("viewServicio/$servicioParaEnviar/${servicio.matricula}")
                 }) {
                     Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                 }
+                // Botón para eliminar el cliente
                 IconButton(
                     onClick = {
                         deletingServicio.value = servicio

@@ -29,6 +29,9 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
 
+/**
+ * Elemento Composable que muestra todos los vehículos de los clintes del taller
+ */
 @Composable
 fun ListVehículos(
     modifier: Modifier = Modifier,
@@ -76,6 +79,10 @@ fun ListVehículos(
     }
 }
 
+/**
+ * Elemento Composable tipo ElevatedCard que muestra la información del vehículo con un botón de ver
+ * más información sobre el vehículo y otro para borrar el vehículo.
+ */
 @Composable
 fun VehiculoCard(
     vehiculo: Vehiculo,
@@ -93,6 +100,7 @@ fun VehiculoCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
+            // Información del vehículo
             Column (
                 modifier = Modifier.padding(all = 10.dp)
             ) {
@@ -102,6 +110,7 @@ fun VehiculoCard(
                 Text(text = vehiculo.nombreCliente)
             }
             Spacer(modifier = Modifier.weight(1f))
+            // Botón de ver más información
             IconButton(onClick = {
                 navController.navigate("viewVehiculo/${vehiculo.matricula}")
             }) {
@@ -110,6 +119,7 @@ fun VehiculoCard(
                     contentDescription = "Ver"
                 )
             }
+            // Botón de eliminar el vehículo
             IconButton(onClick = {
                 showDeleteAlertDialog.value = true
                 deletingVehiculo.value = vehiculo

@@ -12,13 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.proyecto1.R
 
+/**
+ * Barra superior de la aplicación. Esta barra mostrará los siguientes:
+ * - Nombre de la pantalla actual
+ * - Botón de ir atrás (no siempre)
+ * - Botón de abrir la pantalla de preferencias (no siempre)
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
@@ -37,6 +41,7 @@ fun TopBar(navController: NavController) {
         mutableStateOf(false)
     }
 
+    // Ajustamos si mostrar o no los botones de atrás y preferencias dependiendo de la pantalla
     when (currentRoute) {
         "servicios" -> {
             titleText.value = stringResource(id = R.string.ServicesTitle)
@@ -91,9 +96,11 @@ fun TopBar(navController: NavController) {
     }
 
     TopAppBar(
+        // Nombre de la pantalla
         title = {
             Text(text = titleText.value)
         },
+        // Botón que se muestra a la derecha, el de las preferencias
         actions = {
             if (showSettings.value) {
                 IconButton(onClick = {
@@ -103,6 +110,7 @@ fun TopBar(navController: NavController) {
                 }
             }
         },
+        // Botón que se muestra a la izquierda, el de ir hacia atrás
         navigationIcon = {
             if (showBackNavArrow.value) {
                 IconButton(onClick = { navController.popBackStack() }) {

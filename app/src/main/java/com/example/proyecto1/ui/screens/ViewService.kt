@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,12 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
-import com.example.proyecto1.ui.myComponents.TopBar
 
+/**
+ * Elemento Composable que mustra la información del servicio.
+ */
 @Composable
 fun ViewService(
     viewModel: ActivityViewModel,
@@ -48,6 +48,9 @@ fun ViewService(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositvo está en vertical
+ */
 @Composable
 fun PortraitLayout(
     servicio: Servicio,
@@ -67,6 +70,9 @@ fun PortraitLayout(
     }
 }
 
+/**
+ * Elemento Composable que se construirá si el dispositivo está en modo horizontal
+ */
 @Composable
 fun LandscapeLayout(
     servicio: Servicio,

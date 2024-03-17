@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -39,7 +38,6 @@ import dagger.hilt.android.AndroidEntryPoint
  *
  * Además, nosotros vamos a usar AppCompatActiviy para poder usar Hilt (Inyección de dependencias)
  */
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -101,6 +99,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Abrir el dial (marcador de teléfono) con un número de teléfono recibido como
+     * parametro.
+     */
     fun openDial(tel: Int) {
         // Crear el Intent para abrir el Dial con el número del cliente
         val dialIntent = Intent(Intent.ACTION_DIAL).apply {
@@ -111,26 +113,40 @@ class MainActivity : AppCompatActivity() {
         startActivity(dialIntent)
     }
 
+    /**
+     * Abrir la aplicación por defecto como cliente de correo para enviar un correo a la dirección
+     * recibida como parámetro.
+     */
     fun mailTo(mail: String) {
+        // Crear el Intent para abrir el cliente de correo por defecto
         val mailIntent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            Log.d("Intent", "dirección de mail: $mail")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
         }
 
+        // Iniciamos la actividad que abre el cliente de correo
         startActivity(mailIntent)
     }
 
+    /**
+     * Cambiar los Locales (idiomas) de la aplicación en los propios ajustes de la aplicación.
+     */
     fun changeLocales(languageCode: String) {
         // The Locale is saved into App Settings so when the app is started again, the Locale
         // is taken from App Settings
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageCode))
     }
 
+    /**
+     * Cambiar el tema de la aplicación.
+     * Es necesario hacerlo en el contexto de la actividad porque necesitamos regenerar la actividad
+     * para poder cambiar el tema.
+     */
     fun changeTheme(theme: String) {
         viewModel.changeColor(theme)
         recreate()
     }
+
 
     // --- NOTIFICATIONS ---
     /**
@@ -138,6 +154,8 @@ class MainActivity : AppCompatActivity() {
      *
      * Despite being call on each onCreate(), if the CHANNEL_ID already exists, it doesn't create
      * a new one.
+     *
+     * Extraido de: https://developer.android.com/develop/ui/views/notifications/channels#CreateChannel
      */
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -154,6 +172,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Mandar una notificación avisando de que el archivo con los servicios semanales se ha
+     * descargado correctamente
+     */
     fun sendDownloadNotification() {
         var builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.round_car_repair_24)
@@ -174,6 +196,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     * Solicitar permisos para enviar notificaciones locales
+     *
+     * Además es necesario definirlo en el Manifest: https://developer.android.com/develop/ui/views/notifications/notification-permission#declare
+     */
     fun requestPushNotifcations() {
         when {
             ContextCompat.checkSelfPermission(
@@ -199,6 +227,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Solicitar permisos para escribir en el sistema de ficheros del dispositivo.
+     *
+     * Además, hay que añadir los siguientes permisos en el Manifest:
+     * - android.permission.READ_EXTERNAL_STORAGE
+     * - android.permission.WRITE_EXTERNAL_STORAGE
+     */
     fun requestWriteInStoragePermission() {
         val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -206,52 +241,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-/**
-@Preview(showBackground = true)
-@Composable
-fun ServiciosPreview() {
-    val modifier = Modifier.fillMaxSize()
-    val viewModel = ActivityViewModel()
-    viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
-    viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
-    viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
-    viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
-    viewModel.addNewServicio(Servicio(fecha = "2020-12-12", descripcion = "Hola", matricula = "1234"))
-
-    TallerTheme {
-        MainView(modifier, viewModel, "Servicios", navController = rememberNavController())
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun VehiculosPreview() {
-    val modifier = Modifier.fillMaxSize()
-    val viewModel = ActivityViewModel()
-    viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
-    viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
-    viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
-    viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
-    viewModel.addNewVehiculo(Vehiculo(matricula = "1234", marca = "Mercedes", modelo ="A45 AMG"))
-
-    TallerTheme {
-        MainView(modifier, viewModel, "Vehículos", navController = rememberNavController())
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ClientesPreview() {
-    val modifier = Modifier.fillMaxSize()
-    val viewModel = ActivityViewModel()
-    viewModel.addNewCliente(Cliente(email = "angel@upv.ehu", nombre = "Angel", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "j.carlos@upv.ehu", nombre = "Juan Carlos", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "jose@upv.ehu", nombre = "Jose", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "pedro@upv.ehu", nombre = "Pedro", telefono = 123456789))
-    viewModel.addNewCliente(Cliente(email = "antton@upv.ehu", nombre = "Antton", telefono = 123456789))
-
-    TallerTheme {
-        MainView(modifier, viewModel, "Clientes", navController = rememberNavController())
-    }
-}*/

@@ -6,8 +6,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.proyecto1.data.database.entities.Servicio
 import kotlinx.coroutines.flow.Flow
-import java.time.Month
 
+/**
+ * DAO (Data Access Object) que accede a la base de datos para realizar transacciones sobre los
+ * servicios
+ */
 @Dao
 interface ServicioDao {
     @Query("SELECT * FROM servicios")

@@ -1,6 +1,5 @@
 package com.example.proyecto1.domain
 
-import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -10,16 +9,20 @@ import com.example.proyecto1.data.repositories.ServicioRepository
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.io.OutputStreamWriter
 import java.time.LocalDate
 import java.time.Month
 import javax.inject.Inject
 
-
+/**
+ * Esta clase se encarga de descargar en un fichero de texto los servicios del mes actual.
+ */
 class DownloadMonthServices @Inject constructor(
     val servicioRepository: ServicioRepository
 ){
 
+    /**
+     * Imprimir la lista de servicios de una forma concreta
+     */
     private fun List<Servicio>.toText() : String {
         var returnString = ""
         for (servicio in this) {
@@ -29,6 +32,9 @@ class DownloadMonthServices @Inject constructor(
         return returnString
     }
 
+    /**
+     * Descaga los servicios del mes actual en un archivo TXT
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun downloadMonthServices() {
         val currentMonth = getCurrentMonth()
@@ -38,18 +44,27 @@ class DownloadMonthServices @Inject constructor(
         downloadToTxt(monthServices.toText(), currentMonth.value, currentYear)
     }
 
+    /**
+     * Consigue el mes actual
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getCurrentMonth(): Month {
         val currentDate = LocalDate.now()
         return currentDate.month
     }
 
+    /**
+     * Consigue el año actual
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getCurrentYear(): Int {
         val currentDate = LocalDate.now()
         return currentDate.year
     }
 
+    /**
+     * Consigue todos los servicios del mes actual
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getMonthServices(
         currentMonth: Month,
@@ -66,6 +81,9 @@ class DownloadMonthServices @Inject constructor(
         return monthServices
     }
 
+    /**
+     * Escribe un archivo TXT en el directorio descargas con el contenido que recibe como parametro.
+     */
     private fun downloadToTxt(
         text: String,
         currentMonth: Int,

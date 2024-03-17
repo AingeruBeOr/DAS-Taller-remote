@@ -15,17 +15,28 @@ import java.util.Locale
 import javax.inject.Inject
 
 
-/**
+/*
  * Oficial documentation: https://developer.android.com/topic/libraries/architecture/datastore
  */
 
+/**
+ * Añadimos la variable dataStore al contexto
+ */
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+/**
+ * Esta clase se encarga de gestionar las preferencias de la aplicación. En este momento, se encarga
+ * de gestionar el tema seleccionado por el cliente
+ */
 class PreferencesRepository @Inject constructor(
     private val context: Context
 ) {
     // Defining keys from DataStore
     private val THEME = stringPreferencesKey("theme")
 
+    /**
+     * Conseguir el tema actual del usuario.
+     */
     fun getUserTheme(): Flow<String> {
         return context.dataStore.data.map { preferences ->
             preferences[THEME] ?: "Blue"
@@ -40,6 +51,9 @@ class PreferencesRepository @Inject constructor(
         return context.dataStore.data.first()[THEME] ?: "Blue"
     }
 
+    /**
+     * Guardar el tema actual del cliente.
+     */
     suspend fun saveUserTheme(theme: String) {
         context.dataStore.edit { preferences ->
             preferences[THEME] = theme

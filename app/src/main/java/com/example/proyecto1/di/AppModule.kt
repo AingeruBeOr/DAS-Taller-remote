@@ -37,8 +37,8 @@ object AppModule {
             .createFromAsset("database/taller-db.db") // used to prepopulate (default data in database)
             .build()
 
-    /**
-     * Como las interfaces no se puede  y los DAOs son interfaces, vamos a crearlas aquí.
+    /*
+     * Como las interfaces no se puede inyectar y los DAOs son interfaces, vamos a crearlas aquí.
      * Todas van a ser Singleton ya que solo vamos a querer una sola instancia de cada DAO
      */
 

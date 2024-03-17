@@ -3,7 +3,6 @@ package com.example.proyecto1.ui.screens
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -18,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -27,10 +25,22 @@ import com.example.proyecto1.R
 import com.example.proyecto1.ui.AppNavigation
 import com.example.proyecto1.ui.myComponents.BottomBar
 import com.example.proyecto1.ui.myComponents.TopBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Este Composable será el primero en llamarse. Contiene el elemento Scaffold que es la estructura
+ * principal de la aplicación. El Scaffold incluye (los que se han usado):
+ * - Barra supererior [TopBar]
+ * - Barra de navegación inferior [BottomBar]
+ * - Botón flotante
+ * - Contenido principal
+ *
+ * Estos elementos del Scaffold aparecen y desaparecen dependiendo de la pantalla en la que nos
+ * encontremos.
+ *
+ * En el contenido principal del Scaffold, se incluye el [AppNavigation] que irá construyendo
+ * diferentes pantallas que afectarán a los componentes del Scaffold.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainView(
@@ -58,11 +68,14 @@ fun MainView(
         },
         // Barra inferior
         bottomBar = {
+            // Se mostrará o no dependiendo de la ruta (pantalla actual)
             if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
                 BottomBar(navController = navController)
             }
         },
+        // Botón flotante
         floatingActionButton = {
+            // Se mostrará o no dependiendo de la ruta (pantalla actual)
             if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
                 Column (
                     horizontalAlignment = Alignment.End

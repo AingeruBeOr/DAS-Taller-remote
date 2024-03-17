@@ -5,6 +5,9 @@ import com.example.proyecto1.data.database.entities.Servicio
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+/**
+ * Este repositorio se encarga de recoger y enviar datos sobre los servicios
+ */
 class ServicioRepository @Inject constructor (
     val servicioDao: ServicioDao
 ) {
