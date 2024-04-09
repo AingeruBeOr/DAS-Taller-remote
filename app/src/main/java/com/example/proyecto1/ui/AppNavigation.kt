@@ -14,6 +14,7 @@ import com.example.proyecto1.ui.screens.AddVehiculo
 import com.example.proyecto1.ui.screens.ListClientes
 import com.example.proyecto1.ui.screens.ListServicios
 import com.example.proyecto1.ui.screens.ListVehículos
+import com.example.proyecto1.ui.screens.Login
 import com.example.proyecto1.ui.screens.Preferencias
 import com.example.proyecto1.ui.screens.ViewCliente
 import com.example.proyecto1.ui.screens.ViewService
@@ -37,7 +38,12 @@ fun AppNavigation(
     changeColor: (String) -> Unit
 ) {
     // Defining NavHost. This is the navigation graph
-    NavHost(navController = navController, startDestination = "servicios") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            Login(
+                innerPadding = innerPadding
+            )
+        }
         composable("servicios") {
             ListServicios(
                 navController = navController,

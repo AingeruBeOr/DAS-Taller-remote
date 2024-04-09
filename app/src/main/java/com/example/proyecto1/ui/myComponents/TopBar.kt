@@ -43,6 +43,11 @@ fun TopBar(navController: NavController) {
 
     // Ajustamos si mostrar o no los botones de atrás y preferencias dependiendo de la pantalla
     when (currentRoute) {
+        "login" -> {
+            titleText.value = "Login"
+            showSettings.value = true
+            showBackNavArrow.value = false
+        }
         "servicios" -> {
             titleText.value = stringResource(id = R.string.ServicesTitle)
             showSettings.value = true
