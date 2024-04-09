@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.room.Room
 import com.example.proyecto1.data.database.AppDatabase
 import com.example.proyecto1.data.repositories.PreferencesRepository
+import com.example.proyecto1.network.RemoteDBApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
-
 /**
  * Este tipo de objeto se suele usar en HILT cuando no podemos usar la etiqueta @Inject. Esto puede
  * suceder por varias razones:
@@ -20,7 +22,7 @@ import javax.inject.Singleton
  */
 
 @Module
-@InstallIn(SingletonComponent::class) // Indicamos el alcance. SingletonComponent indica a nivel de aplicación
+@InstallIn(SingletonComponent::class) // Indicamos el alcance. 'SingletonComponent' indica a nivel de aplicación
 object AppModule {
 
 
@@ -64,4 +66,22 @@ object AppModule {
     @Provides
     fun providePreferencesRepository(@ApplicationContext applicationContext: Context) =
         PreferencesRepository(applicationContext)
+
+
+
+    // ---- Retrofit ----
+    @Singleton
+    @Provides
+    fun provideRetrofit(): Retrofit {
+        val baseUrl = "http://34.155.61.4/"
+        return Retrofit.Builder()
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .baseUrl(baseUrl)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiService(retrofit: Retrofit) = retrofit.create(RemoteDBApiService::class.java)
 }
+

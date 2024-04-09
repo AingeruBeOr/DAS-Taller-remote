@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -17,10 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.proyecto1.ActivityViewModel
 
 @Composable
 fun Login(
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    viewModel: ActivityViewModel
 ){
     var username by rememberSaveable {
         mutableStateOf("")
@@ -45,7 +46,7 @@ fun Login(
             onValueChange = { password = it },
             label = { Text(text = "Contraseña") }
         )
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { viewModel.login(username, password) }) {
             Text(text = "Login")
         }
     }

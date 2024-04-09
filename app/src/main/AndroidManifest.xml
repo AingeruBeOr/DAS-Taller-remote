@@ -9,6 +9,10 @@
     <!-- Permissions for NOTIFICATIONS -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <!-- Permissions for Internet connection -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- android:usesCleartextTraffic="true" to Allow HTTP not only HTTPS -->
+
     <application
         android:allowBackup="true"
         android:name=".TallerApplication"
@@ -19,6 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto1"
+        android:usesCleartextTraffic="true"
 
         tools:targetApi="33">
         <activity

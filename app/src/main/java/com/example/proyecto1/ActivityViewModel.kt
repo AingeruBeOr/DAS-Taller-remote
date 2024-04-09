@@ -8,11 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
+import com.example.proyecto1.data.repositories.AppUserRepository
 import com.example.proyecto1.data.repositories.ClienteRepository
 import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
+import com.example.proyecto1.network.RemoteDBApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -49,7 +51,8 @@ class ActivityViewModel @Inject constructor(
     val servicioRepository: ServicioRepository,
     val vehiculoRepository: VehiculoRepository,
     val preferencesRepository: PreferencesRepository,
-    val downloadMonthServices: DownloadMonthServices
+    val downloadMonthServices: DownloadMonthServices,
+    val appUserRepository: AppUserRepository
 ) : ViewModel() {
     // Variables que reciben un Flow de la base de datos con los datos actualizados al momento
     val servicios = servicioRepository.getAllServicios()
@@ -146,5 +149,11 @@ class ActivityViewModel @Inject constructor(
             currentThemeSnapshot = preferencesRepository.getUserThemeSnapshot()
         }
         return currentThemeSnapshot
+    }
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            appUserRepository.login(username, password)
+        }
     }
 }

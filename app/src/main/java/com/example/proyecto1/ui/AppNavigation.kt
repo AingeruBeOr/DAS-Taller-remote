@@ -41,7 +41,8 @@ fun AppNavigation(
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             Login(
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                viewModel = viewModel
             )
         }
         composable("servicios") {
