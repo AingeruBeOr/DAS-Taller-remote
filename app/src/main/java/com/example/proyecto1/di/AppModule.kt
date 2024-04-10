@@ -5,13 +5,15 @@ import androidx.room.Room
 import com.example.proyecto1.data.database.AppDatabase
 import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.network.RemoteDBApiService
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 /**
  * Este tipo de objeto se suele usar en HILT cuando no podemos usar la etiqueta @Inject. Esto puede
@@ -75,7 +77,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         val baseUrl = "http://34.155.61.4/"
         return Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .baseUrl(baseUrl)
             .build()
     }

@@ -13,6 +13,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,36 +77,39 @@ fun MainView(
         },
         // Botón flotante
         floatingActionButton = {
-            // Se mostrará o no dependiendo de la ruta (pantalla actual)
-            if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
-                Column (
-                    horizontalAlignment = Alignment.End
-                ) {
-                    if (currentRoute == "servicios") {
-                        SmallFloatingActionButton(
-                            onClick = {
-                                corutineScope.launch {
-                                    viewModel.downloadMonthServices()
-                                }
-                                sendNotification()
-                            },
-                            modifier = Modifier.padding(bottom = 5.dp)
-                        ) {
-                            Icon(painterResource(id = R.drawable.round_download_24), contentDescription = "Añadir")
+            // Solo se mostrará el botón de añadir si es un usuario tipo "taller", no "cliente"
+            if (viewModel.currentUserType.value == "taller") {
+                // Se mostrará o no dependiendo de la ruta (pantalla actual)
+                if (currentRoute == "servicios" || currentRoute == "vehiculos" || currentRoute == "clientes") {
+                    Column (
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        if (currentRoute == "servicios") {
+                            SmallFloatingActionButton(
+                                onClick = {
+                                    corutineScope.launch {
+                                        viewModel.downloadMonthServices()
+                                    }
+                                    sendNotification()
+                                },
+                                modifier = Modifier.padding(bottom = 5.dp)
+                            ) {
+                                Icon(painterResource(id = R.drawable.round_download_24), contentDescription = "Añadir")
+                            }
                         }
-                    }
-                    FloatingActionButton(onClick = {
-                        // Get the current route (current screen)
-                        Log.d("Routing", "Current route: $currentRoute")
+                        FloatingActionButton(onClick = {
+                            // Get the current route (current screen)
+                            Log.d("Routing", "Current route: $currentRoute")
 
-                        // Change screen depending on currentRoute (current screen)
-                        when (currentRoute) {
-                            "servicios" -> navController.navigate("newServicio")
-                            "vehiculos" -> navController.navigate("newVehiculo")
-                            "clientes" -> navController.navigate("newCliente")
+                            // Change screen depending on currentRoute (current screen)
+                            when (currentRoute) {
+                                "servicios" -> navController.navigate("newServicio")
+                                "vehiculos" -> navController.navigate("newVehiculo")
+                                "clientes" -> navController.navigate("newCliente")
+                            }
+                        }) {
+                            Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
                         }
-                    }) {
-                        Icon(imageVector = Icons.Rounded.Add, contentDescription = "Añadir")
                     }
                 }
             }

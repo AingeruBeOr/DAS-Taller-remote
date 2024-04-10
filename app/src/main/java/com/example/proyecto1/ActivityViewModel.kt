@@ -3,6 +3,7 @@ package com.example.proyecto1
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -68,6 +69,7 @@ class ActivityViewModel @Inject constructor(
     var currentThemeSnapshot = "Blue"
     var loginResponse = ""
     var registerResponse = ""
+    var currentUserType = mutableStateOf("taller")
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -164,6 +166,7 @@ class ActivityViewModel @Inject constructor(
     fun pullUserData(username: String) {
         viewModelScope.launch {
             pullUserDataUseCase.pullUserData(username)
+            currentUserType.value = appUserRepository.getUserType(username)
         }
     }
 
