@@ -1,6 +1,7 @@
 package com.example.proyecto1.data.repositories
 
 import android.util.Log
+import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.network.RemoteDBApiService
 import javax.inject.Inject
 
@@ -15,6 +16,12 @@ class AppUserRepository @Inject constructor(
     suspend fun registerTaller(username: String, password: String) : String {
         val response = remoteDBApiService.registerTaller(username, password, "taller")
         return getResponseMessage(response)
+    }
+
+    suspend fun getClientsFromUser(username: String) : List<Cliente> {
+        val response = remoteDBApiService.getClientsFromUser(username)
+        // TODO
+        return response
     }
 
     private fun getResponseMessage(fullResponse: String) : String {

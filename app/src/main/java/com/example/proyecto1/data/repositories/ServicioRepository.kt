@@ -27,4 +27,8 @@ class ServicioRepository @Inject constructor (
     suspend fun deleteServicio(servicio: Servicio) {
         servicioDao.deleteServicio(servicio)
     }
+
+    suspend fun deleteAllLocalServicios() {
+        servicioDao.deleteAll()
+    }
 }

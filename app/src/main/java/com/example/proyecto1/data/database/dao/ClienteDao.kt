@@ -29,4 +29,7 @@ interface ClienteDao {
 
     @Delete
     suspend fun deleteCliente(cliente: Cliente)
+
+    @Query("DELETE FROM clientes")
+    suspend fun deleteAll()
 }

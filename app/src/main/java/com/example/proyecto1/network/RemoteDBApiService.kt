@@ -1,5 +1,8 @@
 package com.example.proyecto1.network
 
+import com.example.proyecto1.data.database.entities.Cliente
+import com.example.proyecto1.data.database.entities.Servicio
+import com.example.proyecto1.data.database.entities.Vehiculo
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -19,4 +22,19 @@ interface RemoteDBApiService{
         @Query("password") password: String,
         @Query("tipo") tipo: String
     ) : String
+
+    @GET("clientsFromUser") // Resolved to: http://BASE_URL/clientsFromUser?username={username}
+    suspend fun getClientsFromUser(
+        @Query("username") username: String
+    ) : List<Cliente>
+
+    @GET("clientVehicles") // Resolved to: http://BASE_URL/clientVehicles?client={client}
+    suspend fun getClientVehicles(
+        @Query("client") client: String
+    ) : List<Vehiculo>
+
+    @GET("vehicleServices") // Resolved to: http://BASE_URL/vehicleServices?matricula={matricula}
+    suspend fun getVehicleServices(
+        @Query("matricula") matricula: String
+    ) : List<Servicio>
 }

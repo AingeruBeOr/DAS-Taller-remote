@@ -14,6 +14,7 @@ import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
+import com.example.proyecto1.domain.PullUserDataUseCase
 import com.example.proyecto1.network.RemoteDBApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -50,9 +51,10 @@ class ActivityViewModel @Inject constructor(
     val clienteRepository: ClienteRepository,
     val servicioRepository: ServicioRepository,
     val vehiculoRepository: VehiculoRepository,
+    val appUserRepository: AppUserRepository,
     val preferencesRepository: PreferencesRepository,
     val downloadMonthServices: DownloadMonthServices,
-    val appUserRepository: AppUserRepository
+    val pullUserDataUseCase: PullUserDataUseCase
 ) : ViewModel() {
     // Variables que reciben un Flow de la base de datos con los datos actualizados al momento
     val servicios = servicioRepository.getAllServicios()
@@ -157,6 +159,12 @@ class ActivityViewModel @Inject constructor(
             loginResponse = appUserRepository.login(username, password)
         }
         return loginResponse
+    }
+
+    fun pullUserData(username: String) {
+        viewModelScope.launch {
+            pullUserDataUseCase.pullUserData(username)
+        }
     }
 
     fun registerTaller(username: String, password: String) : String {
