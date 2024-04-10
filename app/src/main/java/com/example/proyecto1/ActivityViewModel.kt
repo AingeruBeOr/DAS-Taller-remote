@@ -64,6 +64,7 @@ class ActivityViewModel @Inject constructor(
     private var actualServicio = Servicio("a", "a", "a")
     var currentTheme = preferencesRepository.getUserTheme()
     var currentThemeSnapshot = "Blue"
+    var loginResponse = ""
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -150,10 +151,10 @@ class ActivityViewModel @Inject constructor(
         }
         return currentThemeSnapshot
     }
-
-    fun login(username: String, password: String) {
+    fun login(username: String, password: String): String {
         viewModelScope.launch {
-            appUserRepository.login(username, password)
+            loginResponse = appUserRepository.login(username, password)
         }
+        return loginResponse
     }
 }

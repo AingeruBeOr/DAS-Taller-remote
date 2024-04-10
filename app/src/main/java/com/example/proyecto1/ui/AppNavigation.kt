@@ -42,7 +42,8 @@ fun AppNavigation(
         composable("login") {
             Login(
                 innerPadding = innerPadding,
-                viewModel = viewModel
+                viewModel = viewModel,
+                navController = navController
             )
         }
         composable("servicios") {

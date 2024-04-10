@@ -7,10 +7,12 @@ import javax.inject.Inject
 class AppUserRepository @Inject constructor(
     val remoteDBApiService: RemoteDBApiService
 ){
-    suspend fun login(username: String, password: String) {
-        //remoteDBApiService.login(username, password)
-        // TODO borrar, es una prueba
-        val clients = remoteDBApiService.getClients()
-        Log.d("Remote response", clients)
+    suspend fun login(username: String, password: String): String {
+        var message = remoteDBApiService.login(username, password)
+        message = message.split(':')[1]
+            .replace("\"", "")
+            .replace("}", "")
+        Log.d("Remote response", message)
+        return message
     }
 }
