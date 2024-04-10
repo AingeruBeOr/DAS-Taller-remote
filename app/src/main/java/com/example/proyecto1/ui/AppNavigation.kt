@@ -16,6 +16,7 @@ import com.example.proyecto1.ui.screens.ListServicios
 import com.example.proyecto1.ui.screens.ListVehículos
 import com.example.proyecto1.ui.screens.Login
 import com.example.proyecto1.ui.screens.Preferencias
+import com.example.proyecto1.ui.screens.Registration
 import com.example.proyecto1.ui.screens.ViewCliente
 import com.example.proyecto1.ui.screens.ViewService
 import com.example.proyecto1.ui.screens.ViewVehiculo
@@ -44,6 +45,13 @@ fun AppNavigation(
                 innerPadding = innerPadding,
                 viewModel = viewModel,
                 navController = navController
+            )
+        }
+        composable("registration") {
+            Registration(
+                innerPadding = innerPadding,
+                navController = navController,
+                viewModel = viewModel
             )
         }
         composable("servicios") {

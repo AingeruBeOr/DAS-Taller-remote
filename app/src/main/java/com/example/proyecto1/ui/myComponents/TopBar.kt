@@ -48,6 +48,11 @@ fun TopBar(navController: NavController) {
             showSettings.value = true
             showBackNavArrow.value = false
         }
+        "registration" -> {
+            titleText.value = "Registro taller"
+            showSettings.value = true
+            showBackNavArrow.value = false
+        }
         "servicios" -> {
             titleText.value = stringResource(id = R.string.ServicesTitle)
             showSettings.value = true

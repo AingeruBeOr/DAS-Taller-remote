@@ -17,21 +17,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
-import com.example.proyecto1.R
 
 @Composable
-fun Login(
+fun Registration(
     innerPadding: PaddingValues,
-    viewModel: ActivityViewModel,
-    navController: NavController
-){
+    navController: NavController,
+    viewModel: ActivityViewModel
+) {
     var username by rememberSaveable {
         mutableStateOf("")
     }
@@ -45,7 +42,7 @@ fun Login(
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier = androidx.compose.ui.Modifier
             .padding(innerPadding)
             .fillMaxSize()
     ) {
@@ -61,39 +58,32 @@ fun Login(
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
+        Text(text = "Solo puedes regitrate siendo un taller. Si eres un cliente, el taller te proporcionará las credenciales de acceso")
         Button(onClick = {
-            val response = viewModel.login(username, password)
-            // TODO se ejecuta el toast anterior
-            when(response) {
-                "User does not exist" -> Toast.makeText(
+            val message = viewModel.registerTaller(username, password)
+            when (message) {
+                "User already exists" -> Toast.makeText(
                     context,
-                    "El usuario no existe",
+                    "Ya existe un usuario con ese nombre",
                     Toast.LENGTH_SHORT).show()
-                "Incorrect password" -> Toast.makeText(
-                    context,
-                    "La contraseña es incorrecta",
-                    Toast.LENGTH_SHORT).show()
-                "true" ->
+                "User created" -> {
+                    Toast.makeText(context, "Usuario registrado", Toast.LENGTH_SHORT).show()
                     // Navigate and remove the previous Composable from the back stack
-                    navController.navigate("servicios") {
+                    navController.navigate("login") {
                         popUpTo(0)
                     }
+                }
+            }
+        }) {
+            Text(text = "Reigstrarse")
+        }
+        OutlinedButton(onClick = {
+            // Navigate and remove the previous Composable from the back stack
+            navController.navigate("login") {
+                popUpTo(0)
             }
         }) {
             Text(text = "Login")
         }
-        OutlinedButton(onClick = {
-            // Navigate and remove the previous Composable from the back stack
-            navController.navigate("registration") {
-                popUpTo(0)
-            }
-        }) {
-            Text(text = "Registrarse")
-        }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview() {
 }

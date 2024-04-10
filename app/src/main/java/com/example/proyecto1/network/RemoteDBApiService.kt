@@ -12,4 +12,11 @@ interface RemoteDBApiService{
         @Query("username") username: String,
         @Query("password") password: String
     ) : String
+
+    @GET("register") // Resolved to: http://BASE_URL/register?username={username}&password={password}&tipo={tipo}
+    suspend fun registerTaller(
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("tipo") tipo: String
+    ) : String
 }
