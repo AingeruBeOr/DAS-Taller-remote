@@ -70,10 +70,12 @@ class ActivityViewModel @Inject constructor(
     var loginResponse = ""
     var registerResponse = ""
     var currentUserType = mutableStateOf("taller")
+    var currentUserName = ""
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
             servicioRepository.insertServicio(nuevoServicio)
+            servicioRepository.insertarRemoteServicio(nuevoServicio)
         }
     }
 
@@ -87,6 +89,7 @@ class ActivityViewModel @Inject constructor(
     fun addNewVehiculo(nuevoCoche: Vehiculo) {
         viewModelScope.launch {
             vehiculoRepository.insertVehiculo(nuevoCoche)
+            vehiculoRepository.insertRemoteVehiculo(nuevoCoche)
         }
     }
 
@@ -100,6 +103,7 @@ class ActivityViewModel @Inject constructor(
         // Launch must be used becase insertarCliente() from repository is a suspend function
         viewModelScope.launch {
             clienteRepository.insertarCliente(nuevoCliente)
+            clienteRepository.insertarRemoteCliente(nuevoCliente, currentUserName)
         }
     }
 
@@ -167,6 +171,7 @@ class ActivityViewModel @Inject constructor(
         viewModelScope.launch {
             pullUserDataUseCase.pullUserData(username)
             currentUserType.value = appUserRepository.getUserType(username)
+            currentUserName = username
         }
     }
 

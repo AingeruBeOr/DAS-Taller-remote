@@ -34,6 +34,10 @@ class VehiculoRepository @Inject constructor(
         vehiculoDao.insertVehiculo(vehiculo)
     }
 
+    suspend fun insertRemoteVehiculo(vehiculo: Vehiculo) {
+        remoteDBApiService.addVehicle(vehiculo)
+    }
+
     suspend fun deleteVehiculo(vehiculo: Vehiculo) {
         vehiculoDao.deleteVehiculo(vehiculo)
     }
