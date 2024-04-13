@@ -181,4 +181,10 @@ class ActivityViewModel @Inject constructor(
         }
         return registerResponse
     }
+
+    fun submitDeviceTokenFCM(token: String) {
+        viewModelScope.launch {
+            appUserRepository.addAppToken(token)
+        }
+    }
 }

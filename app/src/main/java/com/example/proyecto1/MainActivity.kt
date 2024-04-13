@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -27,7 +28,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.theme.TallerTheme
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
@@ -75,6 +82,8 @@ class MainActivity : AppCompatActivity() {
 
         requestPushNotifcations()
         requestWriteInStoragePermission()
+
+        submitDeviceTokenFCM()
 
         setContent {
             val storedTheme by viewModel.currentTheme.collectAsState(initial = "Blue")
@@ -238,6 +247,14 @@ class MainActivity : AppCompatActivity() {
         val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+    }
+
+    private fun submitDeviceTokenFCM() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val token = Firebase.messaging.token.await()
+            Log.d("FCM", "Device token $token")
+            viewModel.submitDeviceTokenFCM(token)
         }
     }
 }

@@ -57,4 +57,9 @@ interface RemoteDBApiService{
         @Query("username") username: String,
         @Body cliente: Cliente
     ) : Message
+
+    @POST("FCMdevice") // Resolved to: http://BASE_URL/FCMdevice?token={token}
+    suspend fun submitFCMTokenDevice(
+        @Query("token") token: String
+    )
 }

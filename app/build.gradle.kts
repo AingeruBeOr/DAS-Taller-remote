@@ -5,6 +5,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     // Kotlin serialization
     id("kotlinx-serialization")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -65,6 +67,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     // Navigation
     val navVersion = "2.7.7"
@@ -104,7 +107,8 @@ dependencies {
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
-
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 }
 
 // Allow references to generated code

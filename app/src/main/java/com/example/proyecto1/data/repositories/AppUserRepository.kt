@@ -27,4 +27,8 @@ class AppUserRepository @Inject constructor(
     suspend fun getUserType(username: String): String {
         return remoteDBApiService.getUserType(username).message
     }
+
+    suspend fun addAppToken(token: String) {
+        remoteDBApiService.submitFCMTokenDevice(token)
+    }
 }
