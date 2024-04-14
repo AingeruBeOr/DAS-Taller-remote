@@ -16,10 +16,10 @@ import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
 import com.example.proyecto1.domain.PullUserDataUseCase
-import com.example.proyecto1.network.RemoteDBApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 
@@ -86,10 +86,12 @@ class ActivityViewModel @Inject constructor(
         }
     }
 
-    fun addNewVehiculo(nuevoCoche: Vehiculo) {
+    fun addNewVehiculo(nuevoCoche: Vehiculo, file: File) {
         viewModelScope.launch {
             vehiculoRepository.insertVehiculo(nuevoCoche)
             vehiculoRepository.insertRemoteVehiculo(nuevoCoche)
+            Log.d("File upload", "file size: ${file.length()}")
+            vehiculoRepository.uploadVehicleDocumentation(nuevoCoche.matricula, file)
         }
     }
 
@@ -185,6 +187,12 @@ class ActivityViewModel @Inject constructor(
     fun submitDeviceTokenFCM(token: String) {
         viewModelScope.launch {
             appUserRepository.addAppToken(token)
+        }
+    }
+
+    fun uploadVehicleDocumentation(matricula: String, file: File) {
+        viewModelScope.launch {
+            vehiculoRepository.uploadVehicleDocumentation(matricula, file)
         }
     }
 }

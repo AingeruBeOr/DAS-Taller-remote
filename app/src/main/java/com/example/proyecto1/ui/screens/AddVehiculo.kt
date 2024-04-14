@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -93,23 +95,23 @@ fun AddVehiculo(
     val context = LocalContext.current
 
     // Create a temporary file to store the photo taken by the camera
-    val file = context.createImageFile()
+    var file by remember {
+        mutableStateOf<File?>(null)
+    }
     // Get the uri for the temporary file
-    val uri = FileProvider.getUriForFile(
-        context,
-        context.packageName + ".provider",
-        file
-    )
-    var capturedImageUri by remember {
-        mutableStateOf<Uri>(Uri.EMPTY)
+    var uri : Uri = Uri.EMPTY
+
+    var fileUploaded by remember {
+        mutableStateOf(false)
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { savedInUri ->
+        // Callback process when .launch()
         if (savedInUri) {
-            capturedImageUri = uri
-            Toast.makeText(context, "Foto cargada", Toast.LENGTH_SHORT).show()
+            fileUploaded = true
+            Toast.makeText(context, "Foto cargada en $uri", Toast.LENGTH_SHORT).show()
         }
         else Toast.makeText(context, "No se ha podido cargar la foto", Toast.LENGTH_SHORT).show()
     }
@@ -150,8 +152,25 @@ fun AddVehiculo(
             nombreCliente = nombreCliente,
             listaClientes = listaClientes
         )
-        Button(onClick = { cameraLauncher.launch(uri) }) {
-            Text(text = "Foto de la documentación")
+        Row {
+            Button(onClick = {
+                // Create a temporary file to store the photo taken by the camera
+                file = context.createImageFile()
+                // Get the uri for the temporary file
+                uri = FileProvider.getUriForFile(
+                    context,
+                    context.packageName + ".provider",
+                    file!!
+                )
+                cameraLauncher.launch(uri) // 'uri' is the File uri to save camera photo
+            }) {
+                Text(text = "Foto de la documentación")
+            }
+            if (fileUploaded) Icon(
+                imageVector = Icons.Rounded.Check,
+                contentDescription = "Check",
+                tint = Color.Green
+            )
         }
         Row (
             horizontalArrangement = Arrangement.End,
@@ -159,11 +178,14 @@ fun AddVehiculo(
         ) {
             OutlinedButton(onClick = {
                 navController.popBackStack()
-            },) {
+            }) {
                 Text(text = stringResource(id = R.string.Cancel))
             }
             Button(onClick = {
-                viewModel.addNewVehiculo(Vehiculo(matricula, marca, modelo, nombreCliente.value))
+                viewModel.addNewVehiculo(
+                    Vehiculo(matricula, marca, modelo, nombreCliente.value),
+                    file!!
+                )
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))

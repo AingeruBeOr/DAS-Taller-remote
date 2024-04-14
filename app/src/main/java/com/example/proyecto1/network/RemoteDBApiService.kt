@@ -3,9 +3,12 @@ package com.example.proyecto1.network
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface RemoteDBApiService{
@@ -61,5 +64,12 @@ interface RemoteDBApiService{
     @POST("FCMdevice") // Resolved to: http://BASE_URL/FCMdevice?token={token}
     suspend fun submitFCMTokenDevice(
         @Query("token") token: String
+    )
+
+    @Multipart
+    @POST("vehicleDocumentation")
+    suspend fun uploadVehicleDocumentation(
+        @Query("matricula") matricula: String,
+        @Part image: MultipartBody.Part
     )
 }

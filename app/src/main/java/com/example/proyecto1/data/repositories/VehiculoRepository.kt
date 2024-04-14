@@ -5,6 +5,9 @@ import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.network.RemoteDBApiService
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -44,5 +47,12 @@ class VehiculoRepository @Inject constructor(
 
     suspend fun deleteAllLocalVehiculos() {
         vehiculoDao.deleteAll()
+    }
+
+    suspend fun uploadVehicleDocumentation(matricula: String, file: File) {
+        remoteDBApiService.uploadVehicleDocumentation(
+            matricula = matricula,
+            image = MultipartBody.Part.createFormData("image", file.name, file.asRequestBody())
+        )
     }
 }
