@@ -40,6 +40,7 @@ class ClienteRepository @Inject constructor(
 
     suspend fun deleteCliente(cliente: Cliente) {
         clienteDao.deleteCliente(cliente)
+        remoteDBApiService.deleteClient(cliente.nombre)
     }
 
     suspend fun deleteAllLocalClientes() {

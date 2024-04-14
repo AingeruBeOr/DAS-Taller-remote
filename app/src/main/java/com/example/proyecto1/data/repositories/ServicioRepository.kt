@@ -32,6 +32,7 @@ class ServicioRepository @Inject constructor (
 
     suspend fun deleteServicio(servicio: Servicio) {
         servicioDao.deleteServicio(servicio)
+        remoteDBApiService.deleteService(servicio.fecha, servicio.matricula)
     }
 
     suspend fun deleteAllLocalServicios() {

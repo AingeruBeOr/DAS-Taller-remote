@@ -45,6 +45,7 @@ class VehiculoRepository @Inject constructor(
 
     suspend fun deleteVehiculo(vehiculo: Vehiculo) {
         vehiculoDao.deleteVehiculo(vehiculo)
+        remoteDBApiService.deleteVehicle(vehiculo.matricula)
     }
 
     suspend fun deleteAllLocalVehiculos() {

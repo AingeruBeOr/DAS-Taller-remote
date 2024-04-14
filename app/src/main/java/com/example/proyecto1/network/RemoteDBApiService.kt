@@ -7,6 +7,7 @@ import com.example.proyecto1.data.database.entities.Vehiculo
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -79,4 +80,20 @@ interface RemoteDBApiService{
     suspend fun getVehicleDocumentation(
         @Query("matricula") matricula: String
     ) : ResponseBody
+
+    @DELETE("deleteVehicle")
+    suspend fun deleteVehicle(
+        @Query("matricula") matricula: String
+    )
+
+    @DELETE("deleteClient")
+    suspend fun deleteClient(
+        @Query("nombre") nombre: String
+    )
+
+    @DELETE("deleteService")
+    suspend fun deleteService(
+        @Query("fecha") fecha: String,
+        @Query("matricula") matricula: String
+    )
 }
