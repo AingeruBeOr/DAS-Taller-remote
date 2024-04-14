@@ -109,6 +109,11 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
+    // Widgets with JetPack Glance:
+    implementation("androidx.glance:glance-appwidget:1.0.0")
+    // For interop APIs with Material 3
+    implementation("androidx.glance:glance-material3:1.0.0")
 }
 
 // Allow references to generated code
