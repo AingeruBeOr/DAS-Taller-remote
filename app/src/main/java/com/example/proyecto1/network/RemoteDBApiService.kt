@@ -1,9 +1,11 @@
 package com.example.proyecto1.network
 
+import android.graphics.Bitmap
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -72,4 +74,9 @@ interface RemoteDBApiService{
         @Query("matricula") matricula: String,
         @Part image: MultipartBody.Part
     )
+
+    @GET("getVehicleDocumentation")
+    suspend fun getVehicleDocumentation(
+        @Query("matricula") matricula: String
+    ) : ResponseBody
 }

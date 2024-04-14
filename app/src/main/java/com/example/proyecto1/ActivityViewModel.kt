@@ -1,9 +1,12 @@
 package com.example.proyecto1
 
+import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -17,7 +20,9 @@ import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
 import com.example.proyecto1.domain.PullUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -71,6 +76,7 @@ class ActivityViewModel @Inject constructor(
     var registerResponse = ""
     var currentUserType = mutableStateOf("taller")
     var currentUserName = ""
+    var vehicleDocumentation = MutableStateFlow<Bitmap?>(null)
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -190,9 +196,11 @@ class ActivityViewModel @Inject constructor(
         }
     }
 
-    fun uploadVehicleDocumentation(matricula: String, file: File) {
+    fun getVehicleDocumentation(matricula: String) {
         viewModelScope.launch {
-            vehiculoRepository.uploadVehicleDocumentation(matricula, file)
+            delay(300) // TODO, esperamos a que cargue la foto
+            vehicleDocumentation.value = vehiculoRepository.getVehicleDocumentation(matricula)
+            delay(300) // TODO, esperamos a que cargue la foto
         }
     }
 }

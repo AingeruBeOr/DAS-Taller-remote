@@ -15,8 +15,8 @@
 
     <!-- Permission for using the camera. As it is hardware, we have to add 'uses-feature' -->
     <uses-feature
-            android:name="android.hardware.camera"
-        android:required="false" />
+        android:name="android.hardware.camera"
+        android:required="true" />
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application

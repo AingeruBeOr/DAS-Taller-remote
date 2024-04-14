@@ -1,6 +1,9 @@
 package com.example.proyecto1.ui.screens
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.os.Environment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,11 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,18 +30,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Elemento Composable que muestra la información de un vehículos con sus respectivos servicios
@@ -78,7 +87,8 @@ fun ViewVehiculo(
             serviciosDelVehiculo = serviciosDelVehiculo,
             navController = navController,
             showDeleteAlertDialog = showDeleteAlertDialog,
-            deletingServicio = deletingServicio
+            deletingServicio = deletingServicio,
+            viewModel = viewModel
         )
     }
     // Si el dispositivo está en horizontal
@@ -89,7 +99,8 @@ fun ViewVehiculo(
             serviciosDelVehiculo = serviciosDelVehiculo,
             navController = navController,
             showDeleteAlertDialog = showDeleteAlertDialog,
-            deletingServicio = deletingServicio
+            deletingServicio = deletingServicio,
+            viewModel = viewModel
         )
     }
     if (showDeleteAlertDialog.value) {
@@ -111,14 +122,19 @@ fun PortraitLayout(
     serviciosDelVehiculo: List<Servicio>?,
     navController: NavController,
     showDeleteAlertDialog: MutableState<Boolean>,
-    deletingServicio: MutableState<Servicio>
+    deletingServicio: MutableState<Servicio>,
+    viewModel: ActivityViewModel
 ) {
     Column (
         modifier = Modifier
             .padding(innerPadding)
             .padding(all = 15.dp)
     ) {
-        VehicleInfo(vehiculo = vehiculo, modifier = Modifier)
+        VehicleInfo(
+            vehiculo = vehiculo,
+            modifier = Modifier,
+            viewModel = viewModel
+        )
         Text(
             text = stringResource(id = R.string.Vehicle_services),
             fontSize = 20.sp,
@@ -144,14 +160,19 @@ fun LandscapeLayout(
     serviciosDelVehiculo: List<Servicio>?,
     navController: NavController,
     showDeleteAlertDialog: MutableState<Boolean>,
-    deletingServicio: MutableState<Servicio>
+    deletingServicio: MutableState<Servicio>,
+    viewModel: ActivityViewModel
 ) {
     Row (
         modifier = Modifier
             .padding(innerPadding)
             .padding(10.dp)
     ) {
-        VehicleInfo(vehiculo = vehiculo, modifier = Modifier.weight(1f))
+        VehicleInfo(
+            vehiculo = vehiculo,
+            modifier = Modifier.weight(1f),
+            viewModel = viewModel
+        )
         Column (
             modifier = Modifier.weight(1f)
         ) {
@@ -177,8 +198,12 @@ fun LandscapeLayout(
 @Composable
 fun VehicleInfo(
     vehiculo: Vehiculo,
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: ActivityViewModel
 ) {
+    val context = LocalContext.current
+    val vehicleDocumentation by viewModel.vehicleDocumentation.collectAsState()
+
     Column (
         modifier = modifier
     ) {
@@ -186,6 +211,36 @@ fun VehicleInfo(
         Row { Text(text = "Matrícula: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.matricula) }
         Row { Text(text = "Marca: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.marca) }
         Row { Text(text = "Modelo: ", fontWeight = FontWeight.Bold); Text(text = vehiculo.modelo) }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            onClick = {
+                viewModel.getVehicleDocumentation(vehiculo.matricula)
+                // Cuando se ejecute esta función el valor de 'vehicleDocumentation' cambiará y se
+                // ejecutará el LaunchedEffect
+            }
+        ) {
+            Text(text = "Ver documentación")
+        }
+    }
+
+    // This will execute when a change in 'vehicleDocumentation' happens
+    LaunchedEffect(vehicleDocumentation) {
+        vehicleDocumentation?.let {
+            // Convert the Bitmap to a file and get the Uri for that file
+            val file = context.createImageFile()
+            val fileOutputStream = FileOutputStream(file)
+            it.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "image/*")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            context.startActivity(intent)
+        }
     }
 }
 

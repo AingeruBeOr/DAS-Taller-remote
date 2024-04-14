@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -58,25 +59,7 @@ class MainActivity : AppCompatActivity() {
     private val NOTIFICATION_CHANNEL_ID = "1"
     private val NOTIFICATION_ID = 1
 
-    // Register the permissions callback, which handles the user's response to the
-    // system permissions dialog. Save the return value, an instance of
-    // ActivityResultLauncher. You can use either a val, as shown in this snippet,
-    // or a lateinit var in your onAttach() or onCreate() method.
-    val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                // Permission is granted. Continue the action or workflow in your
-                // app.
-            } else {
-                // Explain to the user that the feature is unavailable because the
-                // feature requires a permission that the user has denied. At the
-                // same time, respect the user's decision. Don't link to system
-                // settings in an effort to convince the user to change their
-                // decision.
-            }
-        }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,9 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         createNotificationChannel()
 
-        requestPushNotifcations()
-        requestWriteInStoragePermission()
-        requestCameraUse()
+        requestPermissions()
 
         submitDeviceTokenFCM()
 
@@ -210,82 +191,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    /**
-     * Solicitar permisos para enviar notificaciones locales
-     *
-     * Además es necesario definirlo en el Manifest: https://developer.android.com/develop/ui/views/notifications/notification-permission#declare
-     */
-    fun requestPushNotifcations() {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
+    private fun requestPermissions() {
+        // Register the permissions callback, which handles the user's response to the
+        // system permissions dialog. Save the return value, an instance of
+        // ActivityResultLauncher. You can use either a val, as shown in this snippet,
+        // or a lateinit var in your onAttach() or onCreate() method.
+        val requestMultiplePermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions: Map<String, Boolean> ->
+                permissions.entries.forEach{
+                    Log.d("Permissions", "${it.key} permission ${it.value}")
+                }
             }
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                this, Manifest.permission.POST_NOTIFICATIONS) -> {
-                // In an educational UI, explain to the user why your app requires this
-                // permission for a specific feature to behave as expected, and what
-                // features are disabled if it's declined. In this UI, include a
-                // "cancel" or "no thanks" button that lets the user continue
-                // using your app without granting the permission.
-            }
-            else -> {
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
-                requestPermissionLauncher.launch(
-                    Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
 
-    /**
-     * Solicitar permisos para escribir en el sistema de ficheros del dispositivo.
-     *
-     * Además, hay que añadir los siguientes permisos en el Manifest:
-     * - android.permission.READ_EXTERNAL_STORAGE
-     * - android.permission.WRITE_EXTERNAL_STORAGE
-     */
-    fun requestWriteInStoragePermission() {
-        val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }
-    }
-
-    /**
-     * Solicitar permisos para usar la cámara.
-     *
-     * Además, hay que añadir el perimiso 'android.permission.CAMERA' y un 'uses-feature' de
-     * 'android.hardware.camera'
-     */
-    fun requestCameraUse() {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
+        requestMultiplePermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-            }
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                this, Manifest.permission.CAMERA) -> {
-                // In an educational UI, explain to the user why your app requires this
-                // permission for a specific feature to behave as expected, and what
-                // features are disabled if it's declined. In this UI, include a
-                // "cancel" or "no thanks" button that lets the user continue
-                // using your app without granting the permission.
-            }
-            else -> {
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
-                requestPermissionLauncher.launch(
-                    Manifest.permission.CAMERA)
-            }
-        }
+            )
+        )
     }
-
 
     private fun submitDeviceTokenFCM() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -294,7 +221,4 @@ class MainActivity : AppCompatActivity() {
             viewModel.submitDeviceTokenFCM(token)
         }
     }
-
-
-
 }

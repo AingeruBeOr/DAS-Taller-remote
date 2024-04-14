@@ -1,5 +1,7 @@
 package com.example.proyecto1.data.repositories
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.example.proyecto1.data.database.dao.VehiculoDao
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
@@ -54,5 +56,10 @@ class VehiculoRepository @Inject constructor(
             matricula = matricula,
             image = MultipartBody.Part.createFormData("image", file.name, file.asRequestBody())
         )
+    }
+
+    suspend fun getVehicleDocumentation(matricula: String) : Bitmap {
+        val responseBody = remoteDBApiService.getVehicleDocumentation(matricula)
+        return responseBody.byteStream().use(BitmapFactory::decodeStream)
     }
 }
