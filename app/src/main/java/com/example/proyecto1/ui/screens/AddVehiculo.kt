@@ -1,5 +1,10 @@
 package com.example.proyecto1.ui.screens
 
+import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,14 +29,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Objects
+
+fun Context.createImageFile(): File {
+    // Create an image file name
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val imageFileName = "JPEG_" + timeStamp + "_"
+    val image = File.createTempFile(
+        imageFileName,    /* prefix */
+        ".jpg",     /* suffix */
+        externalCacheDir  /* directory */
+    )
+    return image
+}
 
 /**
  * Este Composable define el contenido de la pantalla de añadir un vehículo; es decir, un formulario
@@ -66,11 +90,36 @@ fun AddVehiculo(
 
     var listaClientes = viewModel.clientes.collectAsState(initial = emptyList()).value
 
+    val context = LocalContext.current
+
+    // Create a temporary file to store the photo taken by the camera
+    val file = context.createImageFile()
+    // Get the uri for the temporary file
+    val uri = FileProvider.getUriForFile(
+        context,
+        context.packageName + ".provider",
+        file
+    )
+    var capturedImageUri by remember {
+        mutableStateOf<Uri>(Uri.EMPTY)
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { savedInUri ->
+        if (savedInUri) {
+            capturedImageUri = uri
+            Toast.makeText(context, "Foto cargada", Toast.LENGTH_SHORT).show()
+        }
+        else Toast.makeText(context, "No se ha podido cargar la foto", Toast.LENGTH_SHORT).show()
+    }
+
     val modifierForInputs = Modifier
         .fillMaxWidth()
         .padding(top = 15.dp)
 
     Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(innerPadding)
             .padding(15.dp)
@@ -101,6 +150,9 @@ fun AddVehiculo(
             nombreCliente = nombreCliente,
             listaClientes = listaClientes
         )
+        Button(onClick = { cameraLauncher.launch(uri) }) {
+            Text(text = "Foto de la documentación")
+        }
         Row (
             horizontalArrangement = Arrangement.End,
             modifier = modifierForInputs

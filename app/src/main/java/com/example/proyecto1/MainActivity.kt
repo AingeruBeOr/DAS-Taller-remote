@@ -3,6 +3,7 @@ package com.example.proyecto1
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -35,6 +36,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.
@@ -82,6 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         requestPushNotifcations()
         requestWriteInStoragePermission()
+        requestCameraUse()
 
         submitDeviceTokenFCM()
 
@@ -250,6 +255,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Solicitar permisos para usar la cámara.
+     *
+     * Además, hay que añadir el perimiso 'android.permission.CAMERA' y un 'uses-feature' de
+     * 'android.hardware.camera'
+     */
+    fun requestCameraUse() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this, Manifest.permission.CAMERA) -> {
+                // In an educational UI, explain to the user why your app requires this
+                // permission for a specific feature to behave as expected, and what
+                // features are disabled if it's declined. In this UI, include a
+                // "cancel" or "no thanks" button that lets the user continue
+                // using your app without granting the permission.
+            }
+            else -> {
+                // You can directly ask for the permission.
+                // The registered ActivityResultCallback gets the result of this request.
+                requestPermissionLauncher.launch(
+                    Manifest.permission.CAMERA)
+            }
+        }
+    }
+
+
     private fun submitDeviceTokenFCM() {
         CoroutineScope(Dispatchers.IO).launch {
             val token = Firebase.messaging.token.await()
@@ -257,4 +294,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.submitDeviceTokenFCM(token)
         }
     }
+
+
+
 }
