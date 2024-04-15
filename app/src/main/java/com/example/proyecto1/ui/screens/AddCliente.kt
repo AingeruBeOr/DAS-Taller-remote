@@ -1,5 +1,6 @@
 package com.example.proyecto1.ui.screens
 
+import android.database.sqlite.SQLiteConstraintException
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
@@ -59,6 +61,12 @@ fun AddCliente(
     var email by rememberSaveable {
         mutableStateOf("")
     }
+    var latitude by rememberSaveable {
+        mutableStateOf("")
+    }
+    var longitude by rememberSaveable {
+        mutableStateOf("")
+    }
 
     val modifierForInputs = Modifier
         .fillMaxWidth()
@@ -97,6 +105,22 @@ fun AddCliente(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = modifierForInputs
         )
+        // Campo de texto para añadir latitud
+        TextField(
+            value = latitude,
+            onValueChange = { latitude = it },
+            label = { Text(text = "Latitud") },
+            leadingIcon = { Icon(imageVector = Icons.Rounded.Place, contentDescription = "latitude") },
+            modifier = modifierForInputs
+        )
+        // Campo de texto para añadir longitud
+        TextField(
+            value = longitude,
+            onValueChange = { longitude = it },
+            label = { Text(text = "Longitud") },
+            leadingIcon = { Icon(imageVector = Icons.Rounded.Place, contentDescription = "longitude") },
+            modifier = modifierForInputs
+        )
         // Linea para añadir los botones de "Cancelar" y "Guardar"
         Row(
             horizontalArrangement = Arrangement.End,
@@ -108,15 +132,38 @@ fun AddCliente(
                 Text(text = stringResource(id = R.string.Cancel))
             }
             Button(onClick = {
+                var validCoordinates = true
                 try {
-                    viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email))
-                    navController.popBackStack()
+                    latitude.toDouble()
+                    longitude.toDouble()
                 }
                 catch (e: NumberFormatException) {
+                    validCoordinates = false
                     Toast.makeText(
                         context,
-                        context.getString(R.string.Phone_too_long),
-                        Toast.LENGTH_SHORT).show()
+                        "Los números de latitud y longitud no son válidos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                if (validCoordinates) {
+                    try {
+                        viewModel.addNewCliente(Cliente(nombre, telefono.toInt(), email), latitude, longitude)
+                        navController.popBackStack()
+                    }
+                    catch (e: NumberFormatException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.Phone_too_long),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    catch (e: SQLiteConstraintException) {
+                        Toast.makeText(
+                            context,
+                            "Ya existe un usuario con ese nombre",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }) {
                 Text(text = stringResource(id = R.string.Save))

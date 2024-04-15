@@ -35,8 +35,8 @@ class ClienteRepository @Inject constructor(
         clienteDao.insertCliente(cliente)
     }
 
-    suspend fun insertarRemoteCliente(cliente: Cliente, username: String) {
-        remoteDBApiService.addClient(username, cliente)
+    suspend fun insertarRemoteCliente(cliente: Cliente, username: String, latitude: String, longitude: String) {
+        remoteDBApiService.addClient(username, latitude = latitude, longitude = longitude, cliente)
     }
 
     suspend fun deleteCliente(cliente: Cliente) {

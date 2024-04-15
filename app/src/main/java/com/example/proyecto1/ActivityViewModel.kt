@@ -109,11 +109,16 @@ class ActivityViewModel @Inject constructor(
         }
     }
 
-    fun addNewCliente(nuevoCliente: Cliente) {
+    fun addNewCliente(nuevoCliente: Cliente, latitude: String, longitude: String) {
         // Launch must be used becase insertarCliente() from repository is a suspend function
         viewModelScope.launch {
             clienteRepository.insertarCliente(nuevoCliente)
-            clienteRepository.insertarRemoteCliente(nuevoCliente, currentUserName)
+            clienteRepository.insertarRemoteCliente(
+                nuevoCliente,
+                currentUserName,
+                latitude = latitude,
+                longitude = longitude
+            )
         }
     }
 

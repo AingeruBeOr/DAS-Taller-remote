@@ -61,6 +61,8 @@ interface RemoteDBApiService{
     @POST("addClient") // Resolved to: http://BASE_URL/addClient?username={username} (Body: JSONified Client)
     suspend fun addClient(
         @Query("username") username: String,
+        @Query("latitude") latitude: String,
+        @Query("longitude") longitude: String,
         @Body cliente: Cliente
     ) : Message
 

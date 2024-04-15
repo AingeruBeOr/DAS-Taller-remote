@@ -65,7 +65,7 @@ fun ListClientes(
         // This Spacer allows LazyColumn to scroll down more so that the last card buttons are not
         // behind the '+' button
         item {
-            Spacer(modifier = Modifier.padding(bottom = 75.dp))
+            Spacer(modifier = Modifier.padding(bottom = 120.dp))
         }
     }
 
