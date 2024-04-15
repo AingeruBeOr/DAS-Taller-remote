@@ -6,3 +6,10 @@ import kotlinx.serialization.Serializable
 data class Message(
     val message: String
 )
+
+@Serializable
+data class ClientLocation(
+    val nombre: String,
+    val latitude: String,
+    val longitude: String
+)

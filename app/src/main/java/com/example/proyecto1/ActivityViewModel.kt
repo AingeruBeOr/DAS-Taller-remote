@@ -19,6 +19,7 @@ import com.example.proyecto1.data.repositories.ServicioRepository
 import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
 import com.example.proyecto1.domain.PullUserDataUseCase
+import com.example.proyecto1.network.ClientLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -77,6 +78,7 @@ class ActivityViewModel @Inject constructor(
     var currentUserType = mutableStateOf("taller")
     var currentUserName = ""
     var vehicleDocumentation = MutableStateFlow<Bitmap?>(null)
+    var userClientLocations = MutableStateFlow<List<ClientLocation>>(listOf())
 
     fun addNewServicio(nuevoServicio: Servicio) {
         viewModelScope.launch {
@@ -201,6 +203,12 @@ class ActivityViewModel @Inject constructor(
             delay(300) // TODO, esperamos a que cargue la foto
             vehicleDocumentation.value = vehiculoRepository.getVehicleDocumentation(matricula)
             delay(300) // TODO, esperamos a que cargue la foto
+        }
+    }
+
+    fun getUsersClientLocations(){
+        viewModelScope.launch {
+            userClientLocations.value = clienteRepository.getUsersClientLocations(currentUserName)
         }
     }
 }

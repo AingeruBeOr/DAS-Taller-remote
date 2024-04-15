@@ -96,4 +96,9 @@ interface RemoteDBApiService{
         @Query("fecha") fecha: String,
         @Query("matricula") matricula: String
     )
+
+    @GET("clientsLocations")
+    suspend fun getClientLocations(
+        @Query("user") user: String
+    ) : List<ClientLocation>
 }

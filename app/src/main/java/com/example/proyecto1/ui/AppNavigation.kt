@@ -146,7 +146,7 @@ fun AppNavigation(
             )
         }
         composable("clientMap") {
-            ClientLocationMaps()
+            ClientLocationMaps(viewModel = viewModel)
         }
     }
 }

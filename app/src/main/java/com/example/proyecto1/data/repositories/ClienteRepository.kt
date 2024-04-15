@@ -3,6 +3,7 @@ package com.example.proyecto1.data.repositories
 import com.example.proyecto1.data.database.dao.ClienteDao
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
+import com.example.proyecto1.network.ClientLocation
 import com.example.proyecto1.network.RemoteDBApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -45,5 +46,9 @@ class ClienteRepository @Inject constructor(
 
     suspend fun deleteAllLocalClientes() {
         clienteDao.deleteAll()
+    }
+
+    suspend fun getUsersClientLocations(user: String): List<ClientLocation> {
+        return remoteDBApiService.getClientLocations(user)
     }
 }
