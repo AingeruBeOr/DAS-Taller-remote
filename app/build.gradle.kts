@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,9 @@ plugins {
     id("kotlinx-serialization")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+
+    // Maps SDK
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -24,6 +29,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val keystorefile = project.rootProject.file("secrets.properties")
+        val properties = Properties()
+        properties.load(keystorefile.inputStream())
+        val MAPS_API_KEY = properties.getProperty("MAPS_API_KEY") ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = MAPS_API_KEY
     }
 
     buildTypes {
@@ -44,6 +55,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -114,9 +126,19 @@ dependencies {
     implementation("androidx.glance:glance-appwidget:1.0.0")
     // For interop APIs with Material 3
     implementation("androidx.glance:glance-material3:1.0.0")
+
+    // Maps SDK for Android
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.maps.android:maps-compose:2.11.4")
 }
 
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+secrets{
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+    ignoreList.add("MAPS_API_KEY")
 }

@@ -103,6 +103,11 @@ fun TopBar(navController: NavController) {
             showSettings.value = false
             showBackNavArrow.value = true
         }
+        "clientMap" -> {
+            titleText.value = "Mapa de los clientes"
+            showSettings.value = true
+            showBackNavArrow.value = true
+        }
     }
 
     TopAppBar(

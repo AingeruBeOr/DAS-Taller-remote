@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -84,6 +85,7 @@ fun MainView(
                     Column (
                         horizontalAlignment = Alignment.End
                     ) {
+                        // Botón pequeño para descargar los servicios de mes
                         if (currentRoute == "servicios") {
                             SmallFloatingActionButton(
                                 onClick = {
@@ -95,6 +97,17 @@ fun MainView(
                                 modifier = Modifier.padding(bottom = 5.dp)
                             ) {
                                 Icon(painterResource(id = R.drawable.round_download_24), contentDescription = "Añadir")
+                            }
+                        }
+                        // Botón pequeño para mostrar la ubicación de los clientes
+                        if (currentRoute == "clientes") {
+                            SmallFloatingActionButton(
+                                onClick = {
+                                    navController.navigate("clientMap")
+                                },
+                                modifier = Modifier.padding(bottom = 5.dp)
+                            ) {
+                                Icon(imageVector = Icons.Rounded.LocationOn, contentDescription = "Añadir")
                             }
                         }
                         FloatingActionButton(onClick = {

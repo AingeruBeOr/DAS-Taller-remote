@@ -11,6 +11,7 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.ui.screens.AddCliente
 import com.example.proyecto1.ui.screens.AddServicio
 import com.example.proyecto1.ui.screens.AddVehiculo
+import com.example.proyecto1.ui.screens.ClientLocationMaps
 import com.example.proyecto1.ui.screens.ListClientes
 import com.example.proyecto1.ui.screens.ListServicios
 import com.example.proyecto1.ui.screens.ListVehículos
@@ -143,6 +144,9 @@ fun AppNavigation(
                 matricula = it.arguments?.getString("matricula"),
                 innerPadding = innerPadding
             )
+        }
+        composable("clientMap") {
+            ClientLocationMaps()
         }
     }
 }
