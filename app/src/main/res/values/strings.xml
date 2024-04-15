@@ -42,4 +42,5 @@
     <string name="Green">Verde</string>
     <string name="Purple">Morado</string>
     <string name="Phone_too_long">El número de teléfono es demasiado largo</string>
+    <string name="widget_description">Resumen</string>
 </resources>
