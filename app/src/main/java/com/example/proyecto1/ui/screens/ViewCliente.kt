@@ -1,6 +1,12 @@
 package com.example.proyecto1.ui.screens
 
+import android.content.ContentProviderOperation
+import android.content.ContentResolver
+import android.content.Context
 import android.content.res.Configuration
+import android.provider.ContactsContract
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,17 +35,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
+import com.example.proyecto1.data.repositories.ClienteRepository
+import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
+import java.lang.Exception
 
 data class ClientInfoState(
     val navController: NavController,
@@ -116,7 +128,12 @@ fun PortraitLayout(
             .padding(innerPadding)
             .padding(all = 15.dp)
     ) {
-        ClientInfo(cliente = state.cliente, openDial = state.openDial, sendMail = state.sendMail)
+        ClientInfo(
+            cliente = state.cliente,
+            openDial = state.openDial,
+            sendMail = state.sendMail,
+            state = state
+        )
         Text(
             text = stringResource(id = R.string.Client_vehicles),
             fontSize = 20.sp,
@@ -146,7 +163,12 @@ fun LandscapeLayout(
             .padding(innerPadding)
             .padding(10.dp)
     ) {
-        ClientInfo(cliente = state.cliente, openDial = state.openDial, sendMail = state.sendMail)
+        ClientInfo(
+            cliente = state.cliente,
+            openDial = state.openDial,
+            sendMail = state.sendMail,
+            state = state
+        )
         Column {
             Text(
                 text = stringResource(id = R.string.Client_vehicles),
@@ -173,8 +195,10 @@ fun LandscapeLayout(
 fun ClientInfo(
     cliente: Cliente,
     openDial: (Int) -> Unit,
-    sendMail: (String) -> Unit
+    sendMail: (String) -> Unit,
+    state: ClientInfoState
 ) {
+    val context = LocalContext.current
     Column {
         // Nombre del cliente
         Row (
@@ -210,6 +234,16 @@ fun ClientInfo(
             }, modifier = Modifier.padding(start = 10.dp)) {
                 Icon(Icons.Rounded.Send, contentDescription = "Send")
             }
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+            onClick = {
+                saveActualClientIntoContacts(context, state)
+            }
+        ) {
+            Text(text = "Guardar en el teléfono")
         }
     }
 }
@@ -289,5 +323,97 @@ fun VehicleCard(
                 )
             }
         }
+    }
+}
+
+fun saveActualClientIntoContacts(
+    context: Context,
+    state: ClientInfoState
+) {
+    val operations = arrayListOf<ContentProviderOperation>()
+
+    // Creates a raw contact
+    var operation : ContentProviderOperation.Builder =
+        ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+            .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, "")
+            .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, "")
+
+    operations.add(operation.build())
+
+    // Adding the name as a Data
+    operation = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+        .withValue(ContactsContract.Data.MIMETYPE,
+            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+        .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, state.cliente.nombre)
+
+    operations.add(operation.build())
+
+    // Adding the phone number as a Data
+    operation = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+        /*
+         * Sets the value of the raw contact id column to the new raw contact ID returned
+         * by the first operation in the batch.
+         */
+        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+
+        // Sets the data row's MIME type to Phone
+        .withValue(ContactsContract.Data.MIMETYPE,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+
+        // Sets the phone number and type
+        .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, state.cliente.telefono)
+        .withValue(
+            ContactsContract.CommonDataKinds.Phone.TYPE,
+            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+        )
+
+    operations.add(operation.build())
+
+    // Adding the email as a Data
+    operation = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+        /*
+         * Sets the value of the raw contact id column to the new raw contact ID returned
+         * by the first operation in the batch.
+         */
+        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+
+        // Sets the data row's MIME type to Email
+        .withValue(ContactsContract.Data.MIMETYPE,
+            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+
+        // Sets the email address and type
+        .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, state.cliente.email)
+        .withValue(
+            ContactsContract.CommonDataKinds.Email.TYPE,
+            ContactsContract.CommonDataKinds.Email.TYPE_HOME
+        )
+
+    /*
+    * Demonstrates a yield point. At the end of this insert, the batch operation's thread
+    * will yield priority to other threads. Use after every set of operations that affect a
+    * single contact, to avoid degrading performance.
+    */
+    operation.withYieldAllowed(true)
+
+    operations.add(operation.build())
+
+    // Ask the Contacts Provider to create a new contact
+    try {
+        context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+        Toast.makeText(
+            context,
+            "El contacto se ha guardado en el teléfono",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+    catch (e: Exception) {
+        Toast.makeText(
+            context,
+            "No se ha podido guardar el contacto",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        Log.e("Contacts", "No se ha podido guardar el contacto")
     }
 }
