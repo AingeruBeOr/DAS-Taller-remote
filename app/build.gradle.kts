@@ -127,9 +127,13 @@ dependencies {
     // For interop APIs with Material 3
     implementation("androidx.glance:glance-material3:1.0.0")
 
-    // Maps SDK for Android
+    // Maps service (Google Play Service)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    // Maps SDK for Android
     implementation("com.google.maps.android:maps-compose:2.11.4")
+
+    // Geolocation service (Google Play Service)
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }
 
 // Allow references to generated code

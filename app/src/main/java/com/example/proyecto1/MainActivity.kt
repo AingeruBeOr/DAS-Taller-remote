@@ -209,7 +209,8 @@ class MainActivity : AppCompatActivity() {
             arrayOf(
                 Manifest.permission.POST_NOTIFICATIONS,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_FINE_LOCATION // También podrá aceptar solo el ACCESS_COARSE_LOCATION
             )
         )
     }
