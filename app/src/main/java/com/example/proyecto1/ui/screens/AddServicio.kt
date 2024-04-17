@@ -29,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,6 +37,7 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
+import com.example.proyecto1.ui.widgets.TallerAppWidget
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -50,6 +52,7 @@ fun AddServicio(
     navController: NavController,
     viewModel: ActivityViewModel
 ) {
+    val context = LocalContext.current
     // Input values
     // Van a ser rememberSaveable para que al girar la pantalla no se borren del formualario
     var descripcion by rememberSaveable {
@@ -118,6 +121,7 @@ fun AddServicio(
                 viewModel.addNewServicio(
                     Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula.value)
                 )
+                viewModel.updateWidget(context)
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))

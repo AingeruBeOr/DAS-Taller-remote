@@ -57,6 +57,7 @@ fun ViewVehiculo(
     matricula: String?,
     innerPadding: PaddingValues
 ) {
+    val context = LocalContext.current
     var vehiculo by remember {
         mutableStateOf(Vehiculo("a", "a", "1", "a"))
     }
@@ -107,7 +108,9 @@ fun ViewVehiculo(
         DeleteAlertDialog(
             showDeleteAlertDialog = showDeleteAlertDialog,
             deletingElement = deletingServicio,
-            deleteElement = viewModel::deleteServicio
+            deleteElement = {
+                viewModel.deleteServicio(it, context)
+            }
         )
     }
 }

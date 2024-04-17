@@ -1,12 +1,12 @@
 package com.example.proyecto1
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyecto1.data.database.entities.Cliente
@@ -20,6 +20,7 @@ import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.domain.DownloadMonthServices
 import com.example.proyecto1.domain.PullUserDataUseCase
 import com.example.proyecto1.network.ClientLocation
+import com.example.proyecto1.ui.widgets.TallerAppWidget
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -87,10 +88,12 @@ class ActivityViewModel @Inject constructor(
         }
     }
 
-    fun deleteServicio(servicioParaBorrar: Servicio) {
+    fun deleteServicio(servicioParaBorrar: Servicio, context: Context) {
         Log.d("ViewModel", "Deleting service")
         viewModelScope.launch{
             servicioRepository.deleteServicio(servicioParaBorrar)
+            servicioRepository.generateWidgetGraph(currentUserName)
+            TallerAppWidget().updateAll(context)
         }
     }
 
@@ -214,6 +217,13 @@ class ActivityViewModel @Inject constructor(
     fun getUsersClientLocations(){
         viewModelScope.launch {
             userClientLocations.value = clienteRepository.getUsersClientLocations(currentUserName)
+        }
+    }
+
+    fun updateWidget(context: Context) {
+        viewModelScope.launch {
+            servicioRepository.generateWidgetGraph(currentUserName)
+            TallerAppWidget().updateAll(context)
         }
     }
 }

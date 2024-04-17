@@ -103,4 +103,9 @@ interface RemoteDBApiService{
     suspend fun getClientLocations(
         @Query("user") user: String
     ) : List<ClientLocation>
+
+    @GET("generateWidgetGraph")
+    suspend fun generateWidgetGraph(
+        @Query("taller") taller: String
+    ) : Message
 }

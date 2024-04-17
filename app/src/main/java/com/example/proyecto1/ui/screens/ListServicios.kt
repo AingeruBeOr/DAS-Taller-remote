@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -39,6 +40,7 @@ fun ListServicios(
     innerPadding: PaddingValues,
     viewModel: ActivityViewModel
 ) {
+    val context = LocalContext.current
     var showDeleteAlertDialog = remember {
         mutableStateOf(false)
     }
@@ -73,7 +75,9 @@ fun ListServicios(
         DeleteAlertDialog(
             showDeleteAlertDialog = showDeleteAlertDialog,
             deletingElement = deletingServicio,
-            deleteElement = viewModel::deleteServicio
+            deleteElement = {
+                viewModel.deleteServicio(it, context)
+            }
         )
     }
 }
@@ -117,7 +121,7 @@ fun ServicioCard(
                 }) {
                     Icon(painterResource(id = R.drawable.baseline_remove_red_eye_24), contentDescription = "Ver")
                 }
-                // Botón para eliminar el cliente
+                // Botón para eliminar el servicio
                 IconButton(
                     onClick = {
                         deletingServicio.value = servicio

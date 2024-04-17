@@ -1,8 +1,12 @@
 package com.example.proyecto1.data.repositories
 
+import android.content.Context
+import androidx.glance.appwidget.updateAll
 import com.example.proyecto1.data.database.dao.ServicioDao
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.network.RemoteDBApiService
+import com.example.proyecto1.ui.widgets.TallerAppWidget
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -37,5 +41,9 @@ class ServicioRepository @Inject constructor (
 
     suspend fun deleteAllLocalServicios() {
         servicioDao.deleteAll()
+    }
+
+    suspend fun generateWidgetGraph(taller: String) {
+        remoteDBApiService.generateWidgetGraph(taller)
     }
 }
