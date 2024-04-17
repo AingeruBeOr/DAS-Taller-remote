@@ -134,6 +134,9 @@ dependencies {
 
     // Geolocation service (Google Play Service)
     implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
 
 // Allow references to generated code
