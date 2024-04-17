@@ -2,7 +2,6 @@ package com.example.proyecto1.ui.widgets
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,9 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmapOrNull
-import androidx.core.net.toUri
-import androidx.glance.Button
-import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -21,20 +17,22 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.ImageProvider
 import androidx.glance.appwidget.SizeMode
+import androidx.glance.appwidget.action.ActionCallback
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxSize
-import androidx.glance.unit.ColorProvider
+import androidx.glance.layout.fillMaxWidth
 import coil.imageLoader
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.proyecto1.R
-import kotlinx.coroutines.coroutineScope
-import java.net.URL
 
 class TallerAppWidget: GlanceAppWidget() {
 
@@ -71,21 +69,35 @@ class TallerAppWidget: GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxSize().background(Color.White)
         ) {
             if (image != null) {
-                /*Image(
-                    provider = ImageProvider(R.mipmap.ic_launcher),
-                    contentDescription = "Bar plot",
-                    modifier = GlanceModifier.fillMaxSize()
-                )*/
                 Image(
                     provider = ImageProvider(image!!),
                     contentDescription = "Bar plot",
                     modifier = GlanceModifier.fillMaxSize()
                 )
             }
+            // If the image has not been loaded
             else {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = GlanceModifier.fillMaxSize()
+                )
             }
-            Button(text = "Referesh", onClick = { /*TODO*/ })
+            Image(
+                provider = ImageProvider(R.drawable.round_refresh_24),
+                contentDescription = "Refresh",
+                modifier = GlanceModifier.fillMaxWidth().clickable {
+                    actionRunCallback<RefreshAction>()
+                }
+            )
+        }
+    }
+
+    private class RefreshAction : ActionCallback {
+        override suspend fun onAction(
+            context: Context,
+            glanceId: GlanceId,
+            parameters: ActionParameters
+        ) {
+            TallerAppWidget().update(context, glanceId)
         }
     }
 
@@ -102,11 +114,6 @@ class TallerAppWidget: GlanceAppWidget() {
         return "http://34.155.61.4/widgetPlots/${username}.png"
     }
 
-    private fun getImageProvider(path: String): ImageProvider {
-        Log.d("Widget", "Accessing ${path}")
-        return ImageProvider(path.toUri())
-    }
-
     /**
      * Use Coil to get the image from the Internet
      *
@@ -114,7 +121,11 @@ class TallerAppWidget: GlanceAppWidget() {
      * contexto
      */
     private suspend fun Context.getImageBitmap(url: String): Bitmap? {
-        val request = ImageRequest.Builder(this).data(url).build()
+        val request = ImageRequest.Builder(this)
+            .data(url)
+            .memoryCachePolicy(CachePolicy.DISABLED)  // Para que no la guarde en caché
+            .diskCachePolicy(CachePolicy.DISABLED)    // Para que no la guarde en caché
+            .build()
         val result = imageLoader.execute(request)
         return result.drawable?.toBitmapOrNull()
     }
