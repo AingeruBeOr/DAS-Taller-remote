@@ -74,7 +74,7 @@ fun Login(
                     "La contraseña es incorrecta",
                     Toast.LENGTH_SHORT).show()
                 "true" -> {
-                    viewModel.pullUserData(username)
+                    viewModel.pullUserData(username, context)
                     // Navigate and remove the previous Composable from the back stack
                     navController.navigate("servicios") {
                         popUpTo(0)

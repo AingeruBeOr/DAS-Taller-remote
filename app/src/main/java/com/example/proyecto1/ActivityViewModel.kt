@@ -185,11 +185,12 @@ class ActivityViewModel @Inject constructor(
         return loginResponse
     }
 
-    fun pullUserData(username: String) {
+    fun pullUserData(username: String, context: Context) {
         viewModelScope.launch {
             pullUserDataUseCase.pullUserData(username)
             currentUserType.value = appUserRepository.getUserType(username)
             currentUserName = username
+            TallerAppWidget().updateAll(context)
         }
     }
 
