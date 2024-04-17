@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
-import com.example.proyecto1.R
 
 @Composable
 fun Login(
@@ -74,7 +73,7 @@ fun Login(
                     "La contraseña es incorrecta",
                     Toast.LENGTH_SHORT).show()
                 "true" -> {
-                    viewModel.pullUserData(username, context)
+                    viewModel.loginSuccessful(username, context)
                     // Navigate and remove the previous Composable from the back stack
                     navController.navigate("servicios") {
                         popUpTo(0)

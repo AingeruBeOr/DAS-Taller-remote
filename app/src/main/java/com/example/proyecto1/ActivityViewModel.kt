@@ -185,11 +185,13 @@ class ActivityViewModel @Inject constructor(
         return loginResponse
     }
 
-    fun pullUserData(username: String, context: Context) {
+    fun loginSuccessful(username: String, context: Context) {
         viewModelScope.launch {
             pullUserDataUseCase.pullUserData(username)
             currentUserType.value = appUserRepository.getUserType(username)
             currentUserName = username
+            servicioRepository.generateWidgetGraph(username)
+            preferencesRepository.saveLastUserName(username)
             TallerAppWidget().updateAll(context)
         }
     }

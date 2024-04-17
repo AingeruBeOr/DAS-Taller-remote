@@ -2,6 +2,7 @@ package com.example.proyecto1.ui.widgets
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmapOrNull
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -33,29 +35,38 @@ import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.proyecto1.R
+import com.example.proyecto1.data.repositories.PreferencesRepository
+import com.example.proyecto1.data.repositories.dataStore
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 class TallerAppWidget: GlanceAppWidget() {
 
     override val sizeMode: SizeMode = SizeMode.Single
-
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         // In this method, load data needed to render the AppWidget.
         // Use `withContext` to switch to another thread for long running
         // operations.
 
+        // Get last user from dataStore
+        val LAST_USER = stringPreferencesKey("lastUser")
+        val username = context.dataStore.data.first()[LAST_USER]
+        Log.d("Widget", username ?: "No-user")
+
+        // UI
         provideContent {
             GlanceTheme {
-                WidgetContent()
+                if (username != null) WidgetContent(username)
+                // else TODO
             }
         }
     }
 
     @Composable
-    private fun WidgetContent() {
+    private fun WidgetContent(username: String) {
         val context = LocalContext.current
-        val size = LocalSize.current
-        val url = getUrl()
+        val url = getUrl(username)
         var image by remember {
             mutableStateOf<Bitmap?>(null)
         }
@@ -109,8 +120,7 @@ class TallerAppWidget: GlanceAppWidget() {
         ImageWorker.cancel(context, glanceId)
     }*/
 
-    private fun getUrl() : String {
-        val username = "Aingeru"
+    private fun getUrl(username: String) : String {
         return "http://34.155.61.4/widgetPlots/${username}.png"
     }
 

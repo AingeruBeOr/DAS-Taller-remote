@@ -33,6 +33,7 @@ class PreferencesRepository @Inject constructor(
 ) {
     // Defining keys from DataStore
     private val THEME = stringPreferencesKey("theme")
+    private val LAST_USER = stringPreferencesKey("lastUser")
 
     /**
      * Conseguir el tema actual del usuario.
@@ -58,5 +59,18 @@ class PreferencesRepository @Inject constructor(
         context.dataStore.edit { preferences ->
             preferences[THEME] = theme
         }
+    }
+
+    /**
+     * Guardar el útlimo usuario que ha iniciado sesión
+     */
+    suspend fun saveLastUserName(username: String) {
+        context.dataStore.edit { preferences ->
+            preferences[LAST_USER] = username
+        }
+    }
+
+    suspend fun getLastUserName() : String? {
+        return context.dataStore.data.first()[LAST_USER]
     }
 }
