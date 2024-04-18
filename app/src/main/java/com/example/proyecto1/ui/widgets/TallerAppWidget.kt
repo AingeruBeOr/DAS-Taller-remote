@@ -165,34 +165,26 @@ class TallerAppWidget: GlanceAppWidget() {
             glanceId: GlanceId,
             parameters: ActionParameters
         ) {
-            Log.d("Widget", "Refresh button callback executing")
-            // Get last user from dataStore (not the one from the widget)
-            val LAST_USER = stringPreferencesKey("lastUser")
-            val username = context.dataStore.data.first()[LAST_USER]
+            // TODO se puede intentar hacer en un worker a parte porque esto tarda mucho
+            updateAppWidgetState(context, glanceId) { prefs ->
+                Log.d("Widget", "Refresh button callback executing")
+                // Get last user from dataStore (not the one from the widget)
+                val LAST_USER = stringPreferencesKey("lastUser")
+                val username = context.dataStore.data.first()[LAST_USER]
 
-            // Request image to the server
-            val imageBitmap = withContext(Dispatchers.IO) {
-                context.getImageBitmap("http://34.155.61.4/widgetPlots/${username}.png")
-            }
-
-            // Bitmap to String
-            val baos = ByteArrayOutputStream()
-            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val b : ByteArray = baos.toByteArray()
-            val imageString = Base64.encodeToString(b, Base64.DEFAULT)
-            Log.d("Widget", "BASE64 image size in refresh button: ${imageString.length}")
-
-            // We get the widget manager
-            val manager = GlanceAppWidgetManager(context)
-            // We get all the glace IDs that are a TallerAppWidget (remember than we can have more
-            // than one widget of the same type)
-            val glanceIds = manager.getGlanceIds(TallerAppWidget::class.java)
-            // For each glanceIds...
-            Log.d("Widget", "Los glanceIds de los widgets son: $glanceIds")
-            glanceIds.forEach { glanceId ->
-                updateAppWidgetState(context, glanceId) { prefs ->
-                    prefs[imageKey] = imageString
+                // Request image to the server
+                val imageBitmap = withContext(Dispatchers.IO) {
+                    context.getImageBitmap("http://34.155.61.4/widgetPlots/${username}.png")
                 }
+
+                // Bitmap to String
+                val baos = ByteArrayOutputStream()
+                imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val b : ByteArray = baos.toByteArray()
+                val imageString = Base64.encodeToString(b, Base64.DEFAULT)
+                Log.d("Widget", "BASE64 image size in refresh button: ${imageString.length}")
+
+                prefs[imageKey] = imageString
             }
             TallerAppWidget().update(context, glanceId)
         }
