@@ -12,8 +12,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,6 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.proyecto1.ActivityViewModel
+import kotlin.math.log
 
 @Composable
 fun Login(
@@ -40,6 +45,9 @@ fun Login(
     }
 
     val context = LocalContext.current
+
+    // Observamos el valor de la respuesta de login
+    val loginResponse = viewModel.loginResponse.collectAsState()
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,9 +69,23 @@ fun Login(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         Button(onClick = {
-            val response = viewModel.login(username, password)
             // TODO se ejecuta el toast anterior
-            when(response) {
+            viewModel.login(username, password)
+        }) {
+            Text(text = "Login")
+        }
+        OutlinedButton(onClick = {
+            // Navigate and remove the previous Composable from the back stack
+            navController.navigate("registration") {
+                popUpTo(0)
+            }
+        }) {
+            Text(text = "Registrarse")
+        }
+
+        // Si el valor de la respuesta de login cambia
+        LaunchedEffect(key1 = loginResponse.value) {
+            when(loginResponse.value) {
                 "User does not exist" -> Toast.makeText(
                     context,
                     "El usuario no existe",
@@ -80,16 +102,6 @@ fun Login(
                     }
                 }
             }
-        }) {
-            Text(text = "Login")
-        }
-        OutlinedButton(onClick = {
-            // Navigate and remove the previous Composable from the back stack
-            navController.navigate("registration") {
-                popUpTo(0)
-            }
-        }) {
-            Text(text = "Registrarse")
         }
     }
 }

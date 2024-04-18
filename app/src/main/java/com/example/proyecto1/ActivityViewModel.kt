@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmapOrNull
@@ -87,7 +88,7 @@ class ActivityViewModel @Inject constructor(
     private var actualServicio = Servicio("a", "a", "a")
     var currentTheme = preferencesRepository.getUserTheme()
     var currentThemeSnapshot = "Blue"
-    var loginResponse = ""
+    var loginResponse = MutableStateFlow<String>("")
     var registerResponse = ""
     var currentUserType = mutableStateOf("taller")
     var currentUserName = ""
@@ -191,11 +192,10 @@ class ActivityViewModel @Inject constructor(
         }
         return currentThemeSnapshot
     }
-    fun login(username: String, password: String): String {
+    fun login(username: String, password: String) {
         viewModelScope.launch {
-            loginResponse = appUserRepository.login(username, password)
+            loginResponse.value = appUserRepository.login(username, password)
         }
-        return loginResponse
     }
 
     fun loginSuccessful(username: String, context: Context) {
