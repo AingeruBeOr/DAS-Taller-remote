@@ -29,6 +29,7 @@ import com.example.proyecto1.domain.DownloadMonthServices
 import com.example.proyecto1.domain.PullUserDataUseCase
 import com.example.proyecto1.network.ClientLocation
 import com.example.proyecto1.ui.widgets.TallerAppWidget
+import com.example.proyecto1.ui.widgets.getImageBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -258,24 +259,10 @@ class ActivityViewModel @Inject constructor(
             Log.d("Widget", "Los glanceIds de los widgets son: $glanceIds")
             glanceIds.forEach { glanceId ->
                 updateAppWidgetState(context, glanceId) { prefs ->
-                    Log.d("Widget", "Actualizando state 1")
-                    val listaServicios = servicios.first()
-                    Log.d("Widget", "Actualizando state 2")
                     prefs[TallerAppWidget.imageKey] = imageString
                 }
             }
             TallerAppWidget().updateAll(context)
         }
-    }
-
-    private suspend fun Context.getImageBitmap(url: String): Bitmap? {
-        val request = ImageRequest.Builder(this)
-            .data(url)
-            .memoryCachePolicy(CachePolicy.DISABLED)  // Para que no la guarde en caché
-            .diskCachePolicy(CachePolicy.DISABLED)    // Para que no la guarde en caché
-            .build()
-        val result = imageLoader.execute(request)
-        Log.d("Widget", "Imagen recuperada VM")
-        return result.drawable?.toBitmapOrNull()
     }
 }
