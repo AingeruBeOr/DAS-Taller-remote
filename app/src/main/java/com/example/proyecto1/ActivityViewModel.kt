@@ -240,7 +240,6 @@ class ActivityViewModel @Inject constructor(
             val imageBitmap = withContext(Dispatchers.IO) {
                 context.getImageBitmap("http://34.155.61.4/widgetPlots/${currentUserName}.png")
             }
-            //val imageBitmap = context.getImageBitmap("http://34.155.61.4/widgetPlots/${currentUserName}.png")
 
             // Bitmap to String
             val baos = ByteArrayOutputStream()
@@ -262,7 +261,6 @@ class ActivityViewModel @Inject constructor(
                     Log.d("Widget", "Actualizando state 1")
                     val listaServicios = servicios.first()
                     Log.d("Widget", "Actualizando state 2")
-                    prefs[TallerAppWidget.servicesKeys] = listaServicios.size.toString()
                     prefs[TallerAppWidget.imageKey] = imageString
                 }
             }

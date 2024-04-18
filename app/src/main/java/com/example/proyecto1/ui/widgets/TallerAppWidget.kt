@@ -21,36 +21,28 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
-import androidx.glance.LocalSize
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
-import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Box
-import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
-import androidx.glance.session.GlanceSessionManager
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
-import androidx.glance.text.Text
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.proyecto1.R
-import com.example.proyecto1.data.repositories.PreferencesRepository
 import com.example.proyecto1.data.repositories.dataStore
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 class TallerAppWidget: GlanceAppWidget() {
 
@@ -63,7 +55,6 @@ class TallerAppWidget: GlanceAppWidget() {
     // store anything related to the state because it is managed by te server.
     // If nothing changes, it will not update because its a bit absurd
     companion object {
-        val servicesKeys = stringPreferencesKey("services")
         val imageKey = stringPreferencesKey("image")
     }
 
@@ -93,7 +84,6 @@ class TallerAppWidget: GlanceAppWidget() {
 
         // Get the PreferencesGlanceStateDefinition (DataStore) unique for each widget
         val prefs = currentState<Preferences>()
-        val services = prefs[servicesKeys]
         val imageString = prefs[imageKey]
 
         // Base64 String image to Bitmap
@@ -115,15 +105,6 @@ class TallerAppWidget: GlanceAppWidget() {
             imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
         }
 
-        /*var image by remember {
-            mutableStateOf<Bitmap?>(null)
-        }
-
-        // Executed in a coroutine when 'url' changes
-        LaunchedEffect(url) {
-            image = context.getImageBitmap(url)
-        }*/
-
         Box (
             modifier = GlanceModifier.fillMaxSize().background(Color.White)
         ) {
@@ -140,19 +121,15 @@ class TallerAppWidget: GlanceAppWidget() {
                     modifier = GlanceModifier.fillMaxSize()
                 )
             }
-            Row {
-                Image(
-                    provider = ImageProvider(R.drawable.round_refresh_24),
-                    contentDescription = "Refresh",
-                    modifier = GlanceModifier.clickable {
-                        actionRunCallback<RefreshAction>()
-                    }
-                )
-                Log.d("Widget", "Services: $services")
-                Text(text = "$services")
+            Image(
+                provider = ImageProvider(R.drawable.round_refresh_24),
+                contentDescription = "Refresh",
+                modifier = GlanceModifier.fillMaxWidth().clickable {
+                    actionRunCallback<RefreshAction>()
+                }
+            )
             }
         }
-    }
 
     private class RefreshAction : ActionCallback {
         override suspend fun onAction(
@@ -160,6 +137,8 @@ class TallerAppWidget: GlanceAppWidget() {
             glanceId: GlanceId,
             parameters: ActionParameters
         ) {
+            // TODO hacer una solicitud al servidor para pedirla la nueva imagen
+            // esto puede ser util para para cuando se actualiza pero desde otro dispositivo
             updateAppWidgetState(context, glanceId) { prefs ->
                 prefs.clear()
             }

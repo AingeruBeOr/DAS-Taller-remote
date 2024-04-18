@@ -111,7 +111,7 @@ fun AddVehiculo(
         // Callback process when .launch()
         if (savedInUri) {
             fileUploaded = true
-            Toast.makeText(context, "Foto cargada en $uri", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Foto cargada", Toast.LENGTH_SHORT).show()
         }
         else Toast.makeText(context, "No se ha podido cargar la foto", Toast.LENGTH_SHORT).show()
     }
