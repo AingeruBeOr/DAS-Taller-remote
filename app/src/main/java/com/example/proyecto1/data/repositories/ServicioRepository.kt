@@ -30,20 +30,20 @@ class ServicioRepository @Inject constructor (
         servicioDao.insertServicio(servicio)
     }
 
-    suspend fun insertarRemoteServicio(servicio: Servicio) {
-        remoteDBApiService.addService(servicio)
+    suspend fun insertarRemoteServicio(servicio: Servicio, taller: String) {
+        remoteDBApiService.addService(servicio, taller)
     }
 
-    suspend fun deleteServicio(servicio: Servicio) {
+    suspend fun deleteServicio(servicio: Servicio, taller: String) {
         servicioDao.deleteServicio(servicio)
-        remoteDBApiService.deleteService(servicio.fecha, servicio.matricula)
+        remoteDBApiService.deleteService(servicio.fecha, servicio.matricula, taller)
     }
 
     suspend fun deleteAllLocalServicios() {
         servicioDao.deleteAll()
     }
 
-    suspend fun generateWidgetGraph(taller: String) {
+    /*suspend fun generateWidgetGraph(taller: String) {
         remoteDBApiService.generateWidgetGraph(taller)
-    }
+    }*/
 }

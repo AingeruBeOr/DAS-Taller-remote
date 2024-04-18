@@ -119,9 +119,9 @@ fun AddServicio(
             }
             Button(onClick = {
                 viewModel.addNewServicio(
-                    Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula.value)
+                    Servicio(fecha = fecha, descripcion = descripcion, matricula = matricula.value),
+                    context
                 )
-                viewModel.updateWidget(context)
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.Save))

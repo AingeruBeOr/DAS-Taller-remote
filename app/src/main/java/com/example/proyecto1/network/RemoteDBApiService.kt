@@ -50,7 +50,8 @@ interface RemoteDBApiService{
 
     @POST("addService") // Resolved to: http://BASE_URL/addService (Body: JSONified Servicio)
     suspend fun addService(
-        @Body servicio: Servicio
+        @Body servicio: Servicio,
+        @Query("taller") taller: String
     ) : Message
 
     @POST("addVehicle") // Resolved to: http://BASE_URL/addVehicle (Body: JSONified Vehiculo)
@@ -96,16 +97,12 @@ interface RemoteDBApiService{
     @DELETE("deleteService")
     suspend fun deleteService(
         @Query("fecha") fecha: String,
-        @Query("matricula") matricula: String
+        @Query("matricula") matricula: String,
+        @Query("taller") taller: String
     )
 
     @GET("clientsLocations")
     suspend fun getClientLocations(
         @Query("user") user: String
     ) : List<ClientLocation>
-
-    @GET("generateWidgetGraph")
-    suspend fun generateWidgetGraph(
-        @Query("taller") taller: String
-    ) : Message
 }

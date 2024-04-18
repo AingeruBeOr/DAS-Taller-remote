@@ -3,12 +3,20 @@ package com.example.proyecto1
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
+import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.graphics.drawable.toBitmapOrNull
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.imageLoader
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
@@ -22,10 +30,14 @@ import com.example.proyecto1.domain.PullUserDataUseCase
 import com.example.proyecto1.network.ClientLocation
 import com.example.proyecto1.ui.widgets.TallerAppWidget
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
 
@@ -81,19 +93,19 @@ class ActivityViewModel @Inject constructor(
     var vehicleDocumentation = MutableStateFlow<Bitmap?>(null)
     var userClientLocations = MutableStateFlow<List<ClientLocation>>(listOf())
 
-    fun addNewServicio(nuevoServicio: Servicio) {
+    fun addNewServicio(nuevoServicio: Servicio, context: Context) {
         viewModelScope.launch {
             servicioRepository.insertServicio(nuevoServicio)
-            servicioRepository.insertarRemoteServicio(nuevoServicio)
+            servicioRepository.insertarRemoteServicio(nuevoServicio, currentUserName)
+            updateWidget(context)
         }
     }
 
     fun deleteServicio(servicioParaBorrar: Servicio, context: Context) {
         Log.d("ViewModel", "Deleting service")
         viewModelScope.launch{
-            servicioRepository.deleteServicio(servicioParaBorrar)
-            servicioRepository.generateWidgetGraph(currentUserName)
-            TallerAppWidget().updateAll(context)
+            servicioRepository.deleteServicio(servicioParaBorrar, currentUserName)
+            updateWidget(context)
         }
     }
 
@@ -190,9 +202,8 @@ class ActivityViewModel @Inject constructor(
             pullUserDataUseCase.pullUserData(username)
             currentUserType.value = appUserRepository.getUserType(username)
             currentUserName = username
-            servicioRepository.generateWidgetGraph(username)
             preferencesRepository.saveLastUserName(username)
-            TallerAppWidget().updateAll(context)
+            updateWidget(context)
         }
     }
 
@@ -225,8 +236,48 @@ class ActivityViewModel @Inject constructor(
 
     fun updateWidget(context: Context) {
         viewModelScope.launch {
-            servicioRepository.generateWidgetGraph(currentUserName)
+            // Lo hacemos con withContext es ejecutarlo en un hilo seprado pero no seguir hasta que tengamos el valor
+            val imageBitmap = withContext(Dispatchers.IO) {
+                context.getImageBitmap("http://34.155.61.4/widgetPlots/${currentUserName}.png")
+            }
+            //val imageBitmap = context.getImageBitmap("http://34.155.61.4/widgetPlots/${currentUserName}.png")
+
+            // Bitmap to String
+            val baos = ByteArrayOutputStream()
+            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val b : ByteArray = baos.toByteArray()
+            val imageString = Base64.encodeToString(b, Base64.DEFAULT)
+            Log.d("Widget", "BASE64 image size in VM: ${imageString.length}")
+
+            Log.d("ViewModel", "Updating widget")
+            // We get the widget manager
+            val manager = GlanceAppWidgetManager(context)
+            // We get all the glace IDs that are a TallerAppWidget (remember than we can have more
+            // than one widget of the same type)
+            val glanceIds = manager.getGlanceIds(TallerAppWidget::class.java)
+            // For each glanceIds...
+            Log.d("Widget", "Los glanceIds de los widgets son: $glanceIds")
+            glanceIds.forEach { glanceId ->
+                updateAppWidgetState(context, glanceId) { prefs ->
+                    Log.d("Widget", "Actualizando state 1")
+                    val listaServicios = servicios.first()
+                    Log.d("Widget", "Actualizando state 2")
+                    prefs[TallerAppWidget.servicesKeys] = listaServicios.size.toString()
+                    prefs[TallerAppWidget.imageKey] = imageString
+                }
+            }
             TallerAppWidget().updateAll(context)
         }
+    }
+
+    private suspend fun Context.getImageBitmap(url: String): Bitmap? {
+        val request = ImageRequest.Builder(this)
+            .data(url)
+            .memoryCachePolicy(CachePolicy.DISABLED)  // Para que no la guarde en caché
+            .diskCachePolicy(CachePolicy.DISABLED)    // Para que no la guarde en caché
+            .build()
+        val result = imageLoader.execute(request)
+        Log.d("Widget", "Imagen recuperada VM")
+        return result.drawable?.toBitmapOrNull()
     }
 }
