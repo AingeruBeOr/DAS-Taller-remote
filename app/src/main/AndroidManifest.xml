@@ -92,6 +92,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/my_app_widget_info" />
         </receiver>
+        
+        <!-- Widget alarm scheduler broadcast receiver -->
+        <receiver android:name=".ui.widgets.alarm.AlarmReceiver" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

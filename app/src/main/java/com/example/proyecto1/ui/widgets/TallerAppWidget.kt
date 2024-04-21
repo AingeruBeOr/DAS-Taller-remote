@@ -50,6 +50,8 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.proyecto1.R
 import com.example.proyecto1.data.repositories.dataStore
+import com.example.proyecto1.ui.widgets.alarm.AlarmScheduler
+import com.example.proyecto1.ui.widgets.alarm.TallerAlarmScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -59,7 +61,6 @@ class TallerAppWidget: GlanceAppWidget() {
 
     override val sizeMode: SizeMode = SizeMode.Single
     override var stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
-
 
     // PreferencesGlanceStateDefinition (DataStore) keys. This is only use because we need to update
     // the DataStore if we want the widget to change. In fact, for this widget we don't need to
@@ -156,6 +157,7 @@ class TallerAppWidget: GlanceAppWidget() {
                     modifier = GlanceModifier.fillMaxSize()
                 )
             }
+            TallerAlarmScheduler(LocalContext.current).schedule()
         }
     }
 
@@ -193,10 +195,12 @@ class TallerAppWidget: GlanceAppWidget() {
     /**
      * Called when the widget instance is deleted. We can then clean up any ongoing task.
      */
-    /*override suspend fun onDelete(context: Context, glanceId: GlanceId) {
+    override suspend fun onDelete(context: Context, glanceId: GlanceId) {
         super.onDelete(context, glanceId)
-        ImageWorker.cancel(context, glanceId)
-    }*/
+
+        // Clear the task
+        TallerAlarmScheduler(context).cancel()
+    }
 
     private fun getUrl(username: String) : String {
         return "http://34.155.61.4/widgetPlots/${username}.png"
