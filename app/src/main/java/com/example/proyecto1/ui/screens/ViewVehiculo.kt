@@ -3,6 +3,8 @@ package com.example.proyecto1.ui.screens
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +48,11 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 
 /**
@@ -206,6 +214,7 @@ fun VehicleInfo(
 ) {
     val context = LocalContext.current
     val vehicleDocumentation by viewModel.vehicleDocumentation.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     var viewDocumentationPressed by remember {
         mutableStateOf(false)
@@ -223,10 +232,20 @@ fun VehicleInfo(
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                viewDocumentationPressed = true
-                viewModel.getVehicleDocumentation(vehiculo.matricula)
-                // Cuando se ejecute esta función el valor de 'vehicleDocumentation' cambiará y se
-                // ejecutará el LaunchedEffect
+                coroutineScope.launch {
+                    if (viewModel.vehicleHasDocumentation(vehiculo.matricula)) {
+                        viewDocumentationPressed = true
+                        viewModel.getVehicleDocumentation(vehiculo.matricula)
+                    }
+                    else {
+                        // Cuando se ejecute esta función el valor de 'vehicleDocumentation' cambiará y se
+                        // ejecutará el LaunchedEffect
+                        Toast.makeText(
+                            context,
+                            "No hay documentaicón disponible",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         ) {
             if (!viewDocumentationPressed) Text(text = "Ver documentación")

@@ -59,6 +59,10 @@ class VehiculoRepository @Inject constructor(
         )
     }
 
+    suspend fun vehicleHasDocumentation(matricula: String) : Boolean {
+        return remoteDBApiService.vehicleHasDocumentation(matricula).message == "true"
+    }
+
     suspend fun getVehicleDocumentation(matricula: String) : Bitmap {
         val responseBody = remoteDBApiService.getVehicleDocumentation(matricula)
         return responseBody.byteStream().use(BitmapFactory::decodeStream)

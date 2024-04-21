@@ -86,6 +86,7 @@ class ActivityViewModel @Inject constructor(
     var currentUserType = mutableStateOf("taller")
     var currentUserName = ""
     var vehicleDocumentation = MutableStateFlow<Bitmap?>(null)
+    var vehicleHasDocumentation = MutableStateFlow(false)
     var userClientLocations = MutableStateFlow<List<ClientLocation>>(listOf())
 
     fun addNewServicio(nuevoServicio: Servicio, context: Context) {
@@ -220,6 +221,10 @@ class ActivityViewModel @Inject constructor(
             vehicleDocumentation.value = vehiculoRepository.getVehicleDocumentation(matricula)
             delay(300) // TODO, esperamos a que cargue la foto
         }
+    }
+
+    suspend fun vehicleHasDocumentation(matricula: String) : Boolean {
+        return vehiculoRepository.vehicleHasDocumentation(matricula)
     }
 
     fun getUsersClientLocations(){

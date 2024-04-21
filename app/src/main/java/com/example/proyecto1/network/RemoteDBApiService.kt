@@ -78,6 +78,11 @@ interface RemoteDBApiService{
         @Part image: MultipartBody.Part
     )
 
+    @GET("vehicleHasDocumentation")
+    suspend fun vehicleHasDocumentation(
+        @Query("matricula") matricula: String
+    ) : Message
+
     @GET("getVehicleDocumentation")
     suspend fun getVehicleDocumentation(
         @Query("matricula") matricula: String
