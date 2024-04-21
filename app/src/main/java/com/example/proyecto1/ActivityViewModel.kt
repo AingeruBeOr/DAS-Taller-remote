@@ -6,18 +6,12 @@ import android.os.Build
 import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.imageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
@@ -36,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream

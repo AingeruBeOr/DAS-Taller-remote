@@ -26,13 +26,11 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
-import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
@@ -50,7 +48,6 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.example.proyecto1.R
 import com.example.proyecto1.data.repositories.dataStore
-import com.example.proyecto1.ui.widgets.alarm.AlarmScheduler
 import com.example.proyecto1.ui.widgets.alarm.TallerAlarmScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

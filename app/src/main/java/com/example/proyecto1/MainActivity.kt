@@ -3,7 +3,6 @@ package com.example.proyecto1
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -26,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import com.example.proyecto1.ui.screens.MainView
 import com.example.proyecto1.ui.theme.TallerTheme
@@ -37,9 +34,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
 
 /**
  * AppCompatActivity extends FragmentActivity which extends ComponentActivity.

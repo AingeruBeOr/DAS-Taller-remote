@@ -1,7 +1,6 @@
 package com.example.proyecto1.ui.screens
 
 import android.content.ContentProviderOperation
-import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Configuration
 import android.provider.ContactsContract
@@ -39,19 +38,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Vehiculo
-import com.example.proyecto1.data.repositories.ClienteRepository
-import com.example.proyecto1.data.repositories.VehiculoRepository
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
-import java.lang.Exception
 
 data class ClientInfoState(
     val navController: NavController,

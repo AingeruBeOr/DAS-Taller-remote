@@ -1,6 +1,5 @@
 package com.example.proyecto1.network
 
-import android.graphics.Bitmap
 import com.example.proyecto1.data.database.entities.Cliente
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo

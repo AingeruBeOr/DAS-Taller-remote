@@ -37,7 +37,6 @@ import com.example.proyecto1.ActivityViewModel
 import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
-import com.example.proyecto1.ui.widgets.TallerAppWidget
 import java.text.SimpleDateFormat
 import java.util.Date
 

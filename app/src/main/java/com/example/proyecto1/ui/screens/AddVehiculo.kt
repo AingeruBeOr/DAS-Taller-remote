@@ -45,7 +45,6 @@ import com.example.proyecto1.data.database.entities.Vehiculo
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Objects
 
 fun Context.createImageFile(): File {
     // Create an image file name

@@ -3,7 +3,6 @@ package com.example.proyecto1.ui.screens
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.os.Environment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,7 +45,6 @@ import com.example.proyecto1.R
 import com.example.proyecto1.data.database.entities.Servicio
 import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.ui.myComponents.DeleteAlertDialog
-import java.io.File
 import java.io.FileOutputStream
 
 /**

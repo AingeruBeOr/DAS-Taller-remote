@@ -2,12 +2,12 @@ package com.example.proyecto1.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.proyecto1.data.database.entities.Cliente
-import com.example.proyecto1.data.database.entities.Servicio
-import com.example.proyecto1.data.database.entities.Vehiculo
 import com.example.proyecto1.data.database.dao.ClienteDao
 import com.example.proyecto1.data.database.dao.ServicioDao
 import com.example.proyecto1.data.database.dao.VehiculoDao
+import com.example.proyecto1.data.database.entities.Cliente
+import com.example.proyecto1.data.database.entities.Servicio
+import com.example.proyecto1.data.database.entities.Vehiculo
 
 /**
  * Base de datos Room de la aplicación. En esta hay que definir cuales son las entidades y cuales

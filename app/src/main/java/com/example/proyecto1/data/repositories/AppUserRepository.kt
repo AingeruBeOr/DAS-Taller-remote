@@ -1,8 +1,6 @@
 package com.example.proyecto1.data.repositories
 
-import android.util.Log
 import com.example.proyecto1.data.database.entities.Cliente
-import com.example.proyecto1.network.Message
 import com.example.proyecto1.network.RemoteDBApiService
 import javax.inject.Inject
 
