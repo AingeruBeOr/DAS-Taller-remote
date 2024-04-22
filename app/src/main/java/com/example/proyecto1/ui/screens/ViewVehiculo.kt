@@ -270,6 +270,9 @@ fun VehicleInfo(
             }
             context.startActivity(intent)
         }
+        // Vaciamos la variable para que cuando volavamos a entrar no se vuelva a cargar la imagen
+        // sin llegar a pulsar el botón
+        viewModel.vehicleDocumentation.value = null
     }
 }
 
